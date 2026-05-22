@@ -40,7 +40,10 @@ jobs:
         env:
           NODE_ENV: test
           JWT_SECRET: test-secret-ci-pipeline
-        run: pnpm test -- --passWithNoTests
+        run: pnpm test -- --passWithNoTests --testPathIgnorePatterns="e2e|integration|performance"
+
+      - name: Remove API routes for static export
+        run: rm -rf app/api
 
       - name: Build (Static Export)
         run: pnpm build

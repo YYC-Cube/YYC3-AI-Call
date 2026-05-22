@@ -50,6 +50,11 @@ jobs:
           echo ""
           echo "📡 Custom domain: ai-call.yyc3.vip"
 
+      - name: Remove API routes for static export
+        run: |
+          echo "📦 Removing API routes for static export..."
+          rm -rf app/api
+
       - name: Build static site
         run: pnpm build
         env:
