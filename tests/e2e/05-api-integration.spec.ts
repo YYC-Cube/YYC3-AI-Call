@@ -134,11 +134,12 @@ test.describe("API 集成与数据同步", () => {
     });
 
     // 或者直接验证前端是否进行了 API 调用
-    const requestSpy = page.on("request", (request) => {
+    const requestSpy = (request: any) => {
       if (request.url().includes("/api/")) {
         console.log("API request detected:", request.url());
       }
-    });
+    };
+    page.on("request", requestSpy);
 
     await page.goto("/");
 
@@ -146,7 +147,7 @@ test.describe("API 集成与数据同步", () => {
     await page.waitForTimeout(1000);
 
     // 移除监听器
-    page.removeListener("request", requestSpy);
+    page.off("request", requestSpy);
   });
 
   test("应该处理网络错误优雅降级", async ({ page }) => {
@@ -162,7 +163,7 @@ test.describe("API 集成与数据同步", () => {
 
     // 页面应该能优雅地处理错误
     // (不会完全崩溃，可能显示错误消息)
-    const pageText = await page.textContent();
+    const pageText = await page.textContent('body');
     expect(pageText).toBeTruthy();
   });
 

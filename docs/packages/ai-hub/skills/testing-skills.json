@@ -1,0 +1,66 @@
+[
+  {
+    "id": "tdd-practice",
+    "name": "TDD Practice",
+    "description": "TDD实践技能，精通红绿重构、测试优先",
+    "trigger": ["tdd", "测试驱动", "test driven", "red green refactor"],
+    "category": "testing",
+    "prompt": "TDD实践：\n1. 编写失败的测试\n2. 编写最小实现\n3. 重构代码\n4. 循环迭代\n5. 测试覆盖率\n6. 持续集成\n\n遵循TDD最佳实践"
+  },
+  {
+    "id": "bdd-practice",
+    "name": "BDD Practice",
+    "description": "BDD实践技能，精通Gherkin语法、行为驱动",
+    "trigger": ["bdd", "行为驱动", "gherkin", "cucumber", "given when then"],
+    "category": "testing",
+    "prompt": "BDD实践：\n1. 场景定义\n2. Gherkin语法\n3. 步骤实现\n4. 参数化测试\n5. 报告生成\n6. 持续集成\n\n遵循BDD最佳实践"
+  },
+  {
+    "id": "e2e-testing",
+    "name": "E2E Testing",
+    "description": "端到端测试技能，精通Playwright/Cypress/Selenium",
+    "trigger": ["e2e", "端到端测试", "playwright", "cypress", "selenium"],
+    "category": "testing",
+    "prompt": "E2E测试设计：\n1. 测试场景设计\n2. 页面对象模式\n3. 等待策略\n4. 截图和视频\n5. 并行执行\n6. CI集成\n\n支持Playwright/Cypress/Selenium"
+  },
+  {
+    "id": "performance-testing",
+    "name": "Performance Testing",
+    "description": "性能测试技能，精通JMeter/k6/Locust",
+    "trigger": ["performance test", "性能测试", "load test", "压力测试", "jmeter", "k6"],
+    "category": "testing",
+    "prompt": "性能测试设计：\n1. 测试场景设计\n2. 负载模型\n3. 指标收集\n4. 瓶颈分析\n5. 优化建议\n6. 报告生成\n\n支持JMeter/k6/Locust"
+  },
+  {
+    "id": "mock-testing",
+    "name": "Mock Testing",
+    "description": "Mock测试技能，精通模拟对象、存根、间谍",
+    "trigger": ["mock", "stub", "spy", "模拟测试", "fake"],
+    "category": "testing",
+    "prompt": "Mock测试设计：\n1. Mock对象创建\n2. Stub实现\n3. Spy使用\n4. 验证调用\n5. 参数匹配\n6. 测试隔离\n\n遵循Mock测试最佳实践"
+  },
+  {
+    "id": "contract-testing",
+    "name": "Contract Testing",
+    "description": "契约测试技能，精通Pact、API契约",
+    "trigger": ["contract test", "契约测试", "pact", "api contract"],
+    "category": "testing",
+    "prompt": "契约测试设计：\n1. 契约定义\n2. 消费者测试\n3. 提供者验证\n4. 契约发布\n5. 版本管理\n6. CI集成\n\n支持Pact等契约测试框架"
+  },
+  {
+    "id": "mutation-testing",
+    "name": "Mutation Testing",
+    "description": "变异测试技能，精通测试质量评估",
+    "trigger": ["mutation test", "变异测试", "stryker", "pitest"],
+    "category": "testing",
+    "prompt": "变异测试：\n1. 变异算子\n2. 测试执行\n3. 存活变异\n4. 覆盖率分析\n5. 质量评估\n6. 改进建议\n\n支持Stryker/Pitest等工具"
+  },
+  {
+    "id": "visual-testing",
+    "name": "Visual Testing",
+    "description": "视觉测试技能，精通截图对比、UI验证",
+    "trigger": ["visual test", "视觉测试", "screenshot", "snapshot", "ui验证"],
+    "category": "testing",
+    "prompt": "视觉测试设计：\n1. 基准截图\n2. 对比算法\n3. 阈值设置\n4. 差异报告\n5. 审核流程\n6. CI集成\n\n支持Storybook/Percy等工具"
+  }
+]

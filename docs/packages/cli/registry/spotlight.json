@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "spotlight",
+  "type": "registry:component",
+  "title": "Spotlight",
+  "author": "YYC³ Team",
+  "description": "鼠标跟随聚光灯效果组件，使用 framer-motion Spring 动画平滑跟踪鼠标位置",
+  "dependencies": ["framer-motion"],
+  "files": [
+    {
+      "path": "components/yyc3/spotlight.tsx",
+      "type": "registry:component",
+      "content": "\"use client\"\nimport { useRef, useState, useCallback, useEffect } from \"react\"\nimport { motion, useSpring, useTransform, type SpringOptions } from \"framer-motion\"\nimport { cn } from \"@/lib/utils\"\n\ntype SpotlightProps = {\n  className?: string\n  size?: number\n  fill?: string\n  springOptions?: SpringOptions\n}\n\nexport function Spotlight({ className, size = 200, springOptions = { bounce: 0 } }: SpotlightProps) {\n  const containerRef = useRef<HTMLDivElement>(null)\n  const [isHovered, setIsHovered] = useState(false)\n  const [parentElement, setParentElement] = useState<HTMLElement | null>(null)\n\n  const mouseX = useSpring(0, springOptions)\n  const mouseY = useSpring(0, springOptions)\n\n  const spotlightLeft = useTransform(mouseX, (x) => `${x - size / 2}px`)\n  const spotlightTop = useTransform(mouseY, (y) => `${y - size / 2}px`)\n\n  useEffect(() => {\n    if (containerRef.current) {\n      const parent = containerRef.current.parentElement\n      if (parent) {\n        parent.style.position = \"relative\"\n        parent.style.overflow = \"hidden\"\n        setParentElement(parent)\n      }\n    }\n  }, [])\n\n  const handleMouseMove = useCallback(\n    (event: MouseEvent) => {\n      if (!parentElement) return\n      const { left, top } = parentElement.getBoundingClientRect()\n      mouseX.set(event.clientX - left)\n      mouseY.set(event.clientY - top)\n    },\n    [mouseX, mouseY, parentElement],\n  )\n\n  useEffect(() => {\n    if (!parentElement) return\n\n    parentElement.addEventListener(\"mousemove\", handleMouseMove)\n    parentElement.addEventListener(\"mouseenter\", () => setIsHovered(true))\n    parentElement.addEventListener(\"mouseleave\", () => setIsHovered(false))\n\n    return () => {\n      parentElement.removeEventListener(\"mousemove\", handleMouseMove)\n      parentElement.removeEventListener(\"mouseenter\", () => setIsHovered(true))\n      parentElement.removeEventListener(\"mouseleave\", () => setIsHovered(false))\n    }\n  }, [parentElement, handleMouseMove])\n\n  return (\n    <motion.div\n      ref={containerRef}\n      className={cn(\n        \"pointer-events-none absolute rounded-full bg-[radial-gradient(circle_at_center,var(--tw-gradient-stops),transparent_80%)] blur-xl transition-opacity duration-200\",\n        \"from-zinc-50 via-zinc-100 to-zinc-200\",\n        isHovered ? \"opacity-100\" : \"opacity-0\",\n        className,\n      )}\n      style={{\n        width: size,\n        height: size,\n        left: spotlightLeft,\n        top: spotlightTop,\n      }}\n    />\n  )\n}"
+    }
+  ],
+  "categories": ["animation", "3d", "interaction"],
+  "meta": {
+    "origin": "yyc3-bot",
+    "layer": "three",
+    "duplicates": 4,
+    "zeroDep": false
+  }
+}

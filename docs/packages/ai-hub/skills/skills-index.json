@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "YYC³ AI Hub Skills Index",
+  "description": "Skills分类索引 - 所有可用技能的完整列表",
+  "version": "1.0.0",
+  "categories": {
+    "architecture": {
+      "name": "架构设计",
+      "description": "系统架构设计相关技能",
+      "icon": "🏗️",
+      "skills": [
+        "microservices-design",
+        "event-sourcing",
+        "domain-driven-design",
+        "api-gateway-design",
+        "service-mesh-design",
+        "cloud-native-design",
+        "data-architecture",
+        "security-architecture"
+      ],
+      "count": 8
+    },
+    "languages": {
+      "name": "编程语言",
+      "description": "各编程语言设计模式技能",
+      "icon": "💻",
+      "skills": [
+        "rust-patterns",
+        "go-patterns",
+        "python-patterns",
+        "typescript-patterns",
+        "java-patterns",
+        "kotlin-patterns",
+        "scala-patterns",
+        "swift-patterns"
+      ],
+      "count": 8
+    },
+    "infrastructure": {
+      "name": "基础设施",
+      "description": "DevOps和基础设施相关技能",
+      "icon": "🔧",
+      "skills": [
+        "kubernetes-deployment",
+        "docker-optimization",
+        "terraform-modules",
+        "ci-cd-pipeline",
+        "monitoring-alerting",
+        "gitops-workflow",
+        "chaos-engineering",
+        "cost-optimization"
+      ],
+      "count": 8
+    },
+    "ai": {
+      "name": "数据与AI",
+      "description": "AI和机器学习相关技能",
+      "icon": "🤖",
+      "skills": [
+        "llm-prompt-engineering",
+        "rag-system",
+        "agent-design",
+        "fine-tuning",
+        "vector-database",
+        "ml-pipeline",
+        "data-pipeline",
+        "nlp-processing"
+      ],
+      "count": 8
+    },
+    "security": {
+      "name": "安全",
+      "description": "安全相关技能",
+      "icon": "🔐",
+      "skills": [
+        "owasp-top10",
+        "secure-coding",
+        "penetration-testing",
+        "security-audit",
+        "encryption-design",
+        "identity-management",
+        "secrets-management",
+        "incident-response"
+      ],
+      "count": 8
+    },
+    "testing": {
+      "name": "测试",
+      "description": "测试相关技能",
+      "icon": "🧪",
+      "skills": [
+        "tdd-practice",
+        "bdd-practice",
+        "e2e-testing",
+        "performance-testing",
+        "mock-testing",
+        "contract-testing",
+        "mutation-testing",
+        "visual-testing"
+      ],
+      "count": 8
+    },
+    "backend": {
+      "name": "后端开发",
+      "description": "后端开发相关技能",
+      "icon": "⚙️",
+      "skills": [
+        "api-design",
+        "database-optimization",
+        "caching",
+        "message-queue",
+        "graphql",
+        "grpc",
+        "websocket",
+        "rate-limiting"
+      ],
+      "count": 8
+    },
+    "frontend": {
+      "name": "前端开发",
+      "description": "前端开发相关技能",
+      "icon": "🎨",
+      "skills": [
+        "ui-design",
+        "responsive-design",
+        "accessibility",
+        "performance-optimization",
+        "state-management",
+        "component-design",
+        "animation",
+        "pwa"
+      ],
+      "count": 8
+    }
+  },
+  "totalSkills": 64,
+  "lastUpdated": "2026-04-09",
+  "files": {
+    "core": "skills.json",
+    "architecture": "architecture-skills.json",
+    "languages": "languages-skills.json",
+    "infrastructure": "infrastructure-skills.json",
+    "ai": "ai-skills.json",
+    "security": "security-skills.json",
+    "testing": "testing-skills.json"
+  }
+}

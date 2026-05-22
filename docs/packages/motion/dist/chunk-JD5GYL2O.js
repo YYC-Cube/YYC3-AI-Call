@@ -1,0 +1,2 @@
+var i={up:n=>`translateY(${n}px)`,down:n=>`translateY(-${n}px)`,left:n=>`translateX(${n}px)`,right:n=>`translateX(-${n}px)`,none:()=>"none"};function s(n,r={}){let{delay:t=0,direction:o="up",duration:e=.5,distance:a=12}=r;return {opacity:n?1:0,transform:n?"none":i[o](a),transition:`opacity ${e}s ease ${t}s, transform ${e}s ease ${t}s`}}export{s as a};//# sourceMappingURL=chunk-JD5GYL2O.js.map
+//# sourceMappingURL=chunk-JD5GYL2O.js.map

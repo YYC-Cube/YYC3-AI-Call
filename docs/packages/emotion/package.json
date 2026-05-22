@@ -1,0 +1,83 @@
+{
+  "name": "@yyc3/emotion",
+  "version": "1.0.0",
+  "description": "YYC³ AI Family 情感引擎 — 多模态情感融合 + 情绪音乐桥接 + 事件总线",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./engine": {
+      "import": "./dist/engine/index.js",
+      "types": "./dist/engine/index.d.ts"
+    },
+    "./music-bridge": {
+      "import": "./dist/music-bridge/index.js",
+      "types": "./dist/music-bridge/index.d.ts"
+    },
+    "./event-bus": {
+      "import": "./dist/event-bus/index.js",
+      "types": "./dist/event-bus/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "eventemitter3": "^5.0.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^20.0.0",
+    "@vitest/coverage-v8": "^1.0.0",
+    "eslint": "^10.1.0",
+    "globals": "^17.4.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0",
+    "typescript-eslint": "^8.58.0",
+    "vitest": "^1.0.0"
+  },
+  "keywords": [
+    "yyc3",
+    "ai-family",
+    "emotion",
+    "multimodal",
+    "sentiment",
+    "music",
+    "affect",
+    "mood",
+    "typescript"
+  ],
+  "author": "YanYuCloudCube Team <admin@0379.email>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YanYuCloudCube/YYC3-pi3",
+    "directory": "packages/emotion"
+  },
+  "homepage": "https://github.com/YanYuCloudCube/YYC3-pi3#readme",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

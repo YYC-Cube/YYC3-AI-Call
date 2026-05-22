@@ -1,0 +1,97 @@
+{
+  "name": "@yyc3/plugins",
+  "version": "1.4.0",
+  "description": "YYC³ AI Family 插件集合 — LSP语言服务器插件、内容处理插件",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./lsp": {
+      "import": "./dist/lsp.js",
+      "types": "./dist/lsp.d.ts"
+    },
+    "./content": {
+      "import": "./dist/content.js",
+      "types": "./dist/content.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "@yyc3/core": "^1.4.0",
+    "eventemitter3": "^5.0.1"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
+    "@vitest/coverage-v8": "^1.0.0",
+    "eslint": "^10.1.0",
+    "globals": "^17.4.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0",
+    "typescript-eslint": "^8.58.0",
+    "vitest": "^1.0.0"
+  },
+  "keywords": [
+    "yyc3",
+    "family-pai",
+    "ai",
+    "plugins",
+    "lsp",
+    "language-server",
+    "emmet",
+    "marked",
+    "handlebars",
+    "ionic",
+    "typescript"
+  ],
+  "author": "YanYuCloudCube Team <admin@0379.email>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YanYuCloudCube/Family-PAI.git",
+    "directory": "packages/plugins"
+  },
+  "bugs": {
+    "url": "https://github.com/YanYuCloudCube/Family-PAI/issues"
+  },
+  "homepage": "https://github.com/YanYuCloudCube/Family-PAI#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "size-limit": [
+    {
+      "path": "dist/index.js",
+      "limit": "8 kB"
+    }
+  ]
+}

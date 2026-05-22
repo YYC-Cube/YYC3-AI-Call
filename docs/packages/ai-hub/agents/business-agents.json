@@ -1,0 +1,90 @@
+[
+  {
+    "id": "business-analyst",
+    "name": "Business Analyst",
+    "description": "业务分析师，精通指标分析、报表、KPI跟踪",
+    "model": "sonnet",
+    "category": "business",
+    "priority": 1,
+    "systemPrompt": "你是业务分析师，精通指标分析、报表、KPI跟踪。你擅长从数据中发现业务洞察。",
+    "tools": ["documentation-builder", "performance-analyzer"],
+    "skills": ["business-analysis", "kpi-tracking", "reporting"]
+  },
+  {
+    "id": "quant-analyst",
+    "name": "Quantitative Analyst",
+    "description": "量化分析师，精通金融建模、交易策略、市场分析",
+    "model": "opus",
+    "category": "business",
+    "priority": 1,
+    "systemPrompt": "你是量化分析师，精通金融建模、交易策略、市场分析。你擅长构建量化交易系统。",
+    "tools": ["api-generator", "performance-analyzer"],
+    "skills": ["quantitative-finance", "trading-strategies", "market-analysis"]
+  },
+  {
+    "id": "risk-manager",
+    "name": "Risk Manager",
+    "description": "风险管理专家，精通投资组合风险监控和管理",
+    "model": "sonnet",
+    "category": "business",
+    "priority": 1,
+    "systemPrompt": "你是风险管理专家，精通投资组合风险监控和管理。你擅长识别和管理金融风险。",
+    "tools": ["performance-analyzer", "documentation-builder"],
+    "skills": ["risk-management", "portfolio-analysis", "var"]
+  },
+  {
+    "id": "content-marketer",
+    "name": "Content Marketer",
+    "description": "内容营销专家，精通博客、社交媒体、邮件营销",
+    "model": "sonnet",
+    "category": "business",
+    "priority": 1,
+    "systemPrompt": "你是内容营销专家，精通博客、社交媒体、邮件营销。你擅长创建吸引人的营销内容。",
+    "tools": ["documentation-builder", "api-generator"],
+    "skills": ["content-marketing", "social-media", "email-campaigns"]
+  },
+  {
+    "id": "sales-automator",
+    "name": "Sales Automator",
+    "description": "销售自动化专家，精通冷邮件、跟进、提案生成",
+    "model": "haiku",
+    "category": "business",
+    "priority": 2,
+    "systemPrompt": "你是销售自动化专家，精通冷邮件、跟进、提案生成。你擅长自动化销售流程。",
+    "tools": ["documentation-builder", "api-generator"],
+    "skills": ["sales-automation", "email-sequences", "proposal-generation"]
+  },
+  {
+    "id": "product-manager",
+    "name": "Product Manager",
+    "description": "产品经理，精通产品规划、需求分析、路线图",
+    "model": "sonnet",
+    "category": "business",
+    "priority": 1,
+    "systemPrompt": "你是产品经理，精通产品规划、需求分析、路线图。你擅长定义和管理产品方向。",
+    "tools": ["documentation-builder", "api-generator"],
+    "skills": ["product-management", "requirements", "roadmap"]
+  },
+  {
+    "id": "ux-researcher",
+    "name": "UX Researcher",
+    "description": "UX研究员，精通用户研究、可用性测试、用户访谈",
+    "model": "sonnet",
+    "category": "business",
+    "priority": 1,
+    "systemPrompt": "你是UX研究员，精通用户研究、可用性测试、用户访谈。你擅长理解用户需求。",
+    "tools": ["documentation-builder", "test-generator"],
+    "skills": ["user-research", "usability-testing", "user-interviews"]
+  },
+  {
+    "id": "scrum-master",
+    "name": "Scrum Master",
+    "description": "Scrum专家，精通敏捷方法论、Sprint规划、团队协作",
+    "model": "sonnet",
+    "category": "business",
+    "priority": 1,
+    "systemPrompt": "你是Scrum专家，精通敏捷方法论、Sprint规划、团队协作。你擅长引导敏捷团队。",
+    "tools": ["documentation-builder", "performance-analyzer"],
+    "skills": ["scrum", "agile", "sprint-planning"]
+  }
+]

@@ -1,0 +1,278 @@
+# ============================================
+# YYC³ AI Calling - Helm Chart 默认值
+# ============================================
+
+# 全局配置
+global:
+  imageRegistry: ""
+  imagePullSecrets: []
+  storageClass: ""
+
+# ============================================
+# 应用主服务配置
+# ============================================
+replicaCount: 3
+
+image:
+  repository: yyc3/yyc3-ai-calling
+  tag: latest
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+
+service:
+  type: ClusterIP
+  port: 3000
+  annotations: {}
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "20m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+  hosts:
+    - host: yyc3-ai-call.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: yyc3-ai-calling-tls
+      hosts:
+        - yyc3-ai-call.example.com
+
+resources:
+  limits:
+    cpu: "2"
+    memory: 2Gi
+  requests:
+    cpu: "500m"
+    memory: 512Mi
+
+# Pod水平自动扩缩容（HPA）
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+  # 自定义指标扩缩容（可选）
+  customMetrics: []
+  #   - type: Pods
+  #     pods:
+  #       metric:
+  #         name: http_requests_per_second
+  #       target:
+  #         type: AverageValue
+  #         averageValue: "1000"
+
+# Pod反亲和性（分散到不同节点）
+podAntiAffinity:
+  enabled: true
+  type: soft  # soft 或 hard
+
+# 节点选择器
+nodeSelector: {}
+
+# 容忍度
+tolerations: []
+
+# 环境变量配置
+env:
+  NODE_ENV: production
+  PORT: "3000"
+  HOSTNAME: "0.0.0.0"
+
+# Secret环境变量（从K8s Secret注入）
+secretEnv: []
+#   - name: JWT_SECRET
+#     secretKeyRef:
+#       name: yyc3-secrets
+#       key: jwt-secret
+#   - name: DATABASE_URL
+#     secretKeyRef:
+#       name: yyc3-secrets
+#       key: database-url
+
+# ConfigMap引用
+configMapRefs: []
+
+# 持久化存储
+persistence:
+  enabled: true
+  size: 10Gi
+  storageClass: standard
+  accessModes:
+    - ReadWriteOnce
+  annotations: {}
+
+# 健康检查
+livenessProbe:
+  httpGet:
+    path: /api/health
+    port: 3000
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /api/health
+    port: 3000
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+startupProbe:
+  httpGet:
+    path: /api/health
+    port: 3000
+  initialDelaySeconds: 10
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 30
+
+# 服务账户
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}
+
+# Pod安全上下文
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1001
+  fsGroup: 1001
+
+# 容器安全上下文
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
+
+# ============================================
+# PostgreSQL 配置（可选，使用Bitnami Chart）
+# ============================================
+postgresql:
+  enabled: true
+  auth:
+    postgresPassword: ""
+    password: ""
+    database: yyc3_ai_calling
+    existingSecret: ""
+  primary:
+    persistence:
+      enabled: true
+      size: 20Gi
+    resources:
+      limits:
+        cpu: "1"
+        memory: 2Gi
+      requests:
+        cpu: "250m"
+        memory: 256Mi
+
+# ============================================
+# Redis 配置（可选，使用Bitnami Chart）
+# ============================================
+redis:
+  enabled: true
+  auth:
+    enabled: true
+    password: ""
+    existingSecret: ""
+  master:
+    persistence:
+      enabled: true
+      size: 5Gi
+  resources:
+    limits:
+      cpu: "500m"
+      memory: 512Mi
+    requests:
+      cpu: "100m"
+      memory: 128Mi
+
+# ============================================
+# Ollama AI模型服务（可选）
+# ============================================
+ollama:
+  enabled: false
+  replicaCount: 1
+  image:
+    repository: ollama/ollama
+    tag: latest
+  resources:
+    limits:
+      nvidia.com/gpu: 1  # 需要GPU节点
+      cpu: "4"
+      memory: 16Gi
+    requests:
+      nvidia.com/gpu: 1
+      cpu: "2"
+      memory: 8Gi
+  models:
+    - qwen3.6:35b-a3b
+    - qwen3-embedding:8b
+  persistence:
+    enabled: true
+    size: 50Gi  # 模型文件较大
+
+# ============================================
+# 监控配置
+# ============================================
+monitoring:
+  # Prometheus PodMonitor
+  podMonitor:
+    enabled: false
+    interval: 15s
+    labels: {}
+  
+  # Prometheus ServiceMonitor
+  serviceMonitor:
+    enabled: false
+    interval: 15s
+    labels: {}
+
+# ============================================
+# 日志配置
+# ============================================
+logging:
+  level: info
+  format: json
+
+# ============================================
+# 网络策略
+# ============================================
+networkPolicy:
+  enabled: false
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              name: ingress-nginx
+      ports:
+        - protocol: TCP
+          port: 3000
+  egress:
+    - to:
+        - namespaceSelector: {}
+      ports:
+        - protocol: TCP
+          port: 5432  # PostgreSQL
+        - protocol: TCP
+          port: 6379  # Redis
+
+# ============================================
+# Pod中断预算（PDB）
+# ============================================
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+  # maxUnavailable: 1  # 二选一

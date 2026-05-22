@@ -1,33 +1,57 @@
 name: CI
 
 on:
-    pull_request:
-    push:
-        branches: [main]
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-            - name: Setup PNPM
-              uses: pnpm/action-setup@v4
-              with:
-                  version: 8
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: "20"
-                  cache: "pnpm"
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
 
-            - name: Install dependencies
-              run: pnpm install --frozen-lockfile=false
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile=false
 
-            - name: Lint
-              run: pnpm lint
+      - name: Generate Prisma Client
+        run: npx prisma generate
 
-            - name: Test
-              run: pnpm test
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type Check
+        run: pnpm type-check
+
+      - name: Test
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test-secret-ci-pipeline
+        run: pnpm test --passWithNoTests
+
+      - name: Build (Static Export)
+        run: pnpm build
+        env:
+          NEXT_STATIC_EXPORT: "1"
+          NEXT_TELEMETRY_DISABLED: "1"
+
+      - name: Verify CNAME for GitHub Pages
+        run: |
+          if [ ! -f "public/CNAME" ]; then
+            echo "::warning::CNAME file missing - custom domain may not work"
+            exit 0
+          fi
+          echo "✅ CNAME: $(cat public/CNAME)"

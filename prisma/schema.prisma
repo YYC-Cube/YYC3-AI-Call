@@ -1,5 +1,5 @@
-// Prisma Schema for YYC³ AI Intelligent Calling System
-// Generator and Data Source
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"
@@ -10,407 +10,161 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ==================== 用户管理 ====================
-
-/// 系统用户模型
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String   // bcrypt hashed
-  name      String
-  role      UserRole @default(AGENT)
-  avatar    String?
-  phone     String?
-  status    UserStatus @default(ACTIVE)
-  
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  lastLogin DateTime?
-  
-  // Relations
-  customers Customer[]
-  tasks     Task[]
-  campaigns Campaign[]
-  
-  @@index([email])
-  @@index([role, status])
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String
+  passwordHash  String
+  role          Role      @default(USER)
+  phone         String?
+  avatar        String?
+  isActive      Boolean   @default(true)
+  lastLoginAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // 关联关系
+  calls         Call[]
+  customers     Customer[]
+  sessions      Session[]
+
   @@map("users")
 }
 
-enum UserRole {
-  ADMIN      // 系统管理员
-  MANAGER    // 团队经理
-  AGENT      // 客服坐席
-  ANALYST    // 数据分析师
-}
-
-enum UserStatus {
-  ACTIVE     // 活跃
-  INACTIVE   // 停用
-  SUSPENDED  // 暂停
-}
-
-// ==================== 客户管理 ====================
-
-/// 客户档案模型
 model Customer {
-  id          String   @id @default(cuid())
-  name        String
-  email       String?  @unique
-  phone       String   @unique
-  gender      Gender?
-  age         Int?
-  company     String?
-  position    String?
-  
-  // 地址信息
-  province    String?
-  city        String?
-  district    String?
-  address     String?
-  
-  // 业务信息
-  status      CustomerStatus @default(NEW)
-  intentLevel IntentLevel @default(UNKNOWN)
-  source      String?       // 来源渠道
-  tags        String[]      // 客户标签
-  
-  // RFM 分析
-  rfmScore    Float   @default(0)
-  lastContact DateTime?
-  totalCalls  Int     @default(0)
-  totalValue  Float   @default(0)
-  
-  // 风险评估
-  riskLevel   RiskLevel @default(LOW)
-  riskReason  String?
-  
-  // 备注
-  notes       String?
-  
-  // 所属坐席
-  userId      String?
-  user        User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
-  // Relations
-  callRecords  CallRecord[]
-  campaigns    CampaignCustomer[]
-  formSubmissions FormSubmission[]
-  tasks        Task[]
-  
+  id            String    @id @default(cuid())
+  name          String
+  phone         String    @unique
+  email         String?
+  company       String?
+  position      String?
+  industry      String?
+  source        String?   @default("manual")
+  status        CustomerStatus @default(NEW)
+  priority      Priority  @default(MEDIUM)
+  tags          String[]
+  notes         String?   @db.Text
+  lastContactAt DateTime?
+  nextFollowUpAt DateTime?
+  assignedToId  String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // 关联关系
+  calls         Call[]
+  assignments   User?    @relation(fields: [assignedToId], references: [id])
+  interactions  Interaction[]
+
+  @@index([status])
+  @@index([assignedToId])
   @@index([phone])
-  @@index([email])
-  @@index([status, intentLevel])
-  @@index([userId])
   @@map("customers")
 }
 
-enum Gender {
-  MALE
-  FEMALE
-  OTHER
+model Call {
+  id            String    @id @default(cuid())
+  customerId    String
+  userId        String
+  type          CallType  @default(OUTBOUND)
+  status        CallStatus @default(PENDING)
+  duration      Int?      // 秒数
+  recordingUrl  String?
+  transcript    String?   @db.Text
+  intent        String?
+  sentiment     String?
+  score         Float?
+  notes         String?   @db.Text
+  startedAt     DateTime?
+  endedAt       DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // 关联关系
+  customer      Customer @relation(fields: [customerId], references: [id])
+  user          User     @relation(fields: [userId], references: [id])
+  interactions  Interaction[]
+
+  @@index([customerId])
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("calls")
+}
+
+model Interaction {
+  id            String    @id @default(cuid())
+  callId        String
+  customerId    String?
+  type          InteractionType
+  content       String    @db.Text
+  metadata      Json?
+  timestamp     DateTime  @default(now())
+
+  // 关联关系
+  call          Call     @relation(fields: [callId], references: [id])
+  customer      Customer? @relation(fields: [customerId], references: [id])
+
+  @@index([callId])
+  @@index([customerId])
+  @@index([timestamp])
+  @@map("interactions")
+}
+
+model Session {
+  id            String    @id @default(cuid())
+  userId        String
+  token         String    @unique
+  refreshToken  String?
+  expiresAt     DateTime
+  ipAddress     String?
+  userAgent     String?
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // 关联关系
+  user          User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([token])
+  @@map("sessions")
+}
+
+model AuditLog {
+  id            String    @id @default(cuid())
+  userId        String?
+  action        String
+  resourceType  String
+  resourceId    String
+  details       Json?
+  ipAddress     String?
+  userAgent     String?
+  createdAt     DateTime  @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([resourceType])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+// 枚举类型定义
+enum Role {
+  USER
+  AGENT
+  MANAGER
+  ADMIN
 }
 
 enum CustomerStatus {
-  NEW          // 新建
-  CONTACTED    // 已联系
-  INTERESTED   // 有意向
-  NEGOTIATING  // 谈判中
-  CLOSED_WON   // 成交
-  CLOSED_LOST  // 丢失
-}
-
-enum IntentLevel {
-  UNKNOWN      // 未知
-  LOW          // 低
-  MEDIUM       // 中
-  HIGH         // 高
-  VERY_HIGH    // 极高
-}
-
-enum RiskLevel {
-  LOW          // 低风险
-  MEDIUM       // 中风险
-  HIGH         // 高风险
-  CRITICAL     // 严重风险
-}
-
-// ==================== 通话记录 ====================
-
-/// 通话记录模型
-model CallRecord {
-  id          String   @id @default(cuid())
-  
-  // 通话基本信息
-  customerId  String
-  customer    Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  
-  phoneNumber String
-  direction   CallDirection
-  status      CallStatus
-  
-  // 通话时长（秒）
-  duration    Int      @default(0)
-  ringTime    Int?     // 振铃时长
-  talkTime    Int?     // 通话时长
-  
-  // AI 分析
-  sentiment   Sentiment?
-  sentimentScore Float?  // 情感分数 0-100
-  
-  intentTags  String[]  // 意图标签
-  keywords    String[]  // 关键词
-  
-  // 质量评分
-  qualityScore Float?   // 0-100
-  
-  // 录音文件
-  recordingUrl String?
-  
-  // 转录文本
-  transcription String?
-  
-  // 通话摘要
-  summary     String?
-  
-  // 后续行动
-  followUpRequired Boolean @default(false)
-  followUpNotes String?
-  
-  startTime   DateTime @default(now())
-  endTime     DateTime?
-  
-  @@index([customerId])
-  @@index([status])
-  @@index([sentiment])
-  @@index([startTime])
-  @@map("call_records")
-}
-
-enum CallDirection {
-  INBOUND   // 呼入
-  OUTBOUND  // 呼出
-}
-
-enum CallStatus {
-  COMPLETED  // 已完成
-  MISSED     // 未接听
-  BUSY       // 忙线
-  REJECTED   // 拒接
-  FAILED     // 失败
-}
-
-enum Sentiment {
-  POSITIVE   // 正面
-  NEUTRAL    // 中立
-  NEGATIVE   // 负面
-}
-
-// ==================== 营销活动 ====================
-
-/// 营销活动模型
-model Campaign {
-  id          String   @id @default(cuid())
-  name        String
-  description String?
-  type        CampaignType
-  status      CampaignStatus @default(DRAFT)
-  
-  // 活动目标
-  targetCount Int      // 目标客户数
-  successCount Int     @default(0)  // 成功数
-  
-  // 时间规划
-  startDate   DateTime?
-  endDate     DateTime?
-  
-  // 创建人
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Restrict)
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
-  // Relations
-  customers   CampaignCustomer[]
-  forms       Form[]
-  tasks       Task[]
-  
-  @@index([status])
-  @@index([userId])
-  @@index([type])
-  @@map("campaigns")
-}
-
-enum CampaignType {
-  EMAIL      // 邮件营销
-  SMS        // 短信营销
-  PHONE      // 电话营销
-  WECHAT     // 微信营销
-  MIXED      // 混合营销
-}
-
-enum CampaignStatus {
-  DRAFT      // 草稿
-  ACTIVE     // 进行中
-  PAUSED     // 已暂停
-  COMPLETED  // 已完成
-  CANCELLED  // 已取消
-}
-
-/// 活动客户关系表
-model CampaignCustomer {
-  id          String   @id @default(cuid())
-  
-  campaignId  String
-  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
-  
-  customerId  String
-  customer    Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  
-  status      ParticipationStatus @default(PENDING)
-  result      String?  // 执行结果
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
-  @@unique([campaignId, customerId])
-  @@index([campaignId])
-  @@index([customerId])
-  @@index([status])
-  @@map("campaign_customers")
-}
-
-enum ParticipationStatus {
-  PENDING    // 待处理
-  SENT       // 已发送
-  OPENED     // 已打开
-  CLICKED    // 已点击
-  CONVERTED  // 已转化
-  FAILED     // 失败
-}
-
-// ==================== 智能表单 ====================
-
-/// 表单定义模型
-model Form {
-  id          String   @id @default(cuid())
-  name        String
-  description String?
-  
-  // 表单配置 (JSON)
-  fields      Json     // 字段配置
-  settings    Json?    // 表单设置
-  
-  // 关联活动
-  campaignId  String?
-  campaign    Campaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
-  
-  status      FormStatus @default(DRAFT)
-  isPublished Boolean  @default(false)
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  publishedAt DateTime?
-  
-  // Relations
-  submissions FormSubmission[]
-  
-  @@index([campaignId])
-  @@index([status])
-  @@map("forms")
-}
-
-enum FormStatus {
-  DRAFT      // 草稿
-  ACTIVE     // 启用
-  ARCHIVED   // 归档
-}
-
-/// 表单提交记录
-model FormSubmission {
-  id         String   @id @default(cuid())
-  
-  formId     String
-  form       Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
-  
-  customerId String?
-  customer   Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
-  
-  // 提交数据 (JSON)
-  data       Json
-  
-  // 来源信息
-  ipAddress  String?
-  userAgent  String?
-  referer    String?
-  
-  status     SubmissionStatus @default(NEW)
-  
-  createdAt  DateTime @default(now())
-  processedAt DateTime?
-  
-  @@index([formId])
-  @@index([customerId])
-  @@index([status])
-  @@index([createdAt])
-  @@map("form_submissions")
-}
-
-enum SubmissionStatus {
-  NEW        // 新提交
-  PROCESSING // 处理中
-  CONTACTED  // 已联系
-  CONVERTED  // 已转化
-  REJECTED   // 已拒绝
-}
-
-// ==================== 任务管理 ====================
-
-/// 任务模型
-model Task {
-  id          String   @id @default(cuid())
-  title       String
-  description String?
-  type        TaskType
-  priority    Priority @default(MEDIUM)
-  status      TaskStatus @default(PENDING)
-  
-  // 关联对象
-  customerId  String?
-  customer    Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
-  
-  campaignId  String?
-  campaign    Campaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
-  
-  // 负责人
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Restrict)
-  
-  // 时间
-  dueDate     DateTime?
-  completedAt DateTime?
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
-  @@index([userId])
-  @@index([customerId])
-  @@index([campaignId])
-  @@index([status, priority])
-  @@index([dueDate])
-  @@map("tasks")
-}
-
-enum TaskType {
-  OUTBOUND_CALL  // 外呼任务
-  FOLLOW_UP      // 跟进任务
-  SURVEY         // 调研任务
-  MEETING        // 会议任务
-  OTHER          // 其他任务
+  NEW
+  CONTACTED
+  QUALIFIED
+  PROPOSAL
+  NEGOTIATION
+  WON
+  LOST
+  ARCHIVED
 }
 
 enum Priority {
@@ -420,46 +174,25 @@ enum Priority {
   URGENT
 }
 
-enum TaskStatus {
-  PENDING      // 待处理
-  IN_PROGRESS  // 进行中
-  COMPLETED    // 已完成
-  CANCELLED    // 已取消
-  OVERDUE      // 已逾期
+enum CallType {
+  INBOUND
+  OUTBOUND
 }
 
-// ==================== 数据分析 ====================
-
-/// 分析指标模型
-model AnalyticsMetric {
-  id        String   @id @default(cuid())
-  
-  // 指标名称
-  metric    String   // call_success_rate, avg_duration, conversion_rate, etc.
-  
-  // 指标值
-  value     Float
-  
-  // 维度标签
-  dimensions Json?   // {region: "华东", product: "全屋整装"}
-  
-  // 时间
-  date      DateTime @default(now())
-  period    Period   @default(DAY)
-  
-  createdAt DateTime @default(now())
-  
-  @@index([metric])
-  @@index([date])
-  @@index([period])
-  @@map("analytics_metrics")
+enum CallStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+  CANCELLED
+  NO_ANSWER
+  BUSY
 }
 
-enum Period {
-  HOUR
-  DAY
-  WEEK
-  MONTH
-  QUARTER
-  YEAR
+enum InteractionType {
+  TRANSCRIPT
+  INTENT_RECOGNITION
+  SENTIMENT_ANALYSIS
+  SYSTEM_EVENT
+  NOTE
 }

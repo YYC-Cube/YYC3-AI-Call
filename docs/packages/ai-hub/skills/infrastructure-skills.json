@@ -1,0 +1,66 @@
+[
+  {
+    "id": "kubernetes-deployment",
+    "name": "Kubernetes Deployment",
+    "description": "K8s部署技能，精通Deployment、Service、Ingress配置",
+    "trigger": ["kubernetes", "k8s", "deployment", "pod", "service"],
+    "category": "infrastructure",
+    "prompt": "Kubernetes部署配置：\n1. Deployment配置\n2. Service配置\n3. Ingress配置\n4. ConfigMap/Secret\n5. 持久化存储\n6. HPA/VPA自动扩缩容\n\n遵循K8s最佳实践"
+  },
+  {
+    "id": "docker-optimization",
+    "name": "Docker Optimization",
+    "description": "Docker优化技能，精通多阶段构建、镜像瘦身、安全",
+    "trigger": ["docker", "容器", "container", "dockerfile", "镜像优化"],
+    "category": "infrastructure",
+    "prompt": "Docker优化：\n1. 多阶段构建\n2. 镜像瘦身\n3. 安全最佳实践\n4. 构建缓存优化\n5. docker-compose配置\n6. 健康检查\n\n遵循Docker最佳实践"
+  },
+  {
+    "id": "terraform-modules",
+    "name": "Terraform Modules",
+    "description": "Terraform模块技能，精通IaC、状态管理、模块化",
+    "trigger": ["terraform", "iac", "基础设施即代码", "terraform module"],
+    "category": "infrastructure",
+    "prompt": "Terraform模块设计：\n1. 模块化设计\n2. 状态管理\n3. 变量与输出\n4. 远程状态\n5. 工作空间\n6. 最佳实践\n\n遵循Terraform最佳实践"
+  },
+  {
+    "id": "ci-cd-pipeline",
+    "name": "CI/CD Pipeline",
+    "description": "CI/CD流水线技能，精通GitHub Actions、GitLab CI、Jenkins",
+    "trigger": ["ci/cd", "pipeline", "流水线", "github actions", "gitlab ci", "jenkins"],
+    "category": "infrastructure",
+    "prompt": "CI/CD流水线设计：\n1. 代码检查\n2. 单元测试\n3. 构建打包\n4. 部署发布\n5. 回滚策略\n6. 通知告警\n\n支持GitHub Actions/GitLab CI/Jenkins"
+  },
+  {
+    "id": "monitoring-alerting",
+    "name": "Monitoring & Alerting",
+    "description": "监控告警技能，精通Prometheus、Grafana、AlertManager",
+    "trigger": ["monitoring", "监控", "prometheus", "grafana", "alert", "告警"],
+    "category": "infrastructure",
+    "prompt": "监控告警配置：\n1. Prometheus指标采集\n2. Grafana仪表盘\n3. AlertManager告警规则\n4. 日志收集\n5. 分布式追踪\n6. SLO/SLI定义\n\n遵循可观测性最佳实践"
+  },
+  {
+    "id": "gitops-workflow",
+    "name": "GitOps Workflow",
+    "description": "GitOps工作流技能，精通ArgoCD、Flux、声明式部署",
+    "trigger": ["gitops", "argocd", "flux", "声明式部署", "declarative"],
+    "category": "infrastructure",
+    "prompt": "GitOps工作流设计：\n1. 声明式配置\n2. Git仓库结构\n3. ArgoCD/Flux配置\n4. 同步策略\n5. 回滚机制\n6. 多环境管理\n\n遵循GitOps最佳实践"
+  },
+  {
+    "id": "chaos-engineering",
+    "name": "Chaos Engineering",
+    "description": "混沌工程技能，精通故障注入、弹性测试、演练",
+    "trigger": ["chaos", "混沌工程", "fault injection", "故障注入", "resilience"],
+    "category": "infrastructure",
+    "prompt": "混沌工程实践：\n1. 故障注入设计\n2. 演练场景\n3. 弹性验证\n4. 自动化测试\n5. 演练报告\n6. 改进建议\n\n遵循混沌工程原则"
+  },
+  {
+    "id": "cost-optimization",
+    "name": "Cost Optimization",
+    "description": "成本优化技能，精通云资源优化、FinOps",
+    "trigger": ["cost", "成本优化", "finops", "云成本", "resource optimization"],
+    "category": "infrastructure",
+    "prompt": "成本优化策略：\n1. 资源使用分析\n2. 实例类型优化\n3. 预留实例\n4. Spot实例\n5. 存储优化\n6. 网络成本优化\n\n遵循FinOps最佳实践"
+  }
+]

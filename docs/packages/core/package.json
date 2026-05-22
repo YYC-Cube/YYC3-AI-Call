@@ -1,0 +1,108 @@
+{
+  "name": "@yyc3/core",
+  "version": "1.4.0",
+  "description": "YYC³ AI Family 核心包 — 统一认证、MCP协议、技能系统、八位AI家人智能体、多模态处理",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./auth": {
+      "import": "./dist/auth/index.js",
+      "types": "./dist/auth/index.d.ts"
+    },
+    "./mcp": {
+      "import": "./dist/mcp/index.js",
+      "types": "./dist/mcp/index.d.ts"
+    },
+    "./skills": {
+      "import": "./dist/skills/index.js",
+      "types": "./dist/skills/index.d.ts"
+    },
+    "./ai-family": {
+      "import": "./dist/ai-family/index.js",
+      "types": "./dist/ai-family/index.d.ts"
+    },
+    "./multimodal": {
+      "import": "./dist/multimodal/index.js",
+      "types": "./dist/multimodal/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "eventemitter3": "^5.0.1",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^20.0.0",
+    "@vitest/coverage-v8": "^1.0.0",
+    "eslint": "^10.1.0",
+    "globals": "^17.4.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0",
+    "typescript-eslint": "^8.58.0",
+    "vitest": "^1.0.0"
+  },
+  "keywords": [
+    "yyc3",
+    "family-pai",
+    "ai",
+    "mcp",
+    "model-context-protocol",
+    "openai",
+    "ollama",
+    "anthropic",
+    "claude",
+    "ai-agent",
+    "multimodal",
+    "speech-to-text",
+    "text-to-speech",
+    "image-analysis",
+    "document-processing",
+    "typescript"
+  ],
+  "author": "YanYuCloudCube Team <admin@0379.email>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YanYuCloudCube/Family-PAI.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/YanYuCloudCube/Family-PAI/issues"
+  },
+  "homepage": "https://github.com/YanYuCloudCube/Family-PAI#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "size-limit": [
+    {
+      "path": "dist/index.js",
+      "limit": "100 kB"
+    }
+  ]
+}

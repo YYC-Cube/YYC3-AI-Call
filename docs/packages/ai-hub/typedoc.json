@@ -1,0 +1,28 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["./src/index.ts"],
+  "out": "./docs/api",
+  "name": "@yyc3/ai-hub API 文档",
+  "readme": "./README.md",
+  "includeVersion": true,
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "excludeInternal": true,
+  "categorizeByGroup": true,
+  "defaultCategory": "Other",
+  "categoryOrder": [
+    "Family",
+    "Family Compass",
+    "Work",
+    "Auth",
+    "MCP",
+    "Skills",
+    "Schemas",
+    "Agents",
+    "Errors",
+    "*"
+  ],
+  "theme": "default",
+  "plugin": [],
+  "searchInComments": true
+}

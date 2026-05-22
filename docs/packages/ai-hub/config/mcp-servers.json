@@ -1,0 +1,120 @@
+{
+  "$schema": "https://anthropic.com/claude-code/mcp-servers.schema.json",
+  "_comment": "YYC³ AI Hub MCP Servers Configuration - 核心MCP服务器配置",
+  "mcpServers": {
+    "yyc3-cn-assistant": {
+      "command": "node",
+      "args": ["/Users/my/YYC3-KB/Mcp集成库/API文档/YYC3-CN/代码/yyc3-cn-mcp-server.js"],
+      "env": {
+        "TRAE_CN_MODE": "development",
+        "NODE_ENV": "development"
+      },
+      "metadata": {
+        "displayName": "YYC3-CN Assistant",
+        "category": "ai-assistant",
+        "description": "YYC³ 中文AI助手，提供20个专业工具",
+        "vendor": "YYC³"
+      }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/my/yyc3-FAmily-π"],
+      "metadata": {
+        "displayName": "Filesystem",
+        "category": "utilities",
+        "description": "文件系统访问",
+        "vendor": "MCP"
+      }
+    },
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "DATABASE_URL": "postgresql://localhost/yyc3_dev"
+      },
+      "metadata": {
+        "displayName": "PostgreSQL",
+        "category": "database",
+        "description": "PostgreSQL数据库访问",
+        "vendor": "MCP"
+      }
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+      },
+      "metadata": {
+        "displayName": "GitHub",
+        "category": "developer-tools",
+        "description": "GitHub API集成",
+        "vendor": "MCP"
+      }
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+      "env": {
+        "BRAVE_API_KEY": "${BRAVE_API_KEY}"
+      },
+      "metadata": {
+        "displayName": "Brave Search",
+        "category": "web-search",
+        "description": "Brave搜索集成",
+        "vendor": "MCP"
+      }
+    },
+    "puppeteer": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-puppeteer"],
+      "metadata": {
+        "displayName": "Puppeteer",
+        "category": "browser-automation",
+        "description": "浏览器自动化",
+        "vendor": "MCP"
+      }
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "metadata": {
+        "displayName": "Memory",
+        "category": "ai-task-management",
+        "description": "持久化记忆存储",
+        "vendor": "MCP"
+      }
+    },
+    "fetch": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"],
+      "metadata": {
+        "displayName": "Fetch",
+        "category": "api-development",
+        "description": "HTTP请求工具",
+        "vendor": "MCP"
+      }
+    },
+    "sqlite": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sqlite"],
+      "metadata": {
+        "displayName": "SQLite",
+        "category": "database",
+        "description": "SQLite数据库",
+        "vendor": "MCP"
+      }
+    },
+    "git": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-git"],
+      "args": ["--repository", "/Users/my/yyc3-FAmily-π"],
+      "metadata": {
+        "displayName": "Git",
+        "category": "developer-tools",
+        "description": "Git仓库操作",
+        "vendor": "MCP"
+      }
+    }
+  }
+}

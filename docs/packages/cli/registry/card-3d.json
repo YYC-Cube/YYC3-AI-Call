@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "card-3d",
+  "type": "registry:component",
+  "title": "Card3D",
+  "author": "YYC³ Team",
+  "description": "3D 透视卡片组件，鼠标跟踪旋转 ±7.5°，Spring 物理平滑，三层 Z 轴深度渲染",
+  "dependencies": ["framer-motion"],
+  "files": [
+    {
+      "path": "components/yyc3/card-3d.tsx",
+      "type": "registry:component",
+      "content": "\"use client\"\n\nimport type React from \"react\"\nimport { useState, useRef, type ReactNode } from \"react\"\nimport { motion, useMotionValue, useSpring, useTransform } from \"framer-motion\"\n\ninterface Card3DProps {\n  children: ReactNode\n  className?: string\n  backgroundGradient?: string\n}\n\nexport function Card3D({\n  children,\n  className = \"\",\n  backgroundGradient = \"from-blue-100 via-purple-50 to-pink-50\",\n}: Card3DProps) {\n  const ref = useRef<HTMLDivElement>(null)\n  const [hovering, setHovering] = useState(false)\n\n  const mouseX = useMotionValue(0)\n  const mouseY = useMotionValue(0)\n\n  const springConfig = { damping: 20, stiffness: 300 }\n  const smoothMouseX = useSpring(mouseX, springConfig)\n  const smoothMouseY = useSpring(mouseY, springConfig)\n\n  const rotateX = useTransform(smoothMouseY, [-0.5, 0.5], [\"7.5deg\", \"-7.5deg\"])\n  const rotateY = useTransform(smoothMouseX, [-0.5, 0.5], [\"-7.5deg\", \"7.5deg\"])\n\n  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {\n    if (!ref.current) return\n    const rect = ref.current.getBoundingClientRect()\n    const normalizedX = (e.clientX - rect.left) / rect.width - 0.5\n    const normalizedY = (e.clientY - rect.top) / rect.height - 0.5\n    mouseX.set(normalizedX)\n    mouseY.set(normalizedY)\n  }\n\n  return (\n    <motion.div\n      ref={ref}\n      className={`relative group perspective-1000 ${className}`}\n      onMouseMove={handleMouseMove}\n      onMouseEnter={() => setHovering(true)}\n      onMouseLeave={() => {\n        setHovering(false)\n        mouseX.set(0)\n        mouseY.set(0)\n      }}\n      style={{ transformStyle: \"preserve-3d\" }}\n    >\n      <motion.div\n        className={`relative w-full h-full rounded-xl bg-gradient-to-br ${backgroundGradient} p-0.5 shadow-lg transition-all duration-300`}\n        style={{\n          rotateX: hovering ? rotateX : 0,\n          rotateY: hovering ? rotateY : 0,\n          transformStyle: \"preserve-3d\",\n        }}\n      >\n        <div\n          className=\"absolute inset-0 rounded-xl bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300\"\n          style={{ transform: \"translateZ(2px)\" }}\n        />\n        <div\n          className=\"h-full w-full rounded-[10px] bg-white p-4 shadow-sm\"\n          style={{ transform: \"translateZ(1px)\" }}\n        >\n          {children}\n        </div>\n      </motion.div>\n    </motion.div>\n  )\n}"
+    }
+  ],
+  "categories": ["animation", "3d", "card"],
+  "meta": {
+    "origin": "YYC-集成中心",
+    "layer": "three"
+  }
+}

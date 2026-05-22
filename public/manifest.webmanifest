@@ -1,0 +1,109 @@
+{
+  "name": "YYC³ AI Intelligent Calling",
+  "short_name": "YYC³ AI",
+  "description": "AI 驱动的智能外呼系统 | Intelligent Calling System Powered by AI",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#2563EB",
+  "background_color": "#0F172A",
+  "dir": "ltr",
+  "lang": "zh-CN",
+  "categories": ["business", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/yyc3-icons/pwa/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "/yyc3-icons/pwa/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/yyc3-icons/pwa/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "/yyc3-icons/pwa/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "/yyc3-icons/pwa/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "/yyc3-icons/pwa/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/yyc3-icons/pwa/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/yyc3-icons/webp/icon-192x192.webp",
+      "sizes": "192x192",
+      "type": "image/webp",
+      "purpose": "any"
+    },
+    {
+      "src": "/yyc3-icons/pwa/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/yyc3-icons/pwa/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/yyc3-icons/pwa/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/yyc3-icons/webp/icon-512x512.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "智能外呼",
+      "short_name": "外呼",
+      "description": "快速启动智能外呼任务",
+      "url": "/?tab=smart-call",
+      "icons": [
+        {
+          "src": "/yyc3-icons/pwa/icon-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "数据分析",
+      "short_name": "分析",
+      "description": "查看实时数据分析",
+      "url": "/?tab=overview",
+      "icons": [
+        {
+          "src": "/yyc3-icons/pwa/icon-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}

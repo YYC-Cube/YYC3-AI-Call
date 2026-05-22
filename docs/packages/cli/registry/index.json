@@ -1,0 +1,45 @@
+{
+  "name": "@yyc3",
+  "homepage": "https://docs.yyc3.top",
+  "items": [
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "spotlight",
+      "type": "registry:component",
+      "title": "Spotlight",
+      "description": "鼠标跟随聚光灯效果组件，framer-motion Spring 动画",
+      "dependencies": ["framer-motion"],
+      "categories": ["animation", "3d", "interaction"],
+      "meta": { "layer": "three" }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "card-3d",
+      "type": "registry:component",
+      "title": "Card3D",
+      "description": "3D 透视卡片，鼠标跟踪旋转 ±7.5°，三层 Z 轴深度",
+      "dependencies": ["framer-motion"],
+      "categories": ["animation", "3d", "card"],
+      "meta": { "layer": "three" }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "spline-scene",
+      "type": "registry:component",
+      "title": "SplineScene",
+      "description": "Spline 3D 场景懒加载，Suspense + lazy 包装",
+      "dependencies": ["@splinetool/react-spline"],
+      "categories": ["3d", "spline"],
+      "meta": { "layer": "spline" }
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "particle-canvas",
+      "type": "registry:component",
+      "title": "ParticleCanvas",
+      "description": "Canvas 2D 粒子网络背景，零依赖，霓虹色粒子 + 连线 + 鼠标交互",
+      "categories": ["animation", "particle", "background"],
+      "meta": { "layer": "particle", "zeroDep": true }
+    }
+  ]
+}

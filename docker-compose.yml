@@ -1,174 +1,172 @@
-version: "3.9"
+# ============================================
+# YYC³ AI Intelligent Calling - Docker Compose
+# 多容器编排：应用 + 数据库 + 缓存 + 消息队列
+# ============================================
+
+version: '3.8'
 
 services:
-  # ==================== 主应用服务 ====================
+  # --------------------------------------------
+  # 主应用服务
+  # --------------------------------------------
   app:
-    image: yyc-ai-calling:latest
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        NEXT_PUBLIC_APP_NAME: "YYC³ AI Intelligent Calling"
-        BUILD_DATE: ${BUILD_DATE:-now}
-        VCS_REF: ${VCS_REF:-latest}
-    container_name: yyc-ai-calling-app
+    container_name: yyc3-ai-calling-app
+    restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-      - DATABASE_URL=${DATABASE_URL}
+      - NEXT_PUBLIC_APP_URL=http://localhost:3000
+      - DATABASE_URL=postgresql://yyc3:yyc3_password@postgres:5432/yyc3_ai_calling?schema=public
       - REDIS_URL=redis://redis:6379
-      - NEXTAUTH_URL=${NEXTAUTH_URL:-http://localhost:3000}
-      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - JWT_SECRET=${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - QWEN_LLM_BASE_URL=http://ollama:11434
+      - QWEN_EMBEDDING_BASE_URL=http://ollama:11434
+    volumes:
+      - ./uploads:/app/uploads
+      - ./logs:/app/logs
     depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
     networks:
-      - yyc-network
-    restart: unless-stopped
+      - yyc3-network
     healthcheck:
-      test:
-        [
-          "CMD",
-          "node",
-          "-e",
-          "require('http').get('http://localhost:3000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})",
-        ]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '1.0'
+          memory: 1G
 
-  # ==================== PostgreSQL 数据库 ====================
+  # --------------------------------------------
+  # PostgreSQL数据库
+  # --------------------------------------------
   postgres:
     image: postgres:16-alpine
-    container_name: yyc-ai-calling-postgres
-    environment:
-      - POSTGRES_DB=${POSTGRES_DB:-yyc_ai_calling}
-      - POSTGRES_USER=${POSTGRES_USER:-yyc_admin}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - PGDATA=/var/lib/postgresql/data/pgdata
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    container_name: yyc3-postgres
+    restart: unless-stopped
     ports:
       - "5432:5432"
+    environment:
+      POSTGRES_USER: yyc3
+      POSTGRES_PASSWORD: yyc3_password
+      POSTGRES_DB: yyc3_ai_calling
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
     networks:
-      - yyc-network
-    restart: unless-stopped
+      - yyc3-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-yyc_admin}"]
+      test: ["CMD-SHELL", "pg_isready -U yyc3 -d yyc3_ai_calling"]
       interval: 10s
       timeout: 5s
       retries: 5
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
 
-  # ==================== pgAdmin 数据库管理 ====================
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: yyc-ai-calling-pgadmin
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL:-admin@yyc3.com}
-      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD:-admin123}
-      - PGADMIN_CONFIG_SERVER_MODE=False
-      - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False
-    volumes:
-      - pgadmin-data:/var/lib/pgadmin
-    ports:
-      - "5050:80"
-    networks:
-      - yyc-network
-    depends_on:
-      - postgres
-    restart: unless-stopped
-    profiles:
-      - dev
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "5m"
-        max-file: "2"
-
-  # ==================== Redis 缓存 ====================
+  # --------------------------------------------
+  # Redis缓存（会话、速率限制等）
+  # --------------------------------------------
   redis:
     image: redis:7-alpine
-    container_name: yyc-ai-calling-redis
-    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
-    volumes:
-      - redis-data:/data
+    container_name: yyc3-redis
+    restart: unless-stopped
     ports:
       - "6379:6379"
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
     networks:
-      - yyc-network
-    restart: unless-stopped
+      - yyc3-network
     healthcheck:
-      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
 
-  # ==================== Nginx 反向代理 ====================
+  # --------------------------------------------
+  # Ollama本地AI模型服务（可选）
+  # --------------------------------------------
+  ollama:
+    image: ollama/ollama:latest
+    container_name: yyc3-ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - yyc3-network
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 8G
+    profiles:
+      - ai-local
+
+  # --------------------------------------------
+  # Nginx反向代理（生产环境）
+  # --------------------------------------------
   nginx:
     image: nginx:alpine
-    container_name: yyc-ai-calling-nginx
+    container_name: yyc3-nginx
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/ssl:/etc/nginx/ssl:ro
-      - nginx-logs:/var/log/nginx
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./certs:/etc/nginx/certs:ro
+      - nginx_logs:/var/log/nginx
     depends_on:
       - app
     networks:
-      - yyc-network
-    restart: unless-stopped
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "wget",
-          "--quiet",
-          "--tries=1",
-          "--spider",
-          "http://localhost/health",
-        ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
+      - yyc3-network
+    profiles:
+      - production
 
+# ============================================
+# 网络配置
+# ============================================
 networks:
-  yyc-network:
+  yyc3-network:
     driver: bridge
-    name: yyc-ai-calling-network
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
 
+# ============================================
+# 持久化卷
+# ============================================
 volumes:
-  postgres-data:
-    name: yyc-postgres-data
-  redis-data:
-    name: yyc-redis-data
-  nginx-logs:
-    name: yyc-nginx-logs
-  pgadmin-data:
-    name: yyc-pgadmin-data
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  ollama_data:
+    driver: local
+  nginx_logs:
+    driver: local

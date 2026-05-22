@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "strict": false,
+    "skipLibCheck": true,
+    "jsx": "react-jsx",
+    "types": ["vitest/globals"],
+    "paths": {
+      "../ThemeStore": ["./ThemeStore.ts"],
+      "../FileStore": ["./FileStore.ts"],
+      "../WorkflowEventBus": ["./WorkflowEventBus.tsx"],
+      "../SettingsBridge": ["./SettingsBridge.ts"]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "__tests__/**/*.ts",
+    "__tests__/**/*.tsx"
+  ],
+  "exclude": ["node_modules", "coverage", "dist"]
+}

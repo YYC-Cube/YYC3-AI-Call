@@ -1,0 +1,24 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["./src/index.ts"],
+  "out": "./docs/api",
+  "name": "@family-ai/core API 文档",
+  "includeVersion": true,
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "excludeInternal": true,
+  "categorizeByGroup": true,
+  "defaultCategory": "Other",
+  "categoryOrder": [
+    "AI Family",
+    "Authentication",
+    "MCP Protocol",
+    "Skills System",
+    "Multimodal",
+    "Setup",
+    "Types",
+    "*"
+  ],
+  "theme": "default",
+  "plugin": []
+}

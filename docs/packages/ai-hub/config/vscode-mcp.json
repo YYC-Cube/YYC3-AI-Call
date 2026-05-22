@@ -1,0 +1,42 @@
+{
+  "$schema": "https://anthropic.com/claude-code/mcp-servers.schema.json",
+  "_comment": "YYC³ AI Hub VSCode MCP Configuration",
+  "mcpServers": {
+    "yyc3-vscode": {
+      "command": "node",
+      "args": ["/Users/my/YYC3-KB/Mcp集成库/Zai-Coding-Plugins/Claude-Code/index.js"],
+      "env": {
+        "VSCODE_MODE": "true"
+      },
+      "metadata": {
+        "displayName": "YYC3 VSCode",
+        "category": "developer-tools",
+        "description": "VSCode集成工具",
+        "vendor": "YYC³"
+      }
+    },
+    "figma": {
+      "command": "npx",
+      "args": ["-y", "@yyc3/figma-mcp"],
+      "env": {
+        "FIGMA_ACCESS_TOKEN": "${FIGMA_ACCESS_TOKEN}"
+      },
+      "metadata": {
+        "displayName": "Figma",
+        "category": "design",
+        "description": "Figma设计工具集成",
+        "vendor": "YYC³"
+      }
+    },
+    "snyk": {
+      "command": "npx",
+      "args": ["-y", "@yyc3/snyk-mcp"],
+      "metadata": {
+        "displayName": "Snyk Security",
+        "category": "security",
+        "description": "安全扫描工具",
+        "vendor": "Snyk"
+      }
+    }
+  }
+}

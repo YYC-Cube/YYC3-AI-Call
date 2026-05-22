@@ -1,0 +1,126 @@
+{
+  "name": "@yyc3/ui",
+  "version": "2.0.0",
+  "description": "YYC³ AI Family UI 组件库 — 即拉即用的 React AI 智能系统 UI 组件 + 56个shadcn/ui标准组件",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./core": {
+      "import": "./dist/core.js",
+      "types": "./dist/core.d.ts"
+    },
+    "./components": {
+      "import": "./dist/components.js",
+      "types": "./dist/components.d.ts"
+    },
+    "./family": {
+      "import": "./dist/family.js",
+      "types": "./dist/family.d.ts"
+    },
+    "./themes": {
+      "import": "./dist/themes.js",
+      "types": "./dist/themes.d.ts"
+    },
+    "./shadcn": {
+      "import": "./dist/shadcn.js",
+      "types": "./dist/shadcn.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "@yyc3/core": "^1.4.0",
+    "clsx": "^2.1.0",
+    "radix-ui": "^1.0.0",
+    "tailwind-merge": "^3.0.0",
+    "@base-ui/react": "^1.0.0",
+    "class-variance-authority": "^0.7.0",
+    "cmdk": "^1.0.0",
+    "embla-carousel-react": "^8.0.0",
+    "input-otp": "^1.4.0",
+    "lucide-react": "^0.460.0",
+    "react-day-picker": "^9.0.0",
+    "react-resizable-panels": "^2.0.0",
+    "recharts": "^2.15.0",
+    "sonner": "^1.7.0",
+    "vaul": "^1.1.0"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0 || >=19.0.0",
+    "react-dom": ">=18.0.0 || >=19.0.0",
+    "react-hook-form": ">=7.0.0",
+    "next-themes": ">=0.4.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^14.3.1",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
+    "@vitest/coverage-v8": "^1.0.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "eslint": "^10.1.0",
+    "globals": "^17.4.0",
+    "jsdom": "^29.0.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0",
+    "typescript-eslint": "^8.58.0",
+    "vitest": "^1.0.0"
+  },
+  "keywords": [
+    "yyc3",
+    "family-pai",
+    "ai",
+    "ui",
+    "react",
+    "components",
+    "ai-family",
+    "zero-dependency",
+    "typescript"
+  ],
+  "author": "YanYuCloudCube Team <admin@0379.email>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YanYuCloudCube/Family-PAI.git",
+    "directory": "packages/ui"
+  },
+  "bugs": {
+    "url": "https://github.com/YanYuCloudCube/Family-PAI/issues"
+  },
+  "homepage": "https://github.com/YanYuCloudCube/Family-PAI#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "size-limit": [
+    {
+      "path": "dist/index.js",
+      "limit": "15 kB"
+    }
+  ]
+}

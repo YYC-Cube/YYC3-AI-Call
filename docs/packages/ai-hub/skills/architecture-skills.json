@@ -1,0 +1,66 @@
+[
+  {
+    "id": "microservices-design",
+    "name": "Microservices Design",
+    "description": "微服务设计技能，精通服务边界划分、API网关、服务发现",
+    "trigger": ["microservice", "微服务", "service mesh", "api gateway"],
+    "category": "architecture",
+    "prompt": "微服务设计指南：\n1. 服务边界划分（DDD限界上下文）\n2. API网关设计\n3. 服务发现与注册\n4. 配置中心\n5. 分布式事务\n6. 服务容错（熔断、降级、限流）\n\n遵循微服务最佳实践和设计模式"
+  },
+  {
+    "id": "event-sourcing",
+    "name": "Event Sourcing",
+    "description": "事件溯源技能，精通CQRS、事件存储、Saga模式",
+    "trigger": ["event sourcing", "事件溯源", "cqrs", "saga"],
+    "category": "architecture",
+    "prompt": "事件溯源设计：\n1. 事件存储设计\n2. CQRS模式实现\n3. Saga编排/协同\n4. 事件版本管理\n5. 快照策略\n6. 事件重放机制"
+  },
+  {
+    "id": "domain-driven-design",
+    "name": "Domain Driven Design",
+    "description": "领域驱动设计技能，精通限界上下文、聚合、领域事件",
+    "trigger": ["ddd", "领域驱动", "domain", "bounded context", "限界上下文"],
+    "category": "architecture",
+    "prompt": "领域驱动设计：\n1. 限界上下文划分\n2. 聚合设计\n3. 领域事件\n4. 值对象\n5. 领域服务\n6. 应用服务\n\n遵循DDD战术设计和战略设计原则"
+  },
+  {
+    "id": "api-gateway-design",
+    "name": "API Gateway Design",
+    "description": "API网关设计技能，精通Kong/APISIX/Nginx配置",
+    "trigger": ["api gateway", "网关", "kong", "apisix", "nginx"],
+    "category": "architecture",
+    "prompt": "API网关设计：\n1. 路由配置\n2. 负载均衡\n3. 认证授权\n4. 限流熔断\n5. 日志监控\n6. 灰度发布\n\n支持Kong/APISIX/Nginx等主流网关"
+  },
+  {
+    "id": "service-mesh-design",
+    "name": "Service Mesh Design",
+    "description": "服务网格设计技能，精通Istio/Linkerd配置",
+    "trigger": ["service mesh", "服务网格", "istio", "linkerd", "envoy"],
+    "category": "architecture",
+    "prompt": "服务网格设计：\n1. 流量管理\n2. 安全策略（mTLS）\n3. 可观测性\n4. 故障注入\n5. 熔断限流\n6. 金丝雀发布\n\n支持Istio/Linkerd等服务网格框架"
+  },
+  {
+    "id": "cloud-native-design",
+    "name": "Cloud Native Design",
+    "description": "云原生设计技能，精通容器化、K8s、Serverless",
+    "trigger": ["cloud native", "云原生", "container", "kubernetes", "serverless"],
+    "category": "architecture",
+    "prompt": "云原生设计：\n1. 容器化策略\n2. Kubernetes部署\n3. Serverless架构\n4. 云原生安全\n5. 可观测性\n6. GitOps流程\n\n遵循CNCF云原生最佳实践"
+  },
+  {
+    "id": "data-architecture",
+    "name": "Data Architecture",
+    "description": "数据架构设计技能，精通数据湖、数据仓库、流处理",
+    "trigger": ["data architecture", "数据架构", "data lake", "data warehouse", "数据湖"],
+    "category": "architecture",
+    "prompt": "数据架构设计：\n1. 数据湖/数据仓库设计\n2. ETL/ELT流程\n3. 流处理架构\n4. 数据治理\n5. 数据质量\n6. 元数据管理"
+  },
+  {
+    "id": "security-architecture",
+    "name": "Security Architecture",
+    "description": "安全架构设计技能，精通零信任、身份认证、加密",
+    "trigger": ["security architecture", "安全架构", "zero trust", "零信任"],
+    "category": "architecture",
+    "prompt": "安全架构设计：\n1. 零信任架构\n2. 身份认证（OAuth2/OIDC）\n3. 访问控制（RBAC/ABAC）\n4. 数据加密\n5. 安全审计\n6. 威胁建模"
+  }
+]

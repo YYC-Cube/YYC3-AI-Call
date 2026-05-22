@@ -1,0 +1,66 @@
+[
+  {
+    "id": "rust-patterns",
+    "name": "Rust Patterns",
+    "description": "Rust设计模式技能，精通所有权、生命周期、trait",
+    "trigger": ["rust", "所有权", "ownership", "lifetime", "生命周期"],
+    "category": "languages",
+    "prompt": "Rust设计模式：\n1. 所有权与借用\n2. 生命周期标注\n3. Trait设计\n4. 错误处理（Result/Option）\n5. 并发模式\n6. unsafe Rust\n\n遵循Rust最佳实践和惯用模式"
+  },
+  {
+    "id": "go-patterns",
+    "name": "Go Patterns",
+    "description": "Go设计模式技能，精通goroutine、channel、context",
+    "trigger": ["golang", "go语言", "goroutine", "channel"],
+    "category": "languages",
+    "prompt": "Go设计模式：\n1. 并发模式（goroutine/channel）\n2. Context使用\n3. 错误处理\n4. 接口设计\n5. 依赖注入\n6. 测试模式\n\n遵循Go语言惯用写法"
+  },
+  {
+    "id": "python-patterns",
+    "name": "Python Patterns",
+    "description": "Python设计模式技能，精通装饰器、上下文管理器、异步",
+    "trigger": ["python", "装饰器", "decorator", "async", "异步"],
+    "category": "languages",
+    "prompt": "Python设计模式：\n1. 装饰器模式\n2. 上下文管理器\n3. 异步编程（asyncio）\n4. 元类\n5. 描述符\n6. 类型提示\n\n遵循PEP 8和Python最佳实践"
+  },
+  {
+    "id": "typescript-patterns",
+    "name": "TypeScript Patterns",
+    "description": "TypeScript设计模式技能，精通类型系统、泛型、工具类型",
+    "trigger": ["typescript", "类型", "泛型", "generic", "type"],
+    "category": "languages",
+    "prompt": "TypeScript设计模式：\n1. 高级类型\n2. 泛型设计\n3. 类型推断\n4. 装饰器\n5. 模块模式\n6. 类型体操\n\n遵循TypeScript最佳实践"
+  },
+  {
+    "id": "java-patterns",
+    "name": "Java Patterns",
+    "description": "Java设计模式技能，精通Stream API、Optional、并发",
+    "trigger": ["java", "stream", "optional", "并发", "concurrent"],
+    "category": "languages",
+    "prompt": "Java设计模式：\n1. Stream API使用\n2. Optional处理\n3. 并发编程\n4. 函数式接口\n5. 模块化\n6. JVM优化\n\n遵循现代Java最佳实践"
+  },
+  {
+    "id": "kotlin-patterns",
+    "name": "Kotlin Patterns",
+    "description": "Kotlin设计模式技能，精通协程、扩展函数、DSL",
+    "trigger": ["kotlin", "协程", "coroutine", "extension", "dsl"],
+    "category": "languages",
+    "prompt": "Kotlin设计模式：\n1. 协程使用\n2. 扩展函数\n3. DSL构建\n4. 空安全\n5. 数据类\n6. 密封类\n\n遵循Kotlin惯用写法"
+  },
+  {
+    "id": "scala-patterns",
+    "name": "Scala Patterns",
+    "description": "Scala设计模式技能，精通函数式编程、Akka、类型系统",
+    "trigger": ["scala", "函数式", "functional", "akka", "类型系统"],
+    "category": "languages",
+    "prompt": "Scala设计模式：\n1. 函数式编程\n2. 模式匹配\n3. 隐式转换\n4. Akka Actor\n5. 类型类\n6. 并发模型\n\n遵循Scala最佳实践"
+  },
+  {
+    "id": "swift-patterns",
+    "name": "Swift Patterns",
+    "description": "Swift设计模式技能，精通SwiftUI、并发、协议",
+    "trigger": ["swift", "swiftui", "协议", "protocol", "async await"],
+    "category": "languages",
+    "prompt": "Swift设计模式：\n1. SwiftUI架构\n2. 并发编程（async/await）\n3. 协议设计\n4. 扩展\n5. 错误处理\n6. 内存管理\n\n遵循Swift最佳实践"
+  }
+]

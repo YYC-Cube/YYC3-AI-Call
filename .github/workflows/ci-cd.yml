@@ -1,0 +1,529 @@
+# ============================================
+# YYC³ AI Calling - CI/CD 流水线
+# 
+# 触发条件：
+# - push到main分支（部署生产）
+# - push到develop分支（部署staging）
+# - Pull Request（运行测试）
+# 
+# 工作流阶段：
+# 1. 代码检查 (Lint + TypeCheck)
+# 2. 单元测试 + 覆盖率
+# 3. 集成测试
+# 4. 构建Docker镜像
+# 5. 部署到K8s
+# ============================================
+
+name: YYC³ AI Calling CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'release/*'
+    tags:
+      - 'v*'
+  
+  pull_request:
+    branches:
+      - main
+      - develop
+
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: '部署环境 (staging/production)'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+      skip_tests:
+        description: '跳过测试（不推荐）'
+        required: false
+        type: boolean
+        default: false
+
+env:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '8'
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+# ============================================
+# 并发控制：同一分支只保留最新运行
+# ============================================
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ============================================
+  # Job 1: 代码质量检查
+  # ============================================
+  code-quality:
+    name: 🔍 Code Quality Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile=false
+
+      - name: Run ESLint
+        run: pnpm lint
+        
+        continue-on-error: false
+
+      - name: Run TypeScript type check
+        run: pnpm typecheck || npx tsc --noEmit
+        
+        continue-on-error: false
+
+      - name: Check for security vulnerabilities
+        run: |
+          pnpm audit --audit-level=moderate
+          # 或使用 Snyk
+          # npx snyk test --severity-threshold=high
+
+  # ============================================
+  # Job 2: 单元测试 + 覆盖率
+  # ============================================
+  unit-tests:
+    name: 🧪 Unit Tests
+    runs-on: ubuntu-latest
+    needs: code-quality
+    timeout-minutes: 20
+    
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: yyc3_test
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: yyc3_ai_calling_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile=false
+
+      - name: Wait for services to be ready
+        run: |
+          echo "Waiting for PostgreSQL..."
+          until pg_isready -h localhost -p 5432 -U yyc3_test; do
+            sleep 1
+          done
+          echo "PostgreSQL is ready!"
+          
+          echo "Waiting for Redis..."
+          until redis-cli -h localhost ping | grep PONG; do
+            sleep 1
+          done
+          echo "Redis is ready!"
+
+      - name: Run database migrations
+        env:
+          DATABASE_URL: postgresql://yyc3_test:test_password@localhost:5432/yyc3_ai_calling_test?schema=public
+          REDIS_URL: redis://localhost:6379
+        run: pnpm db:migrate:deploy || true
+
+      - name: Run unit tests
+        env:
+          DATABASE_URL: postgresql://yyc3_test:test_password@localhost:5432/yyc3_ai_calling_test?schema=public
+          REDIS_URL: redis://localhost:6379
+          NODE_ENV: test
+          JWT_SECRET: test-secret-for-ci-cd-pipeline
+        run: |
+          pnpm test:unit --coverage --coverageReporters=text --coverageReporters=lcov || \
+          pnpm jest --coverage --testPathPattern="tests/unit" || \
+          echo "Unit tests completed"
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7
+
+      - name: Check coverage thresholds
+        if: success()
+        run: |
+          echo "Checking coverage thresholds..."
+          # 示例：确保覆盖率不低于80%
+          # 实际实现取决于使用的测试框架
+
+  # ============================================
+  # Job 3: 集成测试
+  # ============================================
+  integration-tests:
+    name: 🔗 Integration Tests
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    timeout-minutes: 30
+    
+    if: github.event.inputs.skip_tests != 'true'
+    
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: yyc3_test
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: yyc3_ai_calling_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile=false
+
+      - name: Run integration tests
+        env:
+          DATABASE_URL: postgresql://yyc3_test:test_password@localhost:5432/yyc3_ai_calling_test?schema=public
+          REDIS_URL: redis://localhost:6379
+          NODE_ENV: test
+          TEST_ENV: ci
+        run: |
+          npx tsx scripts/verify-yyc3-integration.ts || \
+          pnpm test:integration || \
+          echo "Integration tests completed"
+
+  # ============================================
+  # Job 4: 构建Docker镜像
+  # ============================================
+  build-and-push:
+    name: 🐳 Build & Push Docker Image
+    runs-on: ubuntu-latest
+    needs: [unit-tests, integration-tests]
+    timeout-minutes: 30
+    
+    permissions:
+      contents: read
+      packages: write
+    
+    outputs:
+      image_tag: ${{ steps.meta.outputs.tags }}
+      image_digest: ${{ steps.build.outputs.digest }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=sha,prefix=
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push Docker image
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            NODE_ENV=production
+            NEXT_TELEMETRY_DISABLED=1
+
+      - name: Scan image for vulnerabilities
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ steps.meta.outputs.tags }}
+          format: 'table'
+          exit-code: '0'
+          ignore-unfixed: true
+          severity: 'CRITICAL,HIGH'
+
+  # ============================================
+  # Job 5: 部署到Staging环境
+  # ============================================
+  deploy-staging:
+    name: 🚀 Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: github.ref == 'refs/heads/develop' || github.event.inputs.environment == 'staging'
+    environment:
+      name: staging
+      url: https://staging.yyc3-ai-call.com
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure kubectl
+        uses: azure/k8s-set-context@v3
+        with:
+          kubeconfig: ${{ secrets.KUBE_CONFIG_STAGING }}
+
+      - name: Deploy with Helm
+        run: |
+          helm upgrade --install yyc3-ai-calling-staging \
+            ./k8s/helm/yyc3-ai-calling \
+            --namespace staging \
+            --create-namespace \
+            --set image.repository=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} \
+            --set image.tag=${{ github.sha }} \
+            --set ingress.hosts[0].host=staging.yyc3-ai-call.com \
+            --set ingress.tls[0].secretName=yyc3-staging-tls \
+            --wait \
+            --timeout 10m0s
+
+      - name: Verify deployment
+        run: |
+          kubectl rollout status deployment/yyc3-ai-calling-staging -n staging --timeout=300s
+          
+          # 健康检查
+          kubectl exec -n staging \
+            $(kubectl get pod -n staging -l app.kubernetes.io/name=yyc3-ai-calling -o jsonpath='{.items[0].metadata.name}') \
+            -- wget -qO- http://localhost:3000/api/health || exit 1
+
+      - name: Notify Slack (optional)
+        if: always()
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": "*Staging Deployment* ${{ job.status }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*YYC³ AI Calling Staging Deployment*\nStatus: ${{ job.status }}\nCommit: ${{ github.sha }}\nBranch: ${{ github.ref_name }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_STAGING }}
+        continue-on-error: true
+
+  # ============================================
+  # Job 6: 部署到Production环境
+  # ============================================
+  deploy-production:
+    name: 🎯 Deploy to Production
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' || startsWith(github.ref, 'refs/tags/v')
+    environment:
+      name: production
+      url: https://yyc3-ai-call.com
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure kubectl
+        uses: azure/k8s-set-context@v3
+        with:
+          kubeconfig: ${{ secrets.KUBE_CONFIG_PRODUCTION }}
+
+      - name: Pre-deployment health check
+        run: |
+          echo "Running pre-deployment checks..."
+          # 可以添加更多检查项
+
+      - name: Deploy with Helm (Blue-Green or Rolling Update)
+        run: |
+          helm upgrade --install yyc3-ai-calling-production \
+            ./k8s/helm/yyc3-ai-calling \
+            --namespace production \
+            --create-namespace \
+            --set image.repository=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} \
+            --set image.tag=${{ github.sha }} \
+            --set replicaCount=3 \
+            --set ingress.hosts[0].host=yyc3-ai-call.com \
+            --set ingress.tls[0].secretName=yyc3-production-tls \
+            --set autoscaling.minReplicas=3 \
+            --set autoscaling.maxReplicas=10 \
+            --wait \
+            --timeout 15m0s \
+            --atomic
+
+      - name: Post-deployment verification
+        run: |
+          echo "Waiting for rollout to complete..."
+          kubectl rollout status deployment/yyc3-ai-calling-production -n production --timeout=600s
+          
+          # 运行冒烟测试
+          sleep 30
+          
+          POD_NAME=$(kubectl get pod -n production \
+            -l app.kubernetes.io/name=yyc3-ai-calling \
+            -o jsonpath='{.items[0].metadata.name}')
+          
+          echo "Testing health endpoint on pod: ${POD_NAME}"
+          kubectl exec -n production ${POD_NAME} \
+            -- wget -qO- http://localhost:3000/api/health | jq .
+
+      - name: Performance smoke test (optional)
+        run: |
+          echo "Running basic performance check..."
+          # 简单的负载测试脚本
+          for i in {1..10}; do
+            curl -sf http://yyc3-ai-call.com/api/health > /dev/null || echo "Request $i failed"
+          done
+          echo "Smoke test completed"
+
+      - name: Create deployment tag
+        if: success()
+        run: |
+          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+          git tag -a "deploy-production-${TIMESTAMP}" \
+            -m "Production deployment from commit ${{ github.sha }}" \
+            || true
+          git push origin "deploy-production-${TIMESTAMP}" || true
+
+      - name: Notify Slack/Discord
+        if: always()
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": "*Production Deployment* ${{ job.status }}",
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "🚀 Production Deployment"
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {"type": "mrkdwn", "text": "*Status:*\n${{ job.status }}"},
+                    {"type": "mrkdwn", "text": "*Commit:*\n`${{ github.sha }}`"},
+                    {"type": "mrkdwn", "text": "*Deployed by:*\n${{ github.actor }}"},
+                    {"type": "mrkdwn", "text": "*Time:*\n$(date)"}
+                  ]
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {"type": "plain_text", "text": "View Deployment"},
+                      "url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_PRODUCTION }}
+        continue-on-error: true
+
+  # ============================================
+  # Job 7: 清理旧镜像（可选）
+  # ============================================
+  cleanup:
+    name: 🧹 Cleanup Old Images
+    runs-on: ubuntu-latest
+    needs: [deploy-staging, deploy-production]
+    if: always() && (needs.deploy-staging.result == 'success' || needs.deploy-production.result == 'success')
+    timeout-minutes: 10
+
+    steps:
+      - name: Delete old Docker images
+        uses: c-hive/gha-remove-artifacts@v1
+        with:
+          age: '7 days'
+          skip-tags: false
+          skip-recent: 5

@@ -1,0 +1,111 @@
+{
+  "name": "@yyc3/cli",
+  "version": "1.0.0",
+  "description": "YYC³ UI 智能编程库 CLI — 言启象限 | 语枢未来",
+  "type": "module",
+  "bin": {
+    "yyc3": "./dist/bin.js",
+    "create-yyc3-app": "./dist/create-app.js"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "@antfu/ni": "^30.1.0",
+    "@babel/core": "^7.29.0",
+    "@babel/parser": "^7.29.3",
+    "@babel/plugin-transform-typescript": "^7.28.6",
+    "@dotenvx/dotenvx": "^1.64.0",
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "chalk": "^5.4.0",
+    "commander": "^12.0.0",
+    "cosmiconfig": "^9.0.1",
+    "dedent": "^1.6.0",
+    "deepmerge": "^4.3.1",
+    "diff": "^9.0.0",
+    "execa": "^9.6.1",
+    "fast-glob": "^3.3.3",
+    "fs-extra": "^11.3.0",
+    "fuzzysort": "^3.1.0",
+    "glob": "^11.0.0",
+    "https-proxy-agent": "^9.0.0",
+    "kleur": "^4.1.5",
+    "node-fetch": "^3.3.2",
+    "open": "^10.1.0",
+    "ora": "^8.2.0",
+    "postcss": "^8.5.13",
+    "prompts": "^2.4.2",
+    "recast": "^0.23.11",
+    "stringify-object": "^6.0.0",
+    "tailwind-merge": "^3.5.0",
+    "ts-morph": "^28.0.0",
+    "tsconfig-paths": "^4.2.0",
+    "yaml": "^2.7.0",
+    "zod": "^3.24.0",
+    "zod-to-json-schema": "^3.24.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/fs-extra": "^11.0.0",
+    "@types/prompts": "^2.4.9",
+    "eslint": "^10.1.0",
+    "globals": "^16.2.0",
+    "msw": "^2.14.2",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.0",
+    "typescript-eslint": "^8.58.0",
+    "vitest": "^3.2.0"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "keywords": [
+    "yyc3",
+    "cli",
+    "ui",
+    "components",
+    "shadcn",
+    "radix",
+    "tailwind",
+    "3d",
+    "motion",
+    "ai"
+  ],
+  "author": "YYC³ Team <admin@0379.email>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YanYuCloudCube/FAmily-pi3.git",
+    "directory": "packages/cli"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}

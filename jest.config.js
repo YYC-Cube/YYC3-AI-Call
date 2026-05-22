@@ -13,7 +13,16 @@ const customJestConfig = {
   },
   testMatch: [
     "<rootDir>/tests/**/*.(spec|test).{ts,tsx,js,jsx}",
-    "<rootDir>/**/__tests__/**/*.(spec|test).{ts,tsx,js,jsx}",
+    "<rootDir>/app/**/__tests__/**/*.(spec|test).{ts,tsx,js,jsx}",
+    "<rootDir>/lib/**/__tests__/**/*.(spec|test).{ts,tsx,js,jsx}",
+    "<rootDir>/components/**/__tests__/**/*.(spec|test).{ts,tsx,js,jsx}",
+  ],
+  testPathIgnorePatterns: [
+    "/node_modules/",
+    "/docs/packages/",
+    "/enterprise/",
+    "/examples/",
+    "/dist/",
   ],
 };
 

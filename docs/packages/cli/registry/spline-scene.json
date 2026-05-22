@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "spline-scene",
+  "type": "registry:component",
+  "title": "SplineScene",
+  "author": "YYC³ Team",
+  "description": "Spline 3D 场景懒加载组件，Suspense + lazy 包装，零配置使用",
+  "dependencies": ["@splinetool/react-spline"],
+  "files": [
+    {
+      "path": "components/yyc3/spline-scene.tsx",
+      "type": "registry:component",
+      "content": "\"use client\"\n\nimport { Suspense, lazy } from \"react\"\nconst Spline = lazy(() => import(\"@splinetool/react-spline\"))\n\ninterface SplineSceneProps {\n  scene: string\n  className?: string\n}\n\nexport function SplineScene({ scene, className }: SplineSceneProps) {\n  return (\n    <Suspense\n      fallback={\n        <div className=\"w-full h-full flex items-center justify-center\">\n          <div className=\"animate-spin rounded-full h-8 w-8 border-b-2 border-primary\" />\n        </div>\n      }\n    >\n      <Spline scene={scene} className={className} />\n    </Suspense>\n  )\n}"
+    }
+  ],
+  "categories": ["3d", "spline", "animation"],
+  "meta": {
+    "origin": "yyc3-bot",
+    "layer": "spline"
+  }
+}

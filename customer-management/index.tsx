@@ -326,6 +326,7 @@ export default function CustomerManagement() {
     const customer: Customer = {
       id: Date.now().toString(),
       ...newCustomer,
+      intention: (newCustomer.intention || "potential") as "high" | "medium" | "low" | "potential",
       tags: [],
       status: "new",
       createdAt: new Date().toISOString().split("T")[0],

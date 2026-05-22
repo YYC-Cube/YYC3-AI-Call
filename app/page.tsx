@@ -14,14 +14,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import SmartCallSystem from "../smart-call-system";
-import CustomerProfile360 from "../customer-profile-360";
-import MarketingAutomation from "../marketing-automation";
-import CustomerManagement from "../customer-management";
-import IntelligentPhoneDatabase from "../intelligent-phone-database";
-import IntelligentForms from "../intelligent-forms";
-import MobileApplication from "../mobile-application";
-import DataAnalytics from "../data-analytics";
+import SmartCallSystem from "@/components/smart-call-system";
+import CustomerProfile360 from "@/components/customer-profile-360";
+import MarketingAutomation from "@/components/marketing-automation";
+import CustomerManagement from "@/components/customer-management";
+import IntelligentPhoneDatabase from "@/components/intelligent-phone-database";
+import IntelligentForms from "@/components/intelligent-forms";
+import MobileApplication from "@/components/mobile-application";
+import DataAnalytics from "@/components/data-analytics";
 import {
   Settings,
   Phone,
@@ -120,7 +120,7 @@ export default function CustomerServicePlatform() {
     >
       {/* 顶部导航栏 */}
       <header
-        className={`sticky top-0 z-50 shadow-sm transition-colors duration-300 ${isDarkMode ? "bg-gray-800/90" : "bg-white/90"} backdrop-blur-sm border-b ${isDarkMode ? "border-gray-700" : "border-gray-200"}`}
+        className={`sticky top-0 z-50 shadow-sm transition-colors duration-300 safe-top ${isDarkMode ? "bg-gray-800/90" : "bg-white/90"} backdrop-blur-sm border-b ${isDarkMode ? "border-gray-700" : "border-gray-200"}`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
@@ -498,7 +498,7 @@ export default function CustomerServicePlatform() {
               <Button
                 variant="outline"
                 size="sm"
-                className={`lg:hidden ${isDarkMode ? "border-gray-600 hover:bg-gray-700" : "hover:bg-gray-50"}`}
+                className={`lg:hidden touch-target ${isDarkMode ? "border-gray-600 hover:bg-gray-700" : "hover:bg-gray-50"}`}
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               >
                 {isMobileMenuOpen ? (
@@ -512,7 +512,7 @@ export default function CustomerServicePlatform() {
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 pb-20 lg:pb-8">
         <Tabs
           value={activeTab}
           onValueChange={handleTabChange}
@@ -709,6 +709,46 @@ export default function CustomerServicePlatform() {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* 移动端底部导航栏 */}
+      <nav
+        className={`lg:hidden fixed bottom-0 left-0 right-0 z-50 safe-bottom border-t backdrop-blur-md transition-colors duration-300 ${
+          isDarkMode
+            ? "bg-gray-900/95 border-gray-700"
+            : "bg-white/95 border-gray-200"
+        }`}
+      >
+        <div className="grid grid-cols-5 h-14">
+          {[
+            { icon: BarChart3, label: "概览", tab: "overview" },
+            { icon: Phone, label: "外呼", tab: "smart-call" },
+            { icon: Users, label: "客户", tab: "customer-360" },
+            { icon: Target, label: "营销", tab: "marketing" },
+            { icon: Database, label: "更多", tab: "" },
+          ].map((item) => (
+            <button
+              key={item.tab}
+              onClick={() => {
+                if (item.tab === "") {
+                  setIsMobileMenuOpen(true);
+                } else {
+                  handleTabChange(item.tab);
+                }
+              }}
+              className={`touch-target flex flex-col items-center justify-center gap-0.5 transition-colors ${
+                activeTab === item.tab && item.tab !== ""
+                  ? "text-blue-600"
+                  : isDarkMode
+                    ? "text-gray-400"
+                    : "text-gray-500"
+              }`}
+            >
+              <item.icon className="w-5 h-5" />
+              <span className="text-[10px] font-medium">{item.label}</span>
+            </button>
+          ))}
+        </div>
+      </nav>
     </div>
   );
 }

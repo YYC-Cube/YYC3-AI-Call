@@ -1,20 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  output: process.env.NEXT_STATIC_EXPORT === "1" ? "export" : undefined,
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
+  },
+  eslint: {
+    ignoreDuringBuilds: process.env.NEXT_STATIC_EXPORT === "1",
   },
   images: {
     unoptimized: true,
   },
-  experimental: {
-    isrMemoryCacheSize: 0, // Disable ISR
-  },
-  onDemandEntries: {
-    maxInactiveAge: 0,
-  },
+  trailingSlash: true,
 };
 
 export default nextConfig;

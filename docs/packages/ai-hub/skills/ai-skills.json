@@ -1,0 +1,66 @@
+[
+  {
+    "id": "llm-prompt-engineering",
+    "name": "LLM Prompt Engineering",
+    "description": "LLM Prompt工程技能，精通提示词设计、Few-shot、CoT",
+    "trigger": ["prompt", "提示词", "llm", "few-shot", "chain of thought"],
+    "category": "ai",
+    "prompt": "LLM Prompt工程：\n1. 提示词设计原则\n2. Few-shot学习\n3. Chain of Thought\n4. 角色扮演\n5. 输出格式控制\n6. 提示词优化\n\n遵循Prompt工程最佳实践"
+  },
+  {
+    "id": "rag-system",
+    "name": "RAG System",
+    "description": "RAG系统技能，精通向量检索、嵌入、混合搜索",
+    "trigger": ["rag", "检索增强", "vector search", "embedding", "向量检索"],
+    "category": "ai",
+    "prompt": "RAG系统设计：\n1. 文档切分策略\n2. 嵌入模型选择\n3. 向量数据库\n4. 混合检索\n5. 重排序\n6. 上下文窗口优化\n\n遵循RAG最佳实践"
+  },
+  {
+    "id": "agent-design",
+    "name": "Agent Design",
+    "description": "Agent设计技能，精通工具调用、规划、记忆",
+    "trigger": ["agent", "智能体", "tool calling", "planning", "memory"],
+    "category": "ai",
+    "prompt": "Agent设计：\n1. 工具定义\n2. 规划策略\n3. 记忆系统\n4. 多Agent协作\n5. 错误处理\n6. 安全边界\n\n遵循Agent设计最佳实践"
+  },
+  {
+    "id": "fine-tuning",
+    "name": "Fine-tuning",
+    "description": "模型微调技能，精通数据准备、训练、评估",
+    "trigger": ["fine-tuning", "微调", "training", "训练", "sft"],
+    "category": "ai",
+    "prompt": "模型微调流程：\n1. 数据准备\n2. 数据格式化\n3. 训练配置\n4. 超参数调优\n5. 评估指标\n6. 模型部署\n\n遵循微调最佳实践"
+  },
+  {
+    "id": "vector-database",
+    "name": "Vector Database",
+    "description": "向量数据库技能，精通Pinecone/Milvus/Weaviate",
+    "trigger": ["vector database", "向量数据库", "pinecone", "milvus", "weaviate"],
+    "category": "ai",
+    "prompt": "向量数据库设计：\n1. 索引类型选择\n2. 相似度度量\n3. 分片策略\n4. 查询优化\n5. 数据更新\n6. 性能调优\n\n支持Pinecone/Milvus/Weaviate等"
+  },
+  {
+    "id": "ml-pipeline",
+    "name": "ML Pipeline",
+    "description": "ML流水线技能，精通特征工程、模型训练、部署",
+    "trigger": ["ml pipeline", "机器学习流水线", "feature engineering", "特征工程"],
+    "category": "ai",
+    "prompt": "ML流水线设计：\n1. 特征工程\n2. 数据预处理\n3. 模型训练\n4. 超参数调优\n5. 模型评估\n6. 模型部署\n\n遵循MLOps最佳实践"
+  },
+  {
+    "id": "data-pipeline",
+    "name": "Data Pipeline",
+    "description": "数据流水线技能，精通ETL、数据仓库、流处理",
+    "trigger": ["data pipeline", "etl", "数据流水线", "data warehouse", "数据仓库"],
+    "category": "ai",
+    "prompt": "数据流水线设计：\n1. 数据采集\n2. ETL/ELT流程\n3. 数据仓库设计\n4. 流处理架构\n5. 数据质量\n6. 数据治理\n\n遵循数据工程最佳实践"
+  },
+  {
+    "id": "nlp-processing",
+    "name": "NLP Processing",
+    "description": "NLP处理技能，精通文本分析、情感分析、NER",
+    "trigger": ["nlp", "自然语言处理", "text analysis", "文本分析", "sentiment"],
+    "category": "ai",
+    "prompt": "NLP处理流程：\n1. 文本预处理\n2. 分词与词性标注\n3. 命名实体识别\n4. 情感分析\n5. 文本分类\n6. 文本生成\n\n遵循NLP最佳实践"
+  }
+]

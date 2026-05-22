@@ -1,0 +1,66 @@
+[
+  {
+    "id": "owasp-top10",
+    "name": "OWASP Top 10",
+    "description": "OWASP Top 10安全检查技能，检测常见Web漏洞",
+    "trigger": ["owasp", "安全漏洞", "vulnerability", "注入", "xss", "csrf"],
+    "category": "security",
+    "prompt": "OWASP Top 10检查：\n1. 注入攻击\n2. 失效的身份认证\n3. 敏感数据暴露\n4. XML外部实体\n5. 访问控制失效\n6. 安全配置错误\n7. 跨站脚本(XSS)\n8. 不安全的反序列化\n9. 使用含有已知漏洞的组件\n10. 日志与监控不足\n\n遵循OWASP标准"
+  },
+  {
+    "id": "secure-coding",
+    "name": "Secure Coding",
+    "description": "安全编码技能，精通输入验证、输出编码、安全配置",
+    "trigger": ["secure coding", "安全编码", "input validation", "输入验证"],
+    "category": "security",
+    "prompt": "安全编码实践：\n1. 输入验证\n2. 输出编码\n3. 参数化查询\n4. 安全配置\n5. 密码存储\n6. 会话管理\n\n遵循安全编码最佳实践"
+  },
+  {
+    "id": "penetration-testing",
+    "name": "Penetration Testing",
+    "description": "渗透测试技能，精通漏洞扫描、利用、报告",
+    "trigger": ["penetration", "渗透测试", "pentest", "漏洞扫描"],
+    "category": "security",
+    "prompt": "渗透测试流程：\n1. 信息收集\n2. 漏洞扫描\n3. 漏洞利用\n4. 权限提升\n5. 后渗透\n6. 报告编写\n\n遵循渗透测试方法论"
+  },
+  {
+    "id": "security-audit",
+    "name": "Security Audit",
+    "description": "安全审计技能，精通合规检查、风险评估",
+    "trigger": ["security audit", "安全审计", "compliance", "合规", "risk assessment"],
+    "category": "security",
+    "prompt": "安全审计流程：\n1. 范围定义\n2. 资产识别\n3. 漏洞评估\n4. 风险分析\n5. 合规检查\n6. 改进建议\n\n遵循安全审计标准"
+  },
+  {
+    "id": "encryption-design",
+    "name": "Encryption Design",
+    "description": "加密设计技能，精通对称加密、非对称加密、哈希",
+    "trigger": ["encryption", "加密", "aes", "rsa", "hash", "tls"],
+    "category": "security",
+    "prompt": "加密设计：\n1. 加密算法选择\n2. 密钥管理\n3. TLS配置\n4. 数据加密\n5. 数字签名\n6. 证书管理\n\n遵循加密最佳实践"
+  },
+  {
+    "id": "identity-management",
+    "name": "Identity Management",
+    "description": "身份管理技能，精通OAuth2、OIDC、SAML",
+    "trigger": ["identity", "身份认证", "oauth", "oidc", "saml", "sso"],
+    "category": "security",
+    "prompt": "身份管理设计：\n1. OAuth2流程\n2. OIDC集成\n3. SAML配置\n4. SSO设计\n5. MFA实现\n6. 会话管理\n\n遵循身份管理最佳实践"
+  },
+  {
+    "id": "secrets-management",
+    "name": "Secrets Management",
+    "description": "密钥管理技能，精通Vault、AWS Secrets Manager",
+    "trigger": ["secrets", "密钥管理", "vault", "credentials", "敏感信息"],
+    "category": "security",
+    "prompt": "密钥管理：\n1. 密钥存储\n2. 密钥轮换\n3. 访问控制\n4. 审计日志\n5. 灾难恢复\n6. 集成方案\n\n支持Vault/AWS Secrets Manager等"
+  },
+  {
+    "id": "incident-response",
+    "name": "Incident Response",
+    "description": "事件响应技能，精通安全事件处理、取证分析",
+    "trigger": ["incident response", "事件响应", "forensics", "取证", "安全事件"],
+    "category": "security",
+    "prompt": "事件响应流程：\n1. 检测识别\n2. 遏制隔离\n3. 根除威胁\n4. 恢复服务\n5. 事后分析\n6. 改进措施\n\n遵循事件响应最佳实践"
+  }
+]

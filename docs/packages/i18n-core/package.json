@@ -1,0 +1,129 @@
+{
+  "name": "@yyc3/i18n-core",
+  "version": "2.4.0",
+  "description": "🌐 YYC³ Production-Ready Internationalization (i18n) Framework - High-performance, plugin-based, zero-dependency i18n solution for TypeScript/JavaScript applications",
+  "keywords": [
+    "i18n",
+    "internationalization",
+    "localization",
+    "translation",
+    "typescript",
+    "lru-cache",
+    "plugin-system",
+    "rtl",
+    "lit",
+    "web-components",
+    "yyc3",
+    "chinese-i18n",
+    "chinese-localization",
+    "中文国际化",
+    "中文本地化",
+    "react-i18n-alternative",
+    "vue-i18n-alternative",
+    "zero-dependencies",
+    "enterprise-i18n",
+    "next-i18n",
+    "nuxt-i18n",
+    "icu-messageformat",
+    "mcp",
+    "ai-translation",
+    "quality-estimation",
+    "ast-extraction"
+  ],
+  "author": "YanYuCloudCube Team <admin@0379.email>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YanYuCloudCube/Family-PAI.git",
+    "directory": "packages/i18n-core"
+  },
+  "homepage": "https://github.com/YanYuCloudCube/Family-PAI#readme",
+  "bugs": {
+    "url": "https://github.com/YanYuCloudCube/Family-PAI/issues"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./cache": {
+      "import": "./dist/lib/cache.js",
+      "types": "./dist/lib/cache.d.ts"
+    },
+    "./plugins": {
+      "import": "./dist/plugins/index.js",
+      "types": "./dist/plugins/index.d.ts"
+    },
+    "./icu": {
+      "import": "./dist/lib/icu/parser.js",
+      "types": "./dist/lib/icu/parser.d.ts"
+    },
+    "./ai": {
+      "import": "./dist/lib/ai/provider.js",
+      "types": "./dist/lib/ai/provider.d.ts"
+    },
+    "./mcp": {
+      "import": "./dist/lib/mcp/server.js",
+      "types": "./dist/lib/mcp/server.d.ts"
+    }
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "build:watch": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint 'src/**/*.ts'",
+    "lint:fix": "eslint 'src/**/*.ts' --fix",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "clean": "rm -rf dist coverage",
+    "prepublishOnly": "npm run clean && npm run build && npm test",
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "peerDependencies": {
+    "lit": "^3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "lit": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^20.11.0",
+    "@vitest/coverage-v8": "^1.6.1",
+    "eslint": "^10.1.0",
+    "globals": "^17.4.0",
+    "prettier": "^3.2.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0",
+    "typescript-eslint": "^8.58.0",
+    "vitest": "^1.2.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "size-limit": [
+    {
+      "path": "dist/index.js",
+      "limit": "45 kB"
+    }
+  ],
+  "sideEffects": false,
+  "type": "module"
+}

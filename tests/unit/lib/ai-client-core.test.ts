@@ -3,25 +3,22 @@ import { AIClient } from "@/lib/ai-client";
 describe("AIClient core methods", () => {
   it("extractText returns empty string on empty choices", () => {
     const client = new AIClient("http://x", "m");
-    // @ts-expect-error minimal shape for test
-    const res = { choices: [] };
-    expect(client.extractText(res)).toBe("");
+    const res = { choices: [] as any[] };
+    expect(client.extractText(res as any)).toBe("");
   });
 
   it("extractText returns message content when present", () => {
     const client = new AIClient("http://x", "m");
-    // @ts-expect-error minimal shape for test
     const res = {
       choices: [{ message: { role: "assistant", content: "hello" } }],
     };
-    expect(client.extractText(res)).toBe("hello");
+    expect(client.extractText(res as any)).toBe("hello");
   });
 
   it("classifyIntent falls back when JSON parse fails", async () => {
     const client = new AIClient("http://x", "m");
     const spy = jest
       .spyOn(client as any, "chat")
-      // @ts-expect-error minimal shape for test
       .mockResolvedValue({ choices: [{ message: { content: "not json" } }] });
 
     const out = await client.classifyIntent("refund");
@@ -35,7 +32,6 @@ describe("AIClient core methods", () => {
     const payload = { intent: "billing", confidence: 0.88 };
     const spy = jest
       .spyOn(client as any, "chat")
-      // @ts-expect-error minimal shape for test
       .mockResolvedValue({
         choices: [{ message: { content: JSON.stringify(payload) } }],
       });
@@ -49,7 +45,6 @@ describe("AIClient core methods", () => {
     const client = new AIClient("http://x", "m");
     const spy = jest
       .spyOn(client as any, "chat")
-      // @ts-expect-error minimal shape for test
       .mockResolvedValue({ choices: [{ message: { content: "oops" } }] });
 
     const out = await client.analyzeSentiment("text");
@@ -63,7 +58,6 @@ describe("AIClient core methods", () => {
     const payload = { sentiment: "positive", score: 0.9 } as const;
     const spy = jest
       .spyOn(client as any, "chat")
-      // @ts-expect-error minimal shape for test
       .mockResolvedValue({
         choices: [{ message: { content: JSON.stringify(payload) } }],
       });
@@ -76,18 +70,15 @@ describe("AIClient core methods", () => {
 
 describe("AIClient.chat advanced", () => {
   beforeEach(() => {
-    // @ts-expect-error test shim
-    global.fetch = jest.fn();
+    global.fetch = jest.fn() as any;
   });
 
   afterEach(() => {
-    // @ts-expect-error test shim
-    global.fetch.mockReset?.();
+    (global.fetch as any)?.mockReset?.();
   });
 
   it("throws error with status and statusText when response not ok", async () => {
-    // @ts-expect-error test shim
-    global.fetch.mockResolvedValue({
+    (global.fetch as any).mockResolvedValue({
       ok: false,
       status: 502,
       statusText: "Bad Gateway",
@@ -101,10 +92,8 @@ describe("AIClient.chat advanced", () => {
   });
 
   it("throws error on timeout via AbortController", async () => {
-    // @ts-expect-error test shim
-    global.fetch.mockImplementation((_url: string, init: any) => {
+    (global.fetch as any).mockImplementation((_url: string, init: any) => {
       const { signal } = init;
-      // Simulate timeout by triggering abort
       signal.dispatchEvent(new Event("abort"));
       return Promise.reject(new Error("The operation was aborted"));
     });
@@ -117,8 +106,7 @@ describe("AIClient.chat advanced", () => {
 
   it("clears timeout after successful response", async () => {
     const clearTimeoutSpy = jest.spyOn(global, "clearTimeout");
-    // @ts-expect-error test shim
-    global.fetch.mockResolvedValue({
+    (global.fetch as any).mockResolvedValue({
       ok: true,
       json: async () => ({
         id: "123",
@@ -136,18 +124,15 @@ describe("AIClient.chat advanced", () => {
 
 describe("AIClient.getModels advanced", () => {
   beforeEach(() => {
-    // @ts-expect-error test shim
-    global.fetch = jest.fn();
+    global.fetch = jest.fn() as any;
   });
 
   afterEach(() => {
-    // @ts-expect-error test shim
-    global.fetch.mockReset?.();
+    (global.fetch as any)?.mockReset?.();
   });
 
   it("throws error when response not ok", async () => {
-    // @ts-expect-error test shim
-    global.fetch.mockResolvedValue({
+    (global.fetch as any).mockResolvedValue({
       ok: false,
       statusText: "Unauthorized",
     });
@@ -159,8 +144,7 @@ describe("AIClient.getModels advanced", () => {
   });
 
   it("returns empty array when data is undefined", async () => {
-    // @ts-expect-error test shim
-    global.fetch.mockResolvedValue({
+    (global.fetch as any).mockResolvedValue({
       ok: true,
       json: async () => ({}),
     });
@@ -171,8 +155,7 @@ describe("AIClient.getModels advanced", () => {
   });
 
   it("handles malformed response structure gracefully", async () => {
-    // @ts-expect-error test shim
-    global.fetch.mockResolvedValue({
+    (global.fetch as any).mockResolvedValue({
       ok: true,
       json: async () => ({ data: "not an array" }),
     });
@@ -183,8 +166,7 @@ describe("AIClient.getModels advanced", () => {
   });
 
   it("extracts model ids from data array", async () => {
-    // @ts-expect-error test shim
-    global.fetch.mockResolvedValue({
+    (global.fetch as any).mockResolvedValue({
       ok: true,
       json: async () => ({
         data: [

@@ -1,0 +1,344 @@
+{
+  "$schema": "https://anthropic.com/claude-code/mcp-servers.schema.json",
+  "_comment": "YYC³ AI Hub Extended MCP Servers Configuration - 扩展MCP服务器配置",
+  "mcpServers": {
+    "yyc3-cn-assistant": {
+      "command": "node",
+      "args": ["/Users/my/YYC3-KB/Mcp集成库/API文档/YYC3-CN/代码/yyc3-cn-mcp-server.js"],
+      "env": {
+        "TRAE_CN_MODE": "development",
+        "NODE_ENV": "development"
+      },
+      "metadata": {
+        "displayName": "YYC3-CN Assistant",
+        "category": "ai-assistant",
+        "description": "YYC³ 中文AI助手，提供20个专业工具",
+        "vendor": "YYC³"
+      }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/my/yyc3-FAmily-π"],
+      "metadata": {
+        "displayName": "Filesystem",
+        "category": "utilities",
+        "description": "文件系统访问",
+        "vendor": "MCP"
+      }
+    },
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "DATABASE_URL": "postgresql://localhost/yyc3_dev"
+      },
+      "metadata": {
+        "displayName": "PostgreSQL",
+        "category": "database",
+        "description": "PostgreSQL数据库访问",
+        "vendor": "MCP"
+      }
+    },
+    "sqlite": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sqlite"],
+      "metadata": {
+        "displayName": "SQLite",
+        "category": "database",
+        "description": "SQLite数据库",
+        "vendor": "MCP"
+      }
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+      },
+      "metadata": {
+        "displayName": "GitHub",
+        "category": "developer-tools",
+        "description": "GitHub API集成",
+        "vendor": "MCP"
+      }
+    },
+    "git": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-git", "--repository", "/Users/my/yyc3-FAmily-π"],
+      "metadata": {
+        "displayName": "Git",
+        "category": "developer-tools",
+        "description": "Git仓库操作",
+        "vendor": "MCP"
+      }
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+      "env": {
+        "BRAVE_API_KEY": "${BRAVE_API_KEY}"
+      },
+      "metadata": {
+        "displayName": "Brave Search",
+        "category": "web-search",
+        "description": "Brave搜索集成",
+        "vendor": "MCP"
+      }
+    },
+    "puppeteer": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-puppeteer"],
+      "metadata": {
+        "displayName": "Puppeteer",
+        "category": "browser-automation",
+        "description": "浏览器自动化",
+        "vendor": "MCP"
+      }
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "metadata": {
+        "displayName": "Memory",
+        "category": "ai-task-management",
+        "description": "持久化记忆存储",
+        "vendor": "MCP"
+      }
+    },
+    "fetch": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"],
+      "metadata": {
+        "displayName": "Fetch",
+        "category": "api-development",
+        "description": "HTTP请求工具",
+        "vendor": "MCP"
+      }
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "metadata": {
+        "displayName": "Sequential Thinking",
+        "category": "ai-task-management",
+        "description": "顺序思考工具",
+        "vendor": "MCP"
+      }
+    },
+    "everything": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-everything"],
+      "metadata": {
+        "displayName": "Everything Search",
+        "category": "utilities",
+        "description": "Windows文件搜索",
+        "vendor": "MCP"
+      }
+    },
+    "google-maps": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-google-maps"],
+      "env": {
+        "GOOGLE_MAPS_API_KEY": "${GOOGLE_MAPS_API_KEY}"
+      },
+      "metadata": {
+        "displayName": "Google Maps",
+        "category": "api-development",
+        "description": "Google Maps API集成",
+        "vendor": "MCP"
+      }
+    },
+    "slack": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-slack"],
+      "env": {
+        "SLACK_BOT_TOKEN": "${SLACK_BOT_TOKEN}"
+      },
+      "metadata": {
+        "displayName": "Slack",
+        "category": "productivity",
+        "description": "Slack集成",
+        "vendor": "MCP"
+      }
+    },
+    "aws-kb-retrieval": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-aws-kb-retrieval"],
+      "metadata": {
+        "displayName": "AWS KB Retrieval",
+        "category": "cloud-infrastructure",
+        "description": "AWS知识库检索",
+        "vendor": "AWS"
+      }
+    },
+    "atlassian": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-atlassian"],
+      "env": {
+        "ATLASSIAN_API_TOKEN": "${ATLASSIAN_API_TOKEN}"
+      },
+      "metadata": {
+        "displayName": "Atlassian",
+        "category": "productivity",
+        "description": "Jira/Confluence集成",
+        "vendor": "Atlassian"
+      }
+    },
+    "chroma": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-chroma"],
+      "metadata": {
+        "displayName": "Chroma",
+        "category": "database",
+        "description": "Chroma向量数据库",
+        "vendor": "MCP"
+      }
+    },
+    "clickhouse": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-clickhouse"],
+      "metadata": {
+        "displayName": "ClickHouse",
+        "category": "database",
+        "description": "ClickHouse列式数据库",
+        "vendor": "ClickHouse"
+      }
+    },
+    "docker": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-docker"],
+      "metadata": {
+        "displayName": "Docker",
+        "category": "developer-tools",
+        "description": "Docker容器管理",
+        "vendor": "MCP"
+      }
+    },
+    "kubernetes": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-kubernetes"],
+      "metadata": {
+        "displayName": "Kubernetes",
+        "category": "cloud-infrastructure",
+        "description": "K8s集群管理",
+        "vendor": "MCP"
+      }
+    },
+    "prometheus": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-prometheus"],
+      "metadata": {
+        "displayName": "Prometheus",
+        "category": "observability",
+        "description": "Prometheus监控",
+        "vendor": "MCP"
+      }
+    },
+    "grafana": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-grafana"],
+      "metadata": {
+        "displayName": "Grafana",
+        "category": "observability",
+        "description": "Grafana仪表盘",
+        "vendor": "MCP"
+      }
+    },
+    "elasticsearch": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-elasticsearch"],
+      "metadata": {
+        "displayName": "Elasticsearch",
+        "category": "database",
+        "description": "Elasticsearch搜索引擎",
+        "vendor": "MCP"
+      }
+    },
+    "redis": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-redis"],
+      "metadata": {
+        "displayName": "Redis",
+        "category": "database",
+        "description": "Redis缓存数据库",
+        "vendor": "MCP"
+      }
+    },
+    "mongodb": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-mongodb"],
+      "metadata": {
+        "displayName": "MongoDB",
+        "category": "database",
+        "description": "MongoDB文档数据库",
+        "vendor": "MCP"
+      }
+    },
+    "sentry": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sentry"],
+      "env": {
+        "SENTRY_AUTH_TOKEN": "${SENTRY_AUTH_TOKEN}"
+      },
+      "metadata": {
+        "displayName": "Sentry",
+        "category": "observability",
+        "description": "Sentry错误监控",
+        "vendor": "Sentry"
+      }
+    },
+    "datadog": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-datadog"],
+      "env": {
+        "DATADOG_API_KEY": "${DATADOG_API_KEY}"
+      },
+      "metadata": {
+        "displayName": "Datadog",
+        "category": "observability",
+        "description": "Datadog监控平台",
+        "vendor": "Datadog"
+      }
+    },
+    "stripe": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-stripe"],
+      "env": {
+        "STRIPE_API_KEY": "${STRIPE_API_KEY}"
+      },
+      "metadata": {
+        "displayName": "Stripe",
+        "category": "api-development",
+        "description": "Stripe支付集成",
+        "vendor": "Stripe"
+      }
+    },
+    "twilio": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-twilio"],
+      "env": {
+        "TWILIO_ACCOUNT_SID": "${TWILIO_ACCOUNT_SID}",
+        "TWILIO_AUTH_TOKEN": "${TWILIO_AUTH_TOKEN}"
+      },
+      "metadata": {
+        "displayName": "Twilio",
+        "category": "api-development",
+        "description": "Twilio通信服务",
+        "vendor": "Twilio"
+      }
+    },
+    "sendgrid": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sendgrid"],
+      "env": {
+        "SENDGRID_API_KEY": "${SENDGRID_API_KEY}"
+      },
+      "metadata": {
+        "displayName": "SendGrid",
+        "category": "api-development",
+        "description": "SendGrid邮件服务",
+        "vendor": "Twilio"
+      }
+    }
+  }
+}

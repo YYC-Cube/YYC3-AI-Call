@@ -14,9 +14,9 @@
 > **_All things converge in the cloud pivot; Deep stacks ignite a new era of intelligence_**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Next.js](https://img.shields.io/badge/Next.js-15.2.4-black?logo=next.js)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-14.2-black?logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![React](https://img.shields.io/badge/React-19.0-61DAFB?logo=react&logoColor=white)](https://reactjs.org/)
+[![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react&logoColor=white)](https://reactjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![pnpm](https://img.shields.io/badge/pnpm-8+-F69220?logo=pnpm&logoColor=white)](https://pnpm.io/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
@@ -53,7 +53,7 @@
 
 ## 📖 项目概述
 
-YYC³ AI Intelligent Calling 是一个**企业级智能外呼系统**，基于先进的人工智能技术和现代化的技术栈构建。系统采用 **Next.js 15** 全栈框架，集成 **Zhipu AI**（智谱AI）大模型，为教育机构、企业客服、医疗健康等行业提供高效、智能、安全的自动化呼叫解决方案。
+YYC³ AI Intelligent Calling 是一个**企业级智能外呼系统**，基于先进的人工智能技术和现代化的技术栈构建。系统采用 **Next.js 14** 全栈框架，集成 **Zhipu AI**（智谱AI）大模型和 **vLLM** 本地推理引擎，为教育机构、企业客服、医疗健康等行业提供高效、智能、安全的自动化呼叫解决方案。
 
 ### 核心价值主张
 

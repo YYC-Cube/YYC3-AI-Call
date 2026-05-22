@@ -32,7 +32,7 @@ test.describe('智能外呼系统', () => {
       await expect(panel.first()).toBeVisible();
 
       // 验证关键元素存在
-      const pageText = await page.textContent();
+      const pageText = await page.textContent('body');
       expect(pageText).toMatch(/call|record|script|sentiment|quality|status/i);
     }
   });
@@ -197,9 +197,9 @@ test.describe('智能外呼系统', () => {
 
   test('应该显示通话时长', async ({ page }) => {
     // 查找通话时长信息
-    const duration = page.locator('text=/:/).first();
+    const duration = page.locator("text=/:/").first();
     const durationText = page
-      .locator('span')
+      .locator("span")
       .filter({ hasText: /\d+:\d+|duration|时长|长度/i })
       .first();
 

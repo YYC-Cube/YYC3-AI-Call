@@ -1,198 +1,221 @@
 /**
- * @fileoverview 客户管理API路由
- * @description 处理客户的CRUD操作
- * @module app/api/customers/route
+ * @fileoverview 客户管理 API
+ * @description 客户 CRUD 操作，包含完整的输入验证和权限控制
+ * @module app/api/customers
  * @author YYC³
  * @version 1.0.0
+ * @created 2026-01-22
+ * @copyright Copyright (c) 2026 YYC³
+ * @license MIT
  */
 
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
+import prisma from '@/lib/db';
+import { AuthService } from '@/lib/auth';
+import { CustomerSchemas, validateInput, formatValidationError } from '@/lib/validations';
 
-// 接口定义
-interface Customer {
-  id?: number;
-  name: string;
-  email: string;
-  phone: string;
-  status:
-    | "new"
-    | "contacted"
-    | "interested"
-    | "negotiating"
-    | "closed"
-    | "lost";
-  tags?: string[];
-  followUpDate?: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-interface ApiResponse<T> {
-  success: boolean;
-  data?: T;
-  error?: {
-    code: string;
-    message: string;
-    details?: Record<string, unknown>;
-  };
-  timestamp: string;
-}
-
-// TODO: 待实现 - 连接到真实数据库
-// import { getDatabase } from '@/lib/db';
-
-/**
- * GET /api/customers
- * 获取客户列表
- * @query page - 页码，默认1
- * @query limit - 每页数量，默认10
- * @query search - 搜索关键词
- * @query status - 按状态过滤
- */
 export async function GET(request: NextRequest) {
   try {
+    // 提取认证令牌
+    const authHeader = request.headers.get('authorization');
+    const token = AuthService.extractBearerToken(authHeader ?? undefined);
+
+    if (!token) {
+      return NextResponse.json(
+        { error: '未提供认证令牌', code: 'UNAUTHORIZED' },
+        { status: 401 }
+      );
+    }
+
+    // 验证令牌
+    const payload = AuthService.verifyAccessToken(token);
+    if (!payload) {
+      return NextResponse.json(
+        { error: '无效或过期的令牌', code: 'TOKEN_INVALID' },
+        { status: 401 }
+      );
+    }
+
     // 解析查询参数
     const { searchParams } = new URL(request.url);
-    const page = Math.max(1, Number(searchParams.get("page")) || 1);
-    const limit = Math.min(100, Number(searchParams.get("limit")) || 10);
-    const search = searchParams.get("search") || "";
-    const status = searchParams.get("status");
+    const queryParams = Object.fromEntries(searchParams.entries());
 
-    // TODO: 实现数据库查询
-    // const db = await getDatabase();
-    // const customers = await db.query(
-    //   'SELECT * FROM customers WHERE ...',
-    //   [...]
-    // );
+    // 验证查询参数
+    const validation = validateInput(CustomerSchemas.query, queryParams);
+    if (!validation.success) {
+      return NextResponse.json(
+        formatValidationError(validation.error),
+        { status: 400 }
+      );
+    }
 
-    // 临时Mock数据（实现前）
-    const mockCustomers: Customer[] = [
-      {
-        id: 1,
-        name: "张三",
-        email: "zhangsan@example.com",
-        phone: "13800138000",
-        status: "new",
-        tags: ["VIP", "已咨询"],
-        createdAt: new Date().toISOString(),
-      },
-      // ... 更多mock数据
-    ];
+    const {
+      page = 1,
+      pageSize = 20,
+      search,
+      status,
+      priority,
+      assignedToId,
+      startDate,
+      endDate,
+    } = validation.data;
 
-    const filtered = mockCustomers.filter((customer) => {
-      const matchSearch = search
-        ? [customer.name, customer.email, customer.phone]
-            .filter(Boolean)
-            .some((field) =>
-              field?.toLowerCase().includes(search.toLowerCase()),
-            )
-        : true;
-      const matchStatus = status ? customer.status === status : true;
-      return matchSearch && matchStatus;
-    });
+    // 构建查询条件
+    const where: Record<string, unknown> = {};
 
-    const total = filtered.length;
-    const pages = Math.max(1, Math.ceil(total / limit));
-    const start = (page - 1) * limit;
-    const customers = filtered.slice(start, start + limit);
+    if (search) {
+      where.OR = [
+        { name: { contains: search, mode: 'insensitive' as const } },
+        { phone: { contains: search } },
+        { company: { contains: search, mode: 'insensitive' as const } },
+        { email: { contains: search, mode: 'insensitive' as const } },
+      ];
+    }
 
-    return NextResponse.json<
-      ApiResponse<{ customers: Customer[]; total: number; pages: number }>
-    >({
-      success: true,
-      data: {
-        customers,
+    if (status) {
+      where.status = status;
+    }
+
+    if (priority) {
+      where.priority = priority;
+    }
+
+    if (assignedToId) {
+      where.assignedToId = assignedToId;
+    }
+
+    if (startDate || endDate) {
+      (where as any).createdAt = {};
+      if (startDate) (where as any).createdAt.gte = startDate;
+      if (endDate) (where as any).createdAt.lte = endDate;
+    }
+
+    // 权限控制：普通用户只能查看自己分配的客户
+    if (payload.role === 'USER') {
+      where.assignedToId = payload.userId;
+    }
+
+    // 查询数据
+    const [customers, total] = await Promise.all([
+      prisma.customer.findMany({
+        where,
+        include: {
+          assignments: {
+            select: {
+              id: true,
+              name: true,
+              avatar: true,
+            },
+          },
+          _count: {
+            select: { calls: true },
+          },
+        },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+        orderBy: { updatedAt: 'desc' },
+      }),
+      prisma.customer.count({ where }),
+    ]);
+
+    return NextResponse.json({
+      data: customers,
+      pagination: {
+        page,
+        pageSize,
         total,
-        pages,
+        totalPages: Math.ceil(total / pageSize),
       },
-      timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    console.error("Failed to fetch customers:", error);
-    return NextResponse.json<ApiResponse<null>>(
-      {
-        success: false,
-        error: {
-          code: "FETCH_ERROR",
-          message: "获取客户列表失败",
-          details: { error: String(error) },
-        },
-        timestamp: new Date().toISOString(),
-      },
-      { status: 500 },
+    console.error('❌ 获取客户列表失败:', error);
+    return NextResponse.json(
+      { error: '服务器内部错误', code: 'INTERNAL_ERROR' },
+      { status: 500 }
     );
   }
 }
 
-/**
- * POST /api/customers
- * 创建新客户
- * @body customer - 客户信息
- */
 export async function POST(request: NextRequest) {
   try {
-    // 解析请求体
-    const body = (await request.json()) as Partial<Customer>;
+    // 提取认证令牌
+    const authHeader = request.headers.get('authorization');
+    const token = AuthService.extractBearerToken(authHeader ?? undefined);
 
-    // 验证必填字段
-    const errors: Record<string, string> = {};
-    if (!body.name?.trim()) errors.name = "客户名称不能为空";
-    if (!body.email?.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/))
-      errors.email = "邮箱格式不正确";
-    if (!body.phone?.trim()) errors.phone = "电话不能为空";
-    if (!body.status) errors.status = "客户状态不能为空";
-
-    if (Object.keys(errors).length > 0) {
-      return NextResponse.json<ApiResponse<null>>(
-        {
-          success: false,
-          error: {
-            code: "VALIDATION_ERROR",
-            message: "参数验证失败",
-            details: errors,
-          },
-          timestamp: new Date().toISOString(),
-        },
-        { status: 400 },
+    if (!token) {
+      return NextResponse.json(
+        { error: '未提供认证令牌', code: 'UNAUTHORIZED' },
+        { status: 401 }
       );
     }
 
-    // TODO: 保存到数据库
-    // const db = await getDatabase();
-    // const result = await db.query(
-    //   'INSERT INTO customers (...) VALUES (...) RETURNING id',
-    //   [body.name, body.email, body.phone, body.status]
-    // );
+    // 验证令牌
+    const payload = AuthService.verifyAccessToken(token);
+    if (!payload) {
+      return NextResponse.json(
+        { error: '无效或过期的令牌', code: 'TOKEN_INVALID' },
+        { status: 401 }
+      );
+    }
 
-    // 临时Mock响应
-    const newCustomer: Customer = {
-      id: Date.now(), // 临时ID
-      ...(body as Customer),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
+    // 检查权限：AGENT 及以上角色才能创建客户
+    if (!['AGENT', 'MANAGER', 'ADMIN'].includes(payload.role)) {
+      return NextResponse.json(
+        { error: '权限不足，需要 AGENT 或更高角色', code: 'FORBIDDEN' },
+        { status: 403 }
+      );
+    }
 
-    return NextResponse.json<ApiResponse<Customer>>(
-      {
-        success: true,
-        data: newCustomer,
-        timestamp: new Date().toISOString(),
+    // 解析请求体
+    const body = await request.json();
+
+    // 验证输入
+    const validation = validateInput(CustomerSchemas.create, body);
+    if (!validation.success) {
+      return NextResponse.json(
+        formatValidationError(validation.error),
+        { status: 400 }
+      );
+    }
+
+    // 创建客户
+    const customer = await prisma.customer.create({
+      data: {
+        ...validation.data,
+        assignedToId: payload.role === 'USER' ? payload.userId : undefined,
       },
-      { status: 201 },
-    );
-  } catch (error) {
-    console.error("Failed to create customer:", error);
-    return NextResponse.json<ApiResponse<null>>(
-      {
-        success: false,
-        error: {
-          code: "CREATE_ERROR",
-          message: "创建客户失败",
-          details: { error: String(error) },
+      include: {
+        assignments: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+          },
         },
-        timestamp: new Date().toISOString(),
       },
-      { status: 500 },
+    });
+
+    return NextResponse.json(
+      {
+        message: '客户创建成功',
+        data: customer,
+      },
+      { status: 201 }
+    );
+  } catch (error: any) {
+    console.error('❌ 创建客户失败:', error);
+
+    // 处理唯一约束冲突
+    if (error.code === 'P2002') {
+      return NextResponse.json(
+        { error: '该手机号已被使用', code: 'DUPLICATE_PHONE' },
+        { status: 409 }
+      );
+    }
+
+    return NextResponse.json(
+      { error: '服务器内部错误', code: 'INTERNAL_ERROR' },
+      { status: 500 }
     );
   }
 }

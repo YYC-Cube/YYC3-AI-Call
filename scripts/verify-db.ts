@@ -7,38 +7,60 @@
  * @fileoverview 数据库健康检查与数据完整性验证
  * @module scripts/verify-db
  * @author YYC³ AI Call Center Team
- * @version 1.0.0
- * @created 2026-01-23
+ * @version 2.0.0
+ * @updated 2026-05-01 - 重写以匹配当前简化的Prisma Schema
  */
 
-import { PrismaClient } from "@prisma/client";
-import { checkDBHealth, getDBInfo } from "../lib/db";
+import { PrismaClient, CustomerStatus, Role } from "@prisma/client";
+import prisma from "../lib/db";
 
-const prisma = new PrismaClient();
+const db = prisma || new PrismaClient();
 
-/**
- * 验证表数据
- */
+async function checkDBHealth(): Promise<boolean> {
+  try {
+    await db.$queryRaw`SELECT 1`;
+    return true;
+  } catch (error) {
+    console.error("数据库连接失败:", error);
+    return false;
+  }
+}
+
+async function getDBInfo(): Promise<{
+  version: string;
+  users: number;
+  customers: number;
+  calls: number;
+}> {
+  const [result] = await db.$queryRaw`SELECT version()` as any[];
+  const version = result?.version || "unknown";
+
+  const [users, customers, calls] = await Promise.all([
+    db.user.count(),
+    db.customer.count(),
+    db.call.count(),
+  ]);
+
+  return { version, users, customers, calls };
+}
+
 async function verifyTableData() {
   console.log("\n📊 验证表数据...\n");
 
   const tables = [
-    { name: "User", model: prisma.user },
-    { name: "Customer", model: prisma.customer },
-    { name: "CallRecord", model: prisma.callRecord },
-    { name: "Campaign", model: prisma.campaign },
-    { name: "CampaignCustomer", model: prisma.campaignCustomer },
-    { name: "Form", model: prisma.form },
-    { name: "FormSubmission", model: prisma.formSubmission },
-    { name: "Task", model: prisma.task },
-    { name: "AnalyticsMetric", model: prisma.analyticsMetric },
+    { name: "User", model: db.user },
+    { name: "Customer", model: db.customer },
+    { name: "Call", model: db.call },
+    { name: "Interaction", model: db.interaction },
+    { name: "Session", model: db.session },
+    { name: "AuditLog", model: db.auditLog },
   ];
 
   const results = [];
 
   for (const table of tables) {
     try {
-      const count = await table.model.count();
+      const count = await (table.model as any).count();
       results.push({ name: table.name, count, status: "✅" });
       console.log(
         `  ${table.name.padEnd(20)} ${count.toString().padStart(5)} 条`,
@@ -57,29 +79,24 @@ async function verifyTableData() {
   return results;
 }
 
-/**
- * 验证数据关系
- */
 async function verifyRelations() {
   console.log("\n🔗 验证数据关系...\n");
 
   try {
-    // 验证客户与通话记录关系
-    const customerWithCalls = await prisma.customer.findFirst({
-      where: { callRecords: { some: {} } },
-      include: { callRecords: true },
+    const customerWithCalls = await db.customer.findFirst({
+      where: { calls: { some: {} } },
+      include: { calls: true },
     });
 
     if (customerWithCalls) {
       console.log(
-        `  ✅ 客户-通话记录关系: ${customerWithCalls.name} 有 ${customerWithCalls.callRecords.length} 条通话记录`,
+        `  ✅ 客户-通话记录关系: ${customerWithCalls.name} 有 ${customerWithCalls.calls.length} 条通话记录`,
       );
     } else {
       console.log("  ⚠️  未找到有通话记录的客户");
     }
 
-    // 验证用户与客户关系
-    const userWithCustomers = await prisma.user.findFirst({
+    const userWithCustomers = await db.user.findFirst({
       where: { customers: { some: {} } },
       include: { customers: true },
     });
@@ -92,18 +109,17 @@ async function verifyRelations() {
       console.log("  ⚠️  未找到管理客户的用户");
     }
 
-    // 验证表单与提交记录关系
-    const formWithSubmissions = await prisma.form.findFirst({
-      where: { submissions: { some: {} } },
-      include: { submissions: true },
+    const callWithInteractions = await db.call.findFirst({
+      where: { interactions: { some: {} } },
+      include: { interactions: true },
     });
 
-    if (formWithSubmissions) {
+    if (callWithInteractions) {
       console.log(
-        `  ✅ 表单-提交记录关系: ${formWithSubmissions.name} 有 ${formWithSubmissions.submissions.length} 条提交记录`,
+        `  ✅ 通话-交互记录关系: 通话 #${callWithInteractions.id.slice(0, 8)} 有 ${callWithInteractions.interactions.length} 条交互记录`,
       );
     } else {
-      console.log("  ⚠️  未找到有提交记录的表单");
+      console.log("  ⚠️  未找到有交互记录的通话");
     }
 
     return true;
@@ -113,15 +129,11 @@ async function verifyRelations() {
   }
 }
 
-/**
- * 验证索引
- */
 async function verifyIndexes() {
   console.log("\n🔍 验证数据库索引...\n");
 
   try {
-    // 执行原生查询检查索引
-    const indexes = (await prisma.$queryRaw`
+    const indexes = (await db.$queryRaw`
       SELECT
         schemaname,
         tablename,
@@ -134,8 +146,7 @@ async function verifyIndexes() {
 
     console.log(`  ✅ 找到 ${indexes.length} 个索引`);
 
-    // 显示前 5 个索引作为示例
-    indexes.slice(0, 5).forEach((idx) => {
+    indexes.slice(0, 5).forEach((idx: any) => {
       console.log(`     - ${idx.tablename}.${idx.indexname}`);
     });
 
@@ -150,16 +161,12 @@ async function verifyIndexes() {
   }
 }
 
-/**
- * 验证全文搜索
- */
 async function verifyFullTextSearch() {
   console.log("\n🔎 验证全文搜索功能...\n");
 
   try {
-    // 测试客户全文搜索
     const searchTerm = "科技";
-    const searchResults = await prisma.customer.findMany({
+    const searchResults = await db.customer.findMany({
       where: {
         OR: [
           { name: { contains: searchTerm, mode: "insensitive" } },
@@ -183,14 +190,10 @@ async function verifyFullTextSearch() {
   }
 }
 
-/**
- * 主函数
- */
 async function main() {
   console.log("🔍 开始数据库验证...\n");
   console.log("=".repeat(60));
 
-  // 1. 健康检查
   console.log("\n💓 数据库健康检查...\n");
   const isHealthy = await checkDBHealth();
   if (isHealthy) {
@@ -200,28 +203,21 @@ async function main() {
     process.exit(1);
   }
 
-  // 2. 获取数据库信息
   const dbInfo = await getDBInfo();
   console.log(`  📦 PostgreSQL 版本: ${dbInfo.version}`);
   console.log(`  📊 表统计:`);
   console.log(`     - 用户: ${dbInfo.users} 条`);
   console.log(`     - 客户: ${dbInfo.customers} 条`);
-  console.log(`     - 通话记录: ${dbInfo.callRecords} 条`);
-  console.log(`     - 营销活动: ${dbInfo.campaigns} 条`);
+  console.log(`     - 通话记录: ${dbInfo.calls} 条`);
 
-  // 3. 验证表数据
   const tableResults = await verifyTableData();
 
-  // 4. 验证数据关系
   await verifyRelations();
 
-  // 5. 验证索引
   await verifyIndexes();
 
-  // 6. 验证全文搜索
   await verifyFullTextSearch();
 
-  // 7. 总结
   console.log("\n" + "=".repeat(60));
   console.log("\n📋 验证总结:\n");
 
@@ -234,7 +230,7 @@ async function main() {
     console.log("\n🎉 数据库验证完成！所有检查通过。\n");
   } else {
     console.error(`  ❌ ${failedTables.length} 个表验证失败:`);
-    failedTables.forEach((t) => {
+    failedTables.forEach((t: any) => {
       console.error(`     - ${t.name}: ${t.error}`);
     });
     console.log("\n⚠️  数据库验证发现问题，请检查上述错误。\n");
@@ -242,12 +238,11 @@ async function main() {
   }
 }
 
-// 执行主函数
 main()
   .catch((e) => {
     console.error("\n❌ 验证过程失败:", e);
     process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect();
+    await db.$disconnect();
   });

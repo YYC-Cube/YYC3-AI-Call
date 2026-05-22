@@ -1,0 +1,145 @@
+groups:
+  - name: yyc3-ai-calling-alerts
+    interval: 30s
+    rules:
+      - alert: HighErrorRate
+        expr: |
+          (
+            sum(rate(http_requests_total{status=~"5.."}[5m])) 
+            / 
+            sum(rate(http_requests_total[5m]))
+          ) * 100 > 5
+        for: 2m
+        labels:
+          severity: critical
+          team: backend
+        annotations:
+          summary: "高错误率告警"
+          description: "错误率超过5%（当前值：{{ $value | printf \"%.2f\" }}%）"
+
+      - alert: HighLatency
+        expr: |
+          histogram_quantile(0.95, 
+            rate(http_request_duration_seconds_bucket[5m])
+          ) > 1
+        for: 5m
+        labels:
+          severity: warning
+          team: backend
+        annotations:
+          summary: "请求延迟过高"
+          description: "P95延迟超过1秒（当前值：{{ $value | printf \"%.2f\" }}秒）"
+
+      - alert: DatabaseConnectionPoolExhausted
+        expr: database_connections_active > 20
+        for: 3m
+        labels:
+          severity: critical
+          team: database
+        annotations:
+          summary: "数据库连接池耗尽"
+          description: "活跃数据库连接数：{{ $value }}（阈值：20）"
+
+      - alert: RedisConnectionFailure
+        expr: redis_connections_active == 0
+        for: 1m
+        labels:
+          severity: critical
+          team: infrastructure
+        annotations:
+          summary: "Redis连接失败"
+          description: "无法建立Redis连接，可能影响缓存和会话管理"
+
+      - alert: AICallFailureRateHigh
+        expr: |
+          (
+            sum(rate(ai_calls_total{status="failed"}[10m])) 
+            / 
+            sum(rate(ai_calls_total[10m]))
+          ) * 100 > 15
+        for: 5m
+        labels:
+          severity: warning
+          team: ai-service
+        annotations:
+          summary: "AI通话失败率过高"
+          description: "AI通话失败率超过15%（当前值：{{ $value | printf \"%.2f\" }}%）"
+
+      - alert: AICallDurationTooLong
+        expr: |
+          histogram_quantile(0.95, 
+            rate(ai_call_duration_seconds_bucket[10m])
+          ) > 90
+        for: 10m
+        labels:
+          severity: warning
+          team: ai-service
+        annotations:
+          summary: "AI通话时长异常"
+          description: "P95通话时长超过90秒（当前值：{{ $value | printf \"%.0f\" }}秒）"
+
+      - alert: TaskBacklogGrowing
+        expr: active_tasks_count{state="pending"} > 100
+        for: 10m
+        labels:
+          severity: warning
+          team: operations
+        annotations:
+          summary: "任务积压严重"
+          description: "待处理任务数：{{ $value }}（阈值：100）"
+
+      - alert: UnusualTrafficSpike
+        expr: |
+          sum(rate(http_requests_total[5m])) 
+          > 
+          (sum(rate(http_requests_total[1h]) offset 5m) * 3)
+        for: 5m
+        labels:
+          severity: warning
+          team: security
+        annotations:
+          summary: "异常流量激增"
+          description: "当前请求速率是过去1小时平均值的3倍以上，可能存在攻击或异常流量"
+
+      - alert: MemoryUsageHigh
+        expr: (process_resident_memory_bytes / 1024 / 1024) > 512
+        for: 10m
+        labels:
+          severity: warning
+          team: infrastructure
+        annotations:
+          summary: "内存使用率过高"
+          description: "内存使用量：{{ $value | printf \"%.0f\" }}MB（阈值：512MB）"
+
+      - alert: CPUUsageHigh
+        expr: rate(process_cpu_seconds_total[5m]) > 0.8
+        for: 10m
+        labels:
+          severity: warning
+          team: infrastructure
+        annotations:
+          summary: "CPU使用率过高"
+          description: "CPU使用率超过80%，可能影响响应性能"
+
+  - name: yyc3-ai-calling-info
+    interval: 60s
+    rules:
+      - alert: LowRequestRate
+        expr: sum(rate(http_requests_total[10m])) < 0.1
+        for: 30m
+        labels:
+          severity: info
+          team: operations
+        annotations:
+          summary: "请求量过低"
+          description: "每分钟请求数少于6，可能服务不可用或无流量"
+
+      - alert: NoActiveTasks
+        expr: active_tasks_count == 0
+        for: 1h
+        labels:
+          severity: info
+          team: operations
+        annotations:
+          summary: "无活跃任务"
+          description: "系统已1小时无活跃任务，可能需要检查业务状态"

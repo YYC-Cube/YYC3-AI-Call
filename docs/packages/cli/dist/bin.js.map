@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/bin.ts"],"names":[],"mappings":";;;;AAIA,OAAA,CAAQ,KAAA,EAAM","file":"bin.js","sourcesContent":["#!/usr/bin/env node\n\nimport { program } from './index.js'\n\nprogram.parse()\n"]}

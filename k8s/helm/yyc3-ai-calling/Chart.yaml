@@ -1,0 +1,30 @@
+apiVersion: v2
+name: yyc3-ai-calling
+description: YYC³ AI Intelligent Calling - Kubernetes Helm Chart
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+
+keywords:
+  - ai
+  - calling
+  - nextjs
+  - yyc3
+
+maintainers:
+  - name: YYC³ Team
+    email: dev@yyc3.com
+
+home: https://github.com/yyc3/yyc3-ai-calling
+sources:
+  - https://github.com/yyc3/yyc3-ai-calling
+
+dependencies:
+  - name: postgresql
+    version: 12.x.x
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled
+  - name: redis
+    version: 17.x.x
+    repository: https://charts.bitnami.com/bitnami
+    condition: redis.enabled

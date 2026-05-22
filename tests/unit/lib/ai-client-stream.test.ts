@@ -1,35 +1,28 @@
 import { AIClient } from "@/lib/ai-client";
 
 // Polyfill TextEncoder/TextDecoder if missing (Jest Node env)
-// @ts-ignore
 const needPolyfill = typeof (global as any).TextEncoder === "undefined";
 if (needPolyfill) {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { TextEncoder, TextDecoder } = require("util");
-  // @ts-ignore
   (global as any).TextEncoder = TextEncoder;
-  // @ts-ignore
   (global as any).TextDecoder = TextDecoder;
 }
 
 // Polyfill ReadableStream if missing
-// @ts-ignore
 if (typeof (global as any).ReadableStream === "undefined") {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { ReadableStream } = require("stream/web");
-  // @ts-ignore
   (global as any).ReadableStream = ReadableStream;
 }
 
 describe("AIClient.chatStream", () => {
   beforeEach(() => {
-    // @ts-expect-error test shim
-    global.fetch = jest.fn();
+    global.fetch = jest.fn() as any;
   });
 
   afterEach(() => {
-    // @ts-expect-error test shim
-    global.fetch.mockReset?.();
+    (global.fetch as any)?.mockReset?.();
     jest.restoreAllMocks();
   });
 
@@ -58,8 +51,7 @@ describe("AIClient.chatStream", () => {
 
   it("returns a stream and yields chunks", async () => {
     const body = makeStream(["part1 ", "part2"]);
-    // @ts-expect-error test shim
-    global.fetch.mockResolvedValue({ ok: true, body });
+    (global.fetch as any).mockResolvedValue({ ok: true, body });
 
     const client = new AIClient("http://localhost:9999/v1", "chatglm3-6b");
     const rs = await client.chatStream([{ role: "user", content: "hi" }]);
@@ -69,8 +61,11 @@ describe("AIClient.chatStream", () => {
   });
 
   it("throws when response not ok", async () => {
-    // @ts-expect-error test shim
-    global.fetch.mockResolvedValue({ ok: false, status: 500, statusText: "x" });
+    (global.fetch as any).mockResolvedValue({
+      ok: false,
+      status: 500,
+      statusText: "x",
+    });
     const client = new AIClient("http://localhost:9999/v1", "chatglm3-6b");
     await expect(
       client.chatStream([{ role: "user", content: "hi" }]),
@@ -78,8 +73,7 @@ describe("AIClient.chatStream", () => {
   });
 
   it("throws when body missing", async () => {
-    // @ts-expect-error test shim
-    global.fetch.mockResolvedValue({ ok: true, body: null });
+    (global.fetch as any).mockResolvedValue({ ok: true, body: null });
     const client = new AIClient("http://localhost:9999/v1", "chatglm3-6b");
     await expect(
       client.chatStream([{ role: "user", content: "hi" }]),

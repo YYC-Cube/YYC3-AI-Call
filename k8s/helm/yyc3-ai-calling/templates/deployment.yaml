@@ -1,0 +1,166 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "yyc3-ai-calling.fullname" . }}
+  labels:
+    {{- include "yyc3-ai-calling.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "yyc3-ai-calling.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum | default "config-not-provided" }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "yyc3-ai-calling.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "yyc3-ai-calling.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.securityContext | nindent 8 }}
+      
+      # Pod反亲和性（分散到不同节点）
+      {{- if .Values.podAntiAffinity.enabled }}
+      affinity:
+        podAntiAffinity:
+          {{- if eq .Values.podAntiAffinity.type "hard" }}
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/name
+                    operator: In
+                    values:
+                      - {{ include "yyc3-ai-calling.name" . }}
+              topologyKey: kubernetes.io/hostname
+          {{- else }}
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app.kubernetes.io/name
+                      operator: In
+                      values:
+                        - {{ include "yyc3-ai-calling.name" . }}
+                topologyKey: kubernetes.io/hostname
+          {{- end }}
+      {{- end }}
+
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.containerSecurityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol TCP
+
+          env:
+            - name: NODE_ENV
+              value: {{ .Values.env.NODE_ENV | quote }}
+            - name: PORT
+              value: {{ .Values.service.port | quote }}
+            - name: HOSTNAME
+              value: {{ .Values.env.HOSTNAME | quote }}
+            
+            # 数据库连接
+            {{- if .Values.postgresql.enabled }}
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ printf "%s-postgresql" .Release.Name }}
+                  key: connection-string
+            {{- end }}
+            
+            # Redis连接
+            {{- if .Values.redis.enabled }}
+            - name: REDIS_URL
+              value: "redis://{{ printf "%s-redis-master" .Release.Name }}:6379"
+            {{- if .Values.redis.auth.enabled }}
+            {{- if .Values.redis.auth.existingSecret }}
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.redis.auth.existingSecret }}
+                  key: redis-password
+            {{- end }}
+            {{- end }}
+            {{- end }}
+
+            # AI服务配置
+            {{- if .Values.ollama.enabled }}
+            - name: QWEN_LLM_BASE_URL
+              value: "http://{{ include "yyc3-ai-calling.fullname" . }}-ollama:11434"
+            - name: QWEN_EMBEDDING_BASE_URL
+              value: "http://{{ include "yyc3-ai-calling.fullname" . }}-ollama:11434"
+            {{- end }}
+
+            # 自定义环境变量
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+
+            # Secret注入的环境变量
+            {{- range .Values.secretEnv }}
+            - name: {{ .name }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .secretKeyRef.name }}
+                  key: {{ .secretKeyRef.key }}
+            {{- end }}
+
+          # 资源限制
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+
+          # 挂载卷
+          {{- if .Values.persistence.enabled }}
+          volumeMounts:
+            - name: uploads
+              mountPath: /app/uploads
+            - name: logs
+              mountPath: /app/logs
+          {{- end }}
+
+          # 健康检查
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          startupProbe:
+            {{- toYaml .Values.startupProbe | nindent 12 }}
+
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      # 卷定义
+      volumes:
+        {{- if .Values.persistence.enabled }}
+        - name: uploads
+          persistentVolumeClaim:
+            claimName: {{ include "yyc3-ai-calling.fullname" . }}-uploads
+        - name: logs
+          persistentVolumeClaim:
+            claimName: {{ include "yyc3-ai-calling.fullname" . }}-logs
+        {{- end }}

@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "YYC³ AI Hub Agent Index",
+  "description": "Agent分类索引 - 所有可用Agent的完整列表",
+  "version": "1.0.0",
+  "categories": {
+    "architecture": {
+      "name": "架构设计",
+      "description": "系统架构设计相关Agent",
+      "icon": "🏗️",
+      "agents": [
+        "backend-architect",
+        "frontend-architect",
+        "cloud-architect",
+        "kubernetes-architect",
+        "service-mesh-expert",
+        "event-sourcing-architect",
+        "monorepo-architect",
+        "design-system-architect"
+      ],
+      "count": 8
+    },
+    "languages": {
+      "name": "编程语言",
+      "description": "各编程语言专业Agent",
+      "icon": "💻",
+      "agents": [
+        "c-pro",
+        "cpp-pro",
+        "rust-pro",
+        "golang-pro",
+        "java-pro",
+        "scala-pro",
+        "kotlin-pro",
+        "swift-pro",
+        "elixir-pro",
+        "haskell-pro",
+        "ruby-pro",
+        "php-pro",
+        "sql-pro"
+      ],
+      "count": 13
+    },
+    "infrastructure": {
+      "name": "基础设施",
+      "description": "DevOps和基础设施相关Agent",
+      "icon": "🔧",
+      "agents": [
+        "devops-troubleshooter",
+        "deployment-engineer",
+        "terraform-specialist",
+        "database-admin",
+        "network-engineer",
+        "incident-responder",
+        "sre-engineer",
+        "observability-engineer"
+      ],
+      "count": 8
+    },
+    "quality": {
+      "name": "质量保证",
+      "description": "代码质量和安全相关Agent",
+      "icon": "🛡️",
+      "agents": [
+        "code-reviewer",
+        "security-auditor",
+        "test-automator",
+        "tdd-orchestrator",
+        "debugger",
+        "error-detective",
+        "performance-engineer",
+        "threat-modeling-expert",
+        "backend-security-coder",
+        "frontend-security-coder",
+        "mobile-security-coder",
+        "accessibility-expert"
+      ],
+      "count": 12
+    },
+    "ai": {
+      "name": "数据与AI",
+      "description": "AI和机器学习相关Agent",
+      "icon": "🤖",
+      "agents": [
+        "ai-engineer",
+        "ml-engineer",
+        "mlops-engineer",
+        "prompt-engineer",
+        "vector-database-engineer",
+        "data-scientist",
+        "data-engineer",
+        "nlp-engineer",
+        "computer-vision-engineer"
+      ],
+      "count": 9
+    },
+    "documentation": {
+      "name": "文档编写",
+      "description": "技术文档相关Agent",
+      "icon": "📚",
+      "agents": [
+        "docs-architect",
+        "api-documenter",
+        "reference-builder",
+        "tutorial-engineer",
+        "mermaid-expert",
+        "c4-architect",
+        "changelog-writer",
+        "readme-writer"
+      ],
+      "count": 8
+    },
+    "business": {
+      "name": "业务分析",
+      "description": "业务和产品相关Agent",
+      "icon": "📊",
+      "agents": [
+        "business-analyst",
+        "quant-analyst",
+        "risk-manager",
+        "content-marketer",
+        "sales-automator",
+        "product-manager",
+        "ux-researcher",
+        "scrum-master"
+      ],
+      "count": 8
+    },
+    "development": {
+      "name": "开发核心",
+      "description": "核心开发Agent",
+      "icon": "👨‍💻",
+      "agents": [
+        "backend-development",
+        "frontend-development",
+        "mobile-development",
+        "fullstack-development",
+        "api-development",
+        "database-development",
+        "devops-development",
+        "security-development"
+      ],
+      "count": 8
+    }
+  },
+  "totalAgents": 74,
+  "lastUpdated": "2026-04-09",
+  "files": {
+    "core": "agents.json",
+    "architecture": "architecture-agents.json",
+    "languages": "languages-agents.json",
+    "infrastructure": "infrastructure-agents.json",
+    "quality": "quality-agents.json",
+    "ai": "ai-agents.json",
+    "documentation": "documentation-agents.json",
+    "business": "business-agents.json"
+  }
+}

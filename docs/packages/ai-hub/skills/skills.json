@@ -1,0 +1,122 @@
+[
+  {
+    "id": "unit-tests",
+    "name": "Unit Tests",
+    "description": "单元测试生成技能，支持Jest、Pytest、Vitest等框架",
+    "trigger": ["test", "测试", "unit", "单元"],
+    "category": "testing",
+    "prompt": "生成全面的单元测试，包括：\n1. 正常情况测试\n2. 边界条件测试\n3. 异常情况测试\n4. Mock和Stub使用\n\n测试框架：根据项目自动选择（Jest/Pytest/Vitest等）"
+  },
+  {
+    "id": "api-design",
+    "name": "API Design",
+    "description": "RESTful API设计技能，遵循OpenAPI规范",
+    "trigger": ["api", "rest", "接口"],
+    "category": "backend",
+    "prompt": "设计RESTful API，包括：\n1. 资源定义和URL设计\n2. HTTP方法选择\n3. 请求/响应格式\n4. 错误处理\n5. 认证授权\n\n遵循OpenAPI 3.0规范"
+  },
+  {
+    "id": "database-optimization",
+    "name": "Database Optimization",
+    "description": "数据库优化技能，包括索引设计、查询优化",
+    "trigger": ["database", "数据库", "sql", "优化", "optimize"],
+    "category": "data",
+    "prompt": "数据库优化建议：\n1. 索引设计优化\n2. 查询语句优化\n3. 表结构优化\n4. 缓存策略\n5. 分库分表方案"
+  },
+  {
+    "id": "security-audit",
+    "name": "Security Audit",
+    "description": "安全审计技能，检测OWASP Top 10漏洞",
+    "trigger": ["security", "安全", "audit", "审计", "vulnerability"],
+    "category": "security",
+    "prompt": "安全审计检查：\n1. SQL注入检测\n2. XSS漏洞检测\n3. CSRF防护\n4. 认证授权漏洞\n5. 敏感数据暴露\n6. 安全配置检查\n\n遵循OWASP Top 10标准"
+  },
+  {
+    "id": "code-quality",
+    "name": "Code Quality",
+    "description": "代码质量检查技能，遵循Clean Code原则",
+    "trigger": ["quality", "质量", "clean", "refactor"],
+    "category": "quality",
+    "prompt": "代码质量检查：\n1. 命名规范\n2. 函数复杂度\n3. 代码重复\n4. 注释质量\n5. 错误处理\n\n遵循Clean Code原则"
+  },
+  {
+    "id": "performance-analysis",
+    "name": "Performance Analysis",
+    "description": "性能分析技能，识别性能瓶颈",
+    "trigger": ["performance", "性能", "slow", "慢", "optimize"],
+    "category": "performance",
+    "prompt": "性能分析建议：\n1. 算法复杂度分析\n2. 内存使用分析\n3. I/O性能分析\n4. 并发性能分析\n5. 缓存优化建议"
+  },
+  {
+    "id": "documentation-generation",
+    "name": "Documentation Generation",
+    "description": "文档生成技能，支持README、API文档、用户指南",
+    "trigger": ["doc", "文档", "readme", "documentation"],
+    "category": "documentation",
+    "prompt": "生成技术文档：\n1. 项目概述\n2. 安装指南\n3. 使用说明\n4. API参考\n5. 示例代码\n6. 常见问题"
+  },
+  {
+    "id": "docker-configuration",
+    "name": "Docker Configuration",
+    "description": "Docker配置技能，生成Dockerfile和docker-compose",
+    "trigger": ["docker", "container", "容器"],
+    "category": "devops",
+    "prompt": "Docker配置生成：\n1. Dockerfile最佳实践\n2. 多阶段构建\n3. docker-compose配置\n4. 网络配置\n5. 数据卷管理"
+  },
+  {
+    "id": "kubernetes-deployment",
+    "name": "Kubernetes Deployment",
+    "description": "K8s部署配置技能，生成Deployment、Service等资源",
+    "trigger": ["kubernetes", "k8s", "deployment", "部署"],
+    "category": "devops",
+    "prompt": "Kubernetes配置生成：\n1. Deployment配置\n2. Service配置\n3. ConfigMap/Secret\n4. Ingress配置\n5. HPA自动扩缩容"
+  },
+  {
+    "id": "ci-cd-pipeline",
+    "name": "CI/CD Pipeline",
+    "description": "CI/CD流水线配置技能，支持GitHub Actions、GitLab CI",
+    "trigger": ["ci", "cd", "pipeline", "流水线", "github actions"],
+    "category": "devops",
+    "prompt": "CI/CD流水线配置：\n1. 代码检查\n2. 单元测试\n3. 构建打包\n4. 部署发布\n5. 通知告警\n\n支持GitHub Actions、GitLab CI等"
+  },
+  {
+    "id": "accessibility-check",
+    "name": "Accessibility Check",
+    "description": "无障碍访问检查技能，遵循WCAG标准",
+    "trigger": ["accessibility", "a11y", "无障碍", "wcag"],
+    "category": "frontend",
+    "prompt": "无障碍访问检查：\n1. 语义化HTML\n2. ARIA属性\n3. 键盘导航\n4. 颜色对比度\n5. 屏幕阅读器支持\n\n遵循WCAG 2.1 AA标准"
+  },
+  {
+    "id": "api-documentation",
+    "name": "API Documentation",
+    "description": "API文档生成技能，支持OpenAPI/Swagger",
+    "trigger": ["api doc", "api文档", "swagger", "openapi"],
+    "category": "documentation",
+    "prompt": "API文档生成：\n1. OpenAPI 3.0规范\n2. 请求/响应示例\n3. 错误码说明\n4. 认证方式\n5. 版本管理"
+  },
+  {
+    "id": "error-handling",
+    "name": "Error Handling",
+    "description": "错误处理技能，设计健壮的错误处理机制",
+    "trigger": ["error", "错误", "exception", "异常"],
+    "category": "backend",
+    "prompt": "错误处理设计：\n1. 错误类型定义\n2. 错误传播机制\n3. 错误恢复策略\n4. 错误日志记录\n5. 用户友好错误信息"
+  },
+  {
+    "id": "logging-monitoring",
+    "name": "Logging & Monitoring",
+    "description": "日志和监控技能，设计可观测性系统",
+    "trigger": ["logging", "monitoring", "日志", "监控", "observability"],
+    "category": "devops",
+    "prompt": "日志和监控设计：\n1. 日志格式规范\n2. 日志级别定义\n3. 监控指标设计\n4. 告警规则配置\n5. 分布式追踪"
+  },
+  {
+    "id": "code-refactoring",
+    "name": "Code Refactoring",
+    "description": "代码重构技能，应用设计模式和最佳实践",
+    "trigger": ["refactor", "重构", "design pattern", "设计模式"],
+    "category": "quality",
+    "prompt": "代码重构建议：\n1. 设计模式应用\n2. 代码结构优化\n3. 重复代码消除\n4. 依赖注入\n5. 接口抽象"
+  }
+]

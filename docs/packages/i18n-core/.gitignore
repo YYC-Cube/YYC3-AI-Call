@@ -1,0 +1,12 @@
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+.DS_Store
+.env
+.env.local
+*.log
+docs/.vitepress/dist
+docs/.vitepress/cache
+tmp/
+temp/
