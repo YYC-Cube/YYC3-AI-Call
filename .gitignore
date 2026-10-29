@@ -52,3 +52,8 @@ logs/
 
 # Prisma
 prisma/migrations/migration_lock.toml
+
+# 依赖与系统垃圾（2026-10-29 清理：嵌套 node_modules 与 .DS_Store 曾被误跟踪）
+node_modules/
+.DS_Store
+**/.DS_Store
