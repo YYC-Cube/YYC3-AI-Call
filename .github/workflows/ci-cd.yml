@@ -92,8 +92,8 @@ jobs:
         continue-on-error: false
 
       - name: Run TypeScript type check
-        run: pnpm typecheck || npx tsc --noEmit
-        
+        run: pnpm type-check
+
         continue-on-error: false
 
       - name: Check for security vulnerabilities
@@ -179,10 +179,7 @@ jobs:
           REDIS_URL: redis://localhost:6379
           NODE_ENV: test
           JWT_SECRET: test-secret-for-ci-cd-pipeline
-        run: |
-          pnpm test:unit --coverage --coverageReporters=text --coverageReporters=lcov || \
-          pnpm jest --coverage --testPathPattern="tests/unit" || \
-          echo "Unit tests completed"
+        run: pnpm exec jest tests/unit --coverage --coverageReporters=text --coverageReporters=lcov
 
       - name: Upload coverage report
         if: always()
@@ -254,10 +251,7 @@ jobs:
           REDIS_URL: redis://localhost:6379
           NODE_ENV: test
           TEST_ENV: ci
-        run: |
-          npx tsx scripts/verify-yyc3-integration.ts || \
-          pnpm test:integration || \
-          echo "Integration tests completed"
+        run: pnpm exec jest tests/integration --passWithNoTests
 
   # ============================================
   # Job 4: 构建Docker镜像

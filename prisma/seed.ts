@@ -7,8 +7,8 @@
  * @fileoverview 数据库种子数据生成
  * @module prisma/seed
  * @author YYC³ AI Call Center Team
- * @version 2.0.0
- * @updated 2026-05-01 - 重写以匹配当前简化的Prisma Schema
+ * @version 2.1.0
+ * @updated 2026-11-20 - 禁止生产环境使用默认种子密码
  */
 
 import {
@@ -41,7 +41,15 @@ async function main() {
   console.log("🌱 开始播种种子数据...");
 
   try {
-    const hashedPassword = await bcrypt.hash("password123", 12);
+    const seedPassword = process.env.SEED_DEFAULT_PASSWORD;
+
+    if (!seedPassword) {
+      throw new Error(
+        "SEED_DEFAULT_PASSWORD is required before seeding (do not use a hardcoded default)",
+      );
+    }
+
+    const hashedPassword = await bcrypt.hash(seedPassword, 12);
 
     console.log("👥 创建用户...");
     const users = await Promise.all([

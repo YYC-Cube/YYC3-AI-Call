@@ -208,7 +208,7 @@ export function validateInput<T>(
   const result = schema.safeParse(data);
 
   if (!result.success) {
-    const errors = result.error.errors.map(err => err.message);
+    const errors = result.error.issues.map((err) => err.message);
     return { success: false, error: errors.join('; ') };
   }
 

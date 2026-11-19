@@ -1,29 +1,17 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const PUBLIC_PATHS = ['/', '/login', '/register', '/api/auth', '/api/health'];
-
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  void request;
 
-  if (pathname.startsWith('/_next') || pathname.startsWith('/yyc3-icons') || pathname.includes('.')) {
-    return NextResponse.next();
-  }
-
-  const isPublic = PUBLIC_PATHS.some(
-    (path) => pathname === path || pathname.startsWith(path + '/')
-  );
-
-  if (isPublic) {
-    return NextResponse.next();
-  }
-
+  // 安全响应头对所有页面生效，避免公开路径缺少基线防护
   const response = NextResponse.next();
 
   response.headers.set('X-Request-ID', crypto.randomUUID());
   response.headers.set('X-Frame-Options', 'DENY');
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
 
   return response;
 }

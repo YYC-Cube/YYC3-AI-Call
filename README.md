@@ -19,7 +19,7 @@
 [![License](https://img.shields.io/badge/License-MIT-00D4AA?style=for-the-badge&labelColor=%230A0F1A)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-00D4AA?style=for-the-badge&labelColor=%230A0F1A)](CONTRIBUTING.md)
 
-[![Next.js](https://img.shields.io/badge/Next.js-14.2-000?logo=next.js&style=flat-square)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-15.5-000?logo=next.js&style=flat-square)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?logo=typescript&style=flat-square)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react&style=flat-square)](https://reactjs.org/)
 [![Prisma](https://img.shields.io/badge/Prisma-5.22-2D3748?logo=prisma&style=flat-square)](https://www.prisma.io/)
@@ -70,7 +70,7 @@ YYC³ AI Intelligent Calling 是由 **YanYuCloudCube™** 团队构建的企业�
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │  Presentation Layer                                              │
-│  Next.js 14.2 · React 18.3 · TypeScript · Tailwind CSS 3.4     │
+│  Next.js 15.5 · React 18.3 · TypeScript · Tailwind CSS 3.4     │
 │  shadcn/ui · Radix UI · Recharts · Lucide Icons                 │
 ├─────────────────────────────────────────────────────────────────┤
 │  API & Service Layer                                             │
@@ -145,7 +145,7 @@ npx prisma generate
 pnpm dev
 ```
 
-Access at [http://localhost:3000](http://localhost:3000)
+Access at [http://localhost:3077](http://localhost:3077)
 
 ### Docker Compose
 
@@ -228,8 +228,17 @@ yyc3-ai-call/
 | `pnpm test:e2e` | Playwright E2E tests |
 | `pnpm db:migrate` | Prisma database migration |
 | `pnpm db:studio` | Prisma Studio GUI |
+| `pnpm dev:yyc3` | 主备/Tailscale 运行时（`yyc3_ai_call_app`） |
+| `pnpm db:migrate:yyc3` | 主备/Tailscale 迁移（`yyc3_ai_call_migrator`） |
+| `pnpm db:status:yyc3:migrate` | 迁移状态（migrator 角色） |
+| `pnpm db:verify:yyc3` | 数据库连通性与数据校验 |
+| `pnpm db:seed:yyc3` | 种子数据（需 `SEED_DEFAULT_PASSWORD`） |
 | `pnpm docker:build` | Build Docker image |
 | `pnpm docker:run` | Start Docker containers |
+
+> **构建提示**：若 `pnpm build` 输出 webpack 源码转储，通常是 VS Code 调试器环境或 `.next` 缓存损坏。清理后重试：
+> `node -e "require('fs').rmSync('.next',{recursive:true,force:true})"`
+> `env -u NODE_OPTIONS -u VSCODE_INSPECTOR_OPTIONS pnpm build`
 
 ---
 
@@ -271,12 +280,35 @@ Services: `app` (Next.js) · `postgres` (PostgreSQL 16) · `redis` (Redis 7) · 
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `DATABASE_URL` | ✅ | PostgreSQL connection string |
-| `REDIS_URL` | ✅ | Redis connection URL |
-| `JWT_SECRET` | ✅ | JWT signing secret |
+| `DATABASE_URL` | ✅ | PostgreSQL connection string（NAS 主库/本机备库 5433，schema `yyc3_v2`） |
+| `REDIS_URL` | ✅ | Redis connection URL（或使用 `YYC3_REDIS_HOST/PORT/PASSWORD`） |
+| `JWT_SECRET` | ✅ | JWT signing secret（生产环境必填，缺失即失败） |
 | `NEXT_PUBLIC_APP_URL` | ❌ | Public app URL |
 | `QWEN_LLM_BASE_URL` | ❌ | LLM API endpoint |
 | `OPENAI_API_KEY` | ❌ | OpenAI API key |
+
+> **数据库基线（D1）**：`prisma/migrations/20260123081143_yyc3_33` 已于 2026-11-20 按 `schema.prisma` 重建，并通过 `?schema=yyc3_v2` 与旧 `public` 隔离。旧 `public` 保留用于回滚，确认稳定后再归档。
+>
+> **主备 / Tailscale**：NAS 主库与本机备库均为 **5433**；`DATABASE_URL` 建议使用 NAS 的 Tailscale MagicDNS 主机名 + `schema=yyc3_v2`。主备 `pg_hba.conf` 均已为应用角色/迁移角色放行 Tailscale（`scram-sha-256`）。
+>
+> **数据库角色分离**：
+> - 运行时：`yyc3_ai_call_app` —— 仅 `SELECT/INSERT/UPDATE/DELETE`，无 `CREATE`；
+> - 迁移：`yyc3_ai_call_migrator` —— 拥有 `yyc3_v2` schema，可执行 DDL。
+>
+> 密码与账号文件均在仓库外 `~/yyc3-secrets/`（权限 600）：`yyc3_ai_call_app.password`、`yyc3_ai_call_migrator.password`、`yyc3_seed_accounts.txt`。禁止把密码写入仓库。
+>
+> **本地启动 / 迁移**：
+>
+> ```bash
+> export YYC3_NAS_PG_HOST=<NAS_MagicDNS名称>
+> pnpm dev:yyc3                  # 运行时（app 角色）
+> pnpm db:migrate:yyc3           # 迁移（migrator 角色）
+> pnpm db:status:yyc3:migrate    # 迁移状态
+> pnpm db:seed:yyc3              # 可选：种子（需 SEED_DEFAULT_PASSWORD）
+> ```
+>
+> 手动方式：`source scripts/use-yyc3-db.sh` / `source scripts/use-yyc3-db-migrate.sh`。
+> 种子账号已轮转；`prisma/seed.ts` 要求显式注入 `SEED_DEFAULT_PASSWORD`，不再包含任何默认密码。
 
 Full configuration: [`.env.example`](./.env.example)
 

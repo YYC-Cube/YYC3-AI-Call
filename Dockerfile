@@ -42,6 +42,10 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
+# 生成 Prisma Client（Docker 构建阶段不会自动执行 postinstall 生成）
+RUN corepack enable && corepack prepare pnpm@latest --activate \
+    && pnpm db:generate
+
 # 构建Next.js应用
 RUN corepack enable && corepack prepare pnpm@latest --activate \
     && pnpm run build

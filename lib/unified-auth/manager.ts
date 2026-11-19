@@ -74,6 +74,26 @@ export class UnifiedAuthManager {
         tools: true,
       },
     });
+
+    // 本地 OpenAI 兼容服务（vLLM/Ollama），端点与模型均由环境变量注入
+    this.configs.set(AuthProvider.LOCAL, {
+      provider: AuthProvider.LOCAL,
+      endpoint: process.env.AI_BASE_URL || 'http://127.0.0.1:10086/v1',
+      model: process.env.AI_MODEL || 'chatglm3-6b',
+      timeout: Number(process.env.AI_TIMEOUT_MS) || 20000,
+      maxRetries: 1,
+      rateLimit: {
+        requestsPerMinute: 60,
+        tokensPerMinute: 100000,
+      },
+      features: {
+        streaming: true,
+        functionCalling: false,
+        vision: false,
+        audio: false,
+        tools: true,
+      },
+    });
   }
 
   registerConfig(config: UnifiedAuthConfig): void {

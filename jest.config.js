@@ -23,6 +23,7 @@ const customJestConfig = {
     "/enterprise/",
     "/examples/",
     "/dist/",
+    "/tests/e2e/",
   ],
 };
 

@@ -2,10 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { tenantManager } from '@/lib/tenant/manager';
 import { logger } from '@/lib/logger';
 
-export function generateStaticParams() {
-  return [];
-}
-
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }

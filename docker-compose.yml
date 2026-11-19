@@ -20,9 +20,9 @@ services:
     environment:
       - NODE_ENV=production
       - NEXT_PUBLIC_APP_URL=http://localhost:3000
-      - DATABASE_URL=postgresql://yyc3:yyc3_password@postgres:5432/yyc3_ai_calling?schema=public
+      - DATABASE_URL=postgresql://yyc3:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}@postgres:5432/yyc3_ai_call?schema=yyc3_v2
       - REDIS_URL=redis://redis:6379
-      - JWT_SECRET=${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
+      - JWT_SECRET=${JWT_SECRET:?JWT_SECRET must be set}
       - OPENAI_API_KEY=${OPENAI_API_KEY:-}
       - QWEN_LLM_BASE_URL=http://ollama:11434
       - QWEN_EMBEDDING_BASE_URL=http://ollama:11434
@@ -62,15 +62,15 @@ services:
       - "5432:5432"
     environment:
       POSTGRES_USER: yyc3
-      POSTGRES_PASSWORD: yyc3_password
-      POSTGRES_DB: yyc3_ai_calling
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
+      POSTGRES_DB: yyc3_ai_call
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
     networks:
       - yyc3-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U yyc3 -d yyc3_ai_calling"]
+      test: ["CMD-SHELL", "pg_isready -U yyc3 -d yyc3_ai_call"]
       interval: 10s
       timeout: 5s
       retries: 5

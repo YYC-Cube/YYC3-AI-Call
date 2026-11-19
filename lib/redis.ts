@@ -15,23 +15,37 @@ const globalForRedis = globalThis as unknown as {
   redis: Redis | undefined;
 };
 
+// 兼容两套环境变量命名：
+// - 通用：REDIS_URL / REDIS_HOST / REDIS_PORT / REDIS_PASSWORD
+// - YYC3 NAS 主备环境：YYC3_REDIS_HOST / YYC3_REDIS_PORT / YYC3_REDIS_PASSWORD
+const redisUrl = process.env.REDIS_URL;
+const redisHost =
+  process.env.REDIS_HOST || process.env.YYC3_REDIS_HOST || 'localhost';
+const redisPort = parseInt(
+  process.env.REDIS_PORT || process.env.YYC3_REDIS_PORT || '6379'
+);
+const redisPassword =
+  process.env.REDIS_PASSWORD || process.env.YYC3_REDIS_PASSWORD;
+
+const redisOptions = {
+  host: redisHost,
+  port: redisPort,
+  password: redisPassword,
+  db: parseInt(process.env.REDIS_DB || '0'),
+  maxRetriesPerRequest: 3,
+  enableReadyCheck: true,
+  retryStrategy(times: number) {
+    if (times > 3) {
+      console.error('Redis 连接重试次数超过限制');
+      return null;
+    }
+    return Math.min(times * 100, 3000);
+  },
+};
+
 export const redis =
   globalForRedis.redis ??
-  new Redis({
-    host: process.env.REDIS_HOST || 'localhost',
-    port: parseInt(process.env.REDIS_PORT || '6379'),
-    password: process.env.REDIS_PASSWORD,
-    db: parseInt(process.env.REDIS_DB || '0'),
-    maxRetriesPerRequest: 3,
-    enableReadyCheck: true,
-    retryStrategy(times) {
-      if (times > 3) {
-        console.error('Redis 连接重试次数超过限制');
-        return null;
-      }
-      return Math.min(times * 100, 3000);
-    },
-  });
+  (redisUrl ? new Redis(redisUrl, redisOptions) : new Redis(redisOptions));
 
 if (process.env.NODE_ENV !== 'production') {
   globalForRedis.redis = redis;

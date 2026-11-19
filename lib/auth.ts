@@ -28,6 +28,21 @@ export class AuthService {
   private static readonly SALT_ROUNDS = 12;
 
   /**
+   * 统一解析 JWT 密钥：签发与校验必须使用同一策略。
+   * 生产环境缺失 JWT_SECRET 时直接失败，避免降级为可预测密钥。
+   */
+  private static getJwtSecret(): string {
+    const secret = process.env.JWT_SECRET;
+    if (secret) {
+      return secret;
+    }
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('JWT_SECRET is required in production');
+    }
+    return 'fallback-secret-for-dev';
+  }
+
+  /**
    * 加密密码
    */
   static async hashPassword(password: string): Promise<string> {
@@ -49,7 +64,7 @@ export class AuthService {
    */
   static generateAccessToken(payload: JWTPayload): string {
     const expiresIn = process.env.JWT_EXPIRES_IN || '24h';
-    const secret = process.env.JWT_SECRET || 'fallback-secret-for-dev';
+    const secret = this.getJwtSecret();
     return jwt.sign(payload, secret, {
       expiresIn,
       algorithm: 'HS256',
@@ -60,7 +75,7 @@ export class AuthService {
    * 生成刷新令牌
    */
   static generateRefreshToken(userId: string): string {
-    const secret = process.env.JWT_SECRET || 'fallback-secret-for-dev';
+    const secret = this.getJwtSecret();
     return jwt.sign(
       { userId, type: 'refresh' },
       secret,
@@ -95,7 +110,7 @@ export class AuthService {
     try {
       const decoded = jwt.verify(
         token,
-        process.env.JWT_SECRET!
+        this.getJwtSecret()
       ) as JWTPayload;
       return decoded;
     } catch (error) {
@@ -109,7 +124,7 @@ export class AuthService {
    */
   static verifyRefreshToken(token: string): { userId: string } | null {
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
+      const decoded = jwt.verify(token, this.getJwtSecret()) as {
         userId: string;
         type: string;
       };
