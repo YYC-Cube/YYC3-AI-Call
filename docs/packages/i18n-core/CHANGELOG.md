@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.5.0] - 2026-11-20
+
+### ✨ 新增特性
+- **浏览器安全入口 `@yyc3/i18n-core/browser`** — 仅导出 engine/cache/plugins/formatter/detector/RTL/types，
+  不含 `node:crypto`、`node:fs`、`node:timers/promises` 等内置模块依赖，可直接被 Vite/Webpack 打包进浏览器产物
+- `tsup` 新增 `browser` 入口，产出 `dist/browser.js` 与 `dist/browser.d.ts`；`package.json` 增加 `./browser` 子路径导出
+
+### 🐛 修复
+- **示例 `examples/vite-react-zh-cn` 构建失败** — 根入口聚合了 MCP/CLI/AI 等 Node 专属模块，
+  浏览器构建报 `Failed to resolve entry for package "fs"`；改用 browser 入口后可通过 `vite build`
+- 示例 API 对齐 2.x —— `initI18n`/`addTranslations` 改为 `i18n.registerTranslation()` + `i18n.setLocale()`
+
+---
+
 ## [2.3.0] - 2026-04-24
 
 ### 🎉 正式发布 (Stable Release — 文档闭环完成)

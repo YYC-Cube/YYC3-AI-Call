@@ -1,6 +1,6 @@
 {
   "name": "@yyc3/i18n-core",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "🌐 YYC³ Production-Ready Internationalization (i18n) Framework - High-performance, plugin-based, zero-dependency i18n solution for TypeScript/JavaScript applications",
   "keywords": [
     "i18n",
@@ -53,6 +53,10 @@
     "./cache": {
       "import": "./dist/lib/cache.js",
       "types": "./dist/lib/cache.d.ts"
+    },
+    "./browser": {
+      "import": "./dist/browser.js",
+      "types": "./dist/browser.d.ts"
     },
     "./plugins": {
       "import": "./dist/plugins/index.js",

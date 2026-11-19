@@ -134,7 +134,9 @@ describe("OpenAI Provider", () => {
       glossary: { API: "接口" },
     });
 
-    const body = JSON.parse((fetchSpy.mock.calls[0]?.[1] as RequestInit)?.body as string);
+    // 同一 spy 在多个用例间复用，取最后一次调用，避免读取前方用例的请求体
+    const lastCall = fetchSpy.mock.calls[fetchSpy.mock.calls.length - 1];
+    const body = JSON.parse((lastCall?.[1] as RequestInit)?.body as string);
     expect(body.messages[1].content).toContain("Glossary");
     expect(body.messages[1].content).toContain("API → 接口");
   });
