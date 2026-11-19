@@ -87,7 +87,9 @@ export async function getProjectInfo(
   }
 
   // Next.js.
-  if (configFiles.find((file) => file.startsWith("next.config."))?.length) {
+  if (
+    configFiles.find((file: string) => file.startsWith("next.config."))?.length
+  ) {
     type.framework = isUsingAppDir
       ? FRAMEWORKS["next-app"]
       : FRAMEWORKS["next-pages"]
@@ -100,19 +102,27 @@ export async function getProjectInfo(
   }
 
   // Astro.
-  if (configFiles.find((file) => file.startsWith("astro.config."))?.length) {
+  if (
+    configFiles.find((file: string) => file.startsWith("astro.config."))?.length
+  ) {
     type.framework = FRAMEWORKS["astro"]
     return type
   }
 
   // Gatsby.
-  if (configFiles.find((file) => file.startsWith("gatsby-config."))?.length) {
+  if (
+    configFiles.find((file: string) =>
+      file.startsWith("gatsby-config.")
+    )?.length
+  ) {
     type.framework = FRAMEWORKS["gatsby"]
     return type
   }
 
   // Laravel.
-  if (configFiles.find((file) => file.startsWith("composer.json"))?.length) {
+  if (
+    configFiles.find((file: string) => file.startsWith("composer.json"))?.length
+  ) {
     type.framework = FRAMEWORKS["laravel"]
     return type
   }
@@ -140,7 +150,9 @@ export async function getProjectInfo(
 
   // React Router.
   if (
-    configFiles.find((file) => file.startsWith("react-router.config."))?.length
+    configFiles.find((file: string) =>
+      file.startsWith("react-router.config.")
+    )?.length
   ) {
     type.framework = FRAMEWORKS["react-router"]
     return type
@@ -149,14 +161,18 @@ export async function getProjectInfo(
   // Vite.
   // Some Remix templates also have a vite.config.* file.
   // We'll assume that it got caught by the Remix check above.
-  if (configFiles.find((file) => file.startsWith("vite.config."))?.length) {
+  if (
+    configFiles.find((file: string) => file.startsWith("vite.config."))?.length
+  ) {
     type.framework = FRAMEWORKS["vite"]
     return type
   }
 
   // Vinxi-based (such as @tanstack/start and @solidjs/solid-start)
   // They are vite-based, and the same configurations used for Vite should work flawlessly
-  const appConfig = configFiles.find((file) => file.startsWith("app.config"))
+  const appConfig = configFiles.find((file: string) =>
+    file.startsWith("app.config")
+  )
   if (appConfig?.length) {
     const appConfigContents = await fs.readFile(
       path.resolve(cwd, appConfig),

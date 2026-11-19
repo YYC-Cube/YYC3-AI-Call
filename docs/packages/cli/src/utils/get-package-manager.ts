@@ -13,7 +13,22 @@ export async function getPackageManager(
   if (packageManager === "bun") return "bun"
   if (packageManager === "deno") return "deno"
   if (!withFallback) {
-    return packageManager ?? "npm"
+    // @antfu/ni 可能返回扩展的包管理器标识（pnpm-rush 等），
+    // 统一收敛到本工具支持的五种之一
+    switch (packageManager?.split("@")[0]) {
+      case "yarn":
+        return "yarn"
+      case "pnpm":
+        return "pnpm"
+      case "bun":
+        return "bun"
+      case "deno":
+        return "deno"
+      case "npm":
+        return "npm"
+      default:
+        return "npm"
+    }
   }
 
   // Fallback to user agent if not detected.

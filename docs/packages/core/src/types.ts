@@ -103,10 +103,10 @@ export const SkillDefinitionSchema = z.object({
   description: z.string(),
   version: z.string(),
   category: z.enum(['reasoning', 'generation', 'analysis', 'automation', 'integration']),
-  inputSchema: z.record(z.any()).optional(),
-  outputSchema: z.record(z.any()).optional(),
+  inputSchema: z.record(z.string(), z.any()).optional(),
+  outputSchema: z.record(z.string(), z.any()).optional(),
   handler: z.function().optional(),
-  metadata: z.record(z.any()).optional(),
+  metadata: z.record(z.string(), z.any()).optional(),
 })
 
 export type SkillDefinition = z.infer<typeof SkillDefinitionSchema>

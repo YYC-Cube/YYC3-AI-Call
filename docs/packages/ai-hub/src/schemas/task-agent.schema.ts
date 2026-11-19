@@ -24,7 +24,7 @@ export const TaskContextSchema = z.object({
   task: z.string().min(1, '任务内容不能为空').max(10000, '任务内容不能超过10000字符'),
   agent: z.string().optional(),
   skills: z.array(z.string()).max(20, '技能列表不能超过20个').optional(),
-  context: z.record(z.any()).optional(),
+  context: z.record(z.string(), z.any()).optional(),
   priority: PrioritySchema.optional().default('medium'),
 }).strict();
 
