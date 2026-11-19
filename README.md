@@ -19,16 +19,19 @@
 [![License](https://img.shields.io/badge/License-MIT-00D4AA?style=for-the-badge&labelColor=%230A0F1A)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-00D4AA?style=for-the-badge&labelColor=%230A0F1A)](CONTRIBUTING.md)
 
+[![Node.js](https://img.shields.io/badge/Node.js-20%2B-339933?logo=node.js&style=flat-square)](https://nodejs.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-15.5-000?logo=next.js&style=flat-square)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?logo=typescript&style=flat-square)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react&style=flat-square)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?logo=typescript&style=flat-square)](https://www.typescriptlang.org/)
+[![Zod](https://img.shields.io/badge/Zod-4-3E67B1?style=flat-square)](https://zod.dev/)
 [![Prisma](https://img.shields.io/badge/Prisma-5.22-2D3748?logo=prisma&style=flat-square)](https://www.prisma.io/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&style=flat-square)](https://www.postgresql.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16%2B-4169E1?logo=postgresql&style=flat-square)](https://www.postgresql.org/)
 [![Redis](https://img.shields.io/badge/Redis-7-DC382D?logo=redis&style=flat-square)](https://redis.io/)
-[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&style=flat-square)](https://www.docker.com/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?logo=tailwindcss&style=flat-square)](https://tailwindcss.com/)
 [![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-Radix-000?style=flat-square)](https://ui.shadcn.com/)
-[![pnpm](https://img.shields.io/badge/pnpm-8+-F69220?logo=pnpm&style=flat-square)](https://pnpm.io/)
+[![pnpm](https://img.shields.io/badge/pnpm-8%2B-F69220?logo=pnpm&style=flat-square)](https://pnpm.io/)
+[![Conventional Commits](https://img.shields.io/badge/Commits-Conventional-FE5196?style=flat-square)](https://www.conventionalcommits.org/)
+[![Code of Conduct](https://img.shields.io/badge/Conduct-Covenant%202.1-00D4AA?style=flat-square)](CODE_OF_CONDUCT.md)
 
 **AI 驱动的企业级智能外呼系统 | Enterprise-Grade AI-Powered Intelligent Calling Platform**
 
@@ -325,19 +328,43 @@ Full configuration: [`.env.example`](./.env.example)
 
 ---
 
-## Documentation
+## Documentation · 可视化文档架构
 
-All documentation lives in [`docs/`](./docs/START_HERE.md):
+全周期文档体系位于 [`docs/`](./docs/)，按项目生命周期五维组织：
 
-| Directory | Content |
-|-----------|---------|
-| `YYC3-AI-Call-架构设计/` | Architecture design documents |
-| `YYC3-AI-Call-API文档/` | API specifications |
-| `YYC3-AI-Call-产品文档/` | Product documentation |
-| `YYC3-AI-Call-测试验证/` | Testing & QA |
-| `YYC3-AI-Call-部署发布/` | Deployment guides |
-| `YYC3-团队通用-标准规范/` | Team standards & conventions |
-| `YYC3-技能知识库-全景可视化架构文档.md` | Knowledge base visualization |
+```mermaid
+graph LR
+    ROOT["docs/"] --> REQ["01 需求规划<br/>YYC3-AI-Call-需求规划"]
+    ROOT --> PLAN["02 项目规划<br/>YYC3-AI-Call-项目规划"]
+    ROOT --> ARCH["03 架构设计<br/>YYC3-AI-Call-架构设计"]
+    ROOT --> DET["04 详细设计<br/>YYC3-AI-Call-详细设计"]
+    ROOT --> DEV["05 开发阶段<br/>YYC3-AI-Call-开发阶段"]
+    ROOT --> TEST["06 测试验证<br/>YYC3-AI-Call-测试验证"]
+    ROOT --> DEPLOY["07 部署发布<br/>YYC3-AI-Call-部署发布"]
+    ROOT --> OPS["08 运维阶段<br/>YYC3-AI-Call-运维阶段"]
+    ROOT --> STD["🧭 团队标准<br/>YYC3-团队通用-标规文档"]
+    ROOT --> ACC["✅ 闭环验收<br/>YYC3-项目闭环-验收系统"]
+
+    OPS --> SUM["📖 阶段总结<br/>数据库基线与安全加固"]
+    STD --> FIVE["五维驱动 · 五高五标五化"]
+    ACC --> GATE["全局验收 · 闭环提示"]
+```
+
+| 分类 | 目录 / 文档 | 内容 |
+|------|-------------|------|
+| 需求 | [`YYC3-AI-Call-需求规划/`](./docs/YYC3-AI-Call-需求规划/) | 项目章程、可行性、需求说明书 |
+| 规划 | [`YYC3-AI-Call-项目规划/`](./docs/YYC3-AI-Call-项目规划/) | 项目管理、进度、风险、沟通计划 |
+| 架构 | [`YYC3-AI-Call-架构设计/`](./docs/YYC3-AI-Call-架构设计/) | 系统/数据/安全/缓存/限流架构 |
+| 设计 | [`YYC3-AI-Call-详细设计/`](./docs/YYC3-AI-Call-详细设计/) | 模块设计、UI/UX、数据校验 |
+| API | [`YYC3-AI-Call-API文档/`](./docs/YYC3-AI-Call-API文档/) · [`openapi.yaml`](./docs/api-reference/openapi.yaml) | RESTful API 规范 |
+| 测试 | [`YYC3-AI-Call-测试验证/`](./docs/YYC3-AI-Call-测试验证/) | 测试用例与验收标准 |
+| 部署 | [`YYC3-AI-Call-部署发布/`](./docs/YYC3-AI-Call-部署发布/) | CI/CD · PWA · 移动端优化 |
+| 运维 | [`YYC3-AI-Call-运维阶段/`](./docs/YYC3-AI-Call-运维阶段/) | 运维手册、灾备预案、[阶段总结](./docs/YYC3-AI-Call-运维阶段/165-YYC3-AI-Call-运维阶段-阶段总结-数据库基线与安全加固.md) |
+| 标准 | [`YYC3-团队通用-标规文档/`](./docs/YYC3-团队通用-标规文档/) | 五维驱动、开发标准、命名规范、标头标尾、文档闭环 |
+| 验收 | [`YYC3-项目闭环-验收系统/`](./docs/YYC3-项目闭环-验收系统/) | 全局验收标准与闭环提示 |
+| 知识 | [`YYC3-技能知识库-全景可视化架构文档.md`](./docs/YYC3-技能知识库-全景可视化架构文档.md) | 知识库全景可视化 |
+
+**Topics 关键词**：`yyc3` · `ai-family` · `intelligent-calling` · `nextjs` · `react` · `typescript` · `prisma` · `postgresql` · `redis` · `shadcn-ui` · `pnpm` · `llm` · `ai-agents` · `mcp` · `pwa`
 
 ---
 

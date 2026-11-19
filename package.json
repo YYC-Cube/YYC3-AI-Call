@@ -4,16 +4,29 @@
   "private": true,
   "description": "YYC³ AI Intelligent Calling - AI 驱动的智能外呼系统",
   "keywords": [
-    "YYC³",
+    "YYC3",
+    "YanYuCloudCube",
     "AI",
     "Intelligent Calling",
+    "Outbound Calling",
     "Customer Service",
+    "AI Agents",
+    "MCP",
+    "LLM",
     "Next.js",
-    "TypeScript"
+    "React",
+    "TypeScript",
+    "Prisma",
+    "PostgreSQL",
+    "Redis",
+    "shadcn-ui",
+    "Radix UI",
+    "pnpm",
+    "PWA"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/YY-Nexus/YYC-AI-Intelligent-Calling"
+    "url": "https://github.com/YYC-Cube/YYC3-AI-Call"
   },
   "license": "MIT",
   "author": "YanYu <193180580+YY-Nexus@users.noreply.github.com>",
