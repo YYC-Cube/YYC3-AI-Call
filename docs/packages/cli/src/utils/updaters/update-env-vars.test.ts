@@ -12,7 +12,7 @@ vi.mock("fs", () => ({
   },
 }))
 
-vi.mock("@/src/utils/logger", () => ({
+vi.mock("../logger", () => ({
   logger: {
     info: vi.fn(),
     log: vi.fn(),
@@ -21,7 +21,7 @@ vi.mock("@/src/utils/logger", () => ({
   },
 }))
 
-vi.mock("@/src/utils/spinner", () => ({
+vi.mock("../spinner", () => ({
   spinner: vi.fn(() => ({
     start: vi.fn().mockReturnThis(),
     stop: vi.fn(),

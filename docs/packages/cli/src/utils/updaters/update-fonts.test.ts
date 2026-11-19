@@ -1319,7 +1319,7 @@ export default function RootLayout({
   })
 })
 
-vi.mock("@/src/utils/get-project-info", () => ({
+vi.mock("../get-project-info", () => ({
   getProjectInfo: vi.fn().mockResolvedValue({
     framework: { name: "vite" },
     isTsx: true,

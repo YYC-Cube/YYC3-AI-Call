@@ -36,11 +36,11 @@ import {
 } from "./api"
 import { RegistriesIndexParseError } from "./errors"
 
-vi.mock("@/src/utils/handle-error", () => ({
+vi.mock("../utils/handle-error", () => ({
   handleError: vi.fn(),
 }))
 
-vi.mock("@/src/utils/logger", () => ({
+vi.mock("../utils/logger", () => ({
   logger: {
     error: vi.fn(),
     break: vi.fn(),

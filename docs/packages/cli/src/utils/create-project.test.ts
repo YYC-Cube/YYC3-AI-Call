@@ -18,11 +18,11 @@ import { createProject } from "./create-project"
 vi.mock("fs-extra")
 vi.mock("execa")
 vi.mock("prompts")
-vi.mock("@/src/utils/get-package-manager", () => ({
+vi.mock("./get-package-manager", () => ({
   getPackageManager: vi.fn().mockResolvedValue("npm"),
 }))
-vi.mock("@/src/utils/spinner")
-vi.mock("@/src/utils/logger", () => ({
+vi.mock("./spinner")
+vi.mock("./logger", () => ({
   logger: {
     break: vi.fn(),
     error: vi.fn(),

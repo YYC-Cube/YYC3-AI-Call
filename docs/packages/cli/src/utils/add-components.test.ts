@@ -39,21 +39,21 @@ const {
   }
 })
 
-vi.mock("@/src/registry/api", () => ({
+vi.mock("../registry/api", () => ({
   getRegistryItems: vi.fn(),
 }))
 
-vi.mock("@/src/registry/config", () => ({
+vi.mock("../registry/config", () => ({
   configWithDefaults: vi.fn((config) => config),
 }))
 
-vi.mock("@/src/registry/resolver", () => ({
+vi.mock("../registry/resolver", () => ({
   resolveRegistryTree: mockResolveRegistryTree,
 }))
 
-vi.mock("@/src/utils/get-config", async () => {
-  const actual = await vi.importActual<typeof import("@/src/utils/get-config")>(
-    "@/src/utils/get-config"
+vi.mock("./get-config", async () => {
+  const actual = await vi.importActual<typeof import("./get-config")>(
+    "./get-config"
   )
 
   return {
@@ -62,44 +62,44 @@ vi.mock("@/src/utils/get-config", async () => {
   }
 })
 
-vi.mock("@/src/utils/get-project-info", () => ({
+vi.mock("./get-project-info", () => ({
   getProjectTailwindVersionFromConfig: mockGetProjectTailwindVersionFromConfig,
 }))
 
-vi.mock("@/src/utils/updaters/update-dependencies", () => ({
+vi.mock("./updaters/update-dependencies", () => ({
   updateDependencies: mockUpdateDependencies,
 }))
 
-vi.mock("@/src/utils/updaters/update-tailwind-config", () => ({
+vi.mock("./updaters/update-tailwind-config", () => ({
   updateTailwindConfig: mockUpdateTailwindConfig,
 }))
 
-vi.mock("@/src/utils/updaters/update-env-vars", () => ({
+vi.mock("./updaters/update-env-vars", () => ({
   updateEnvVars: mockUpdateEnvVars,
 }))
 
-vi.mock("@/src/utils/updaters/update-fonts", () => ({
+vi.mock("./updaters/update-fonts", () => ({
   massageTreeForFonts: mockMassageTreeForFonts,
   updateFonts: mockUpdateFonts,
 }))
 
-vi.mock("@/src/utils/updaters/update-files", () => ({
+vi.mock("./updaters/update-files", () => ({
   updateFiles: mockUpdateFiles,
 }))
 
-vi.mock("@/src/utils/updaters/update-css", () => ({
+vi.mock("./updaters/update-css", () => ({
   updateCss: mockUpdateCss,
 }))
 
-vi.mock("@/src/utils/spinner", () => ({
+vi.mock("./spinner", () => ({
   spinner: vi.fn(() => spinnerInstance),
 }))
 
-vi.mock("@/src/utils/handle-error", () => ({
+vi.mock("./handle-error", () => ({
   handleError: vi.fn(),
 }))
 
-vi.mock("@/src/utils/logger", () => ({
+vi.mock("./logger", () => ({
   logger: {
     info: vi.fn(),
     warn: vi.fn(),

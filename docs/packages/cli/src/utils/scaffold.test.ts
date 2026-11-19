@@ -7,8 +7,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 vi.mock("fs-extra")
 vi.mock("execa")
-vi.mock("@/src/utils/spinner")
-vi.mock("@/src/utils/logger", () => ({
+vi.mock("./spinner")
+vi.mock("./logger", () => ({
   logger: { break: vi.fn(), error: vi.fn(), info: vi.fn() },
 }))
 

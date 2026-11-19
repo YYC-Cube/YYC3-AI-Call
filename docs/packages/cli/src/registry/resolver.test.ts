@@ -28,13 +28,13 @@ vi.mock("./context", () => ({
   getRegistryHeadersFromContext: vi.fn(() => ({})),
 }))
 
-vi.mock("@/src/utils/handle-error", () => ({
+vi.mock("../utils/handle-error", () => ({
   handleError: vi.fn((error) => {
     console.error("Test error:", error)
   }),
 }))
 
-vi.mock("@/src/utils/logger", () => ({
+vi.mock("../utils/logger", () => ({
   logger: {
     error: vi.fn(),
     break: vi.fn(),

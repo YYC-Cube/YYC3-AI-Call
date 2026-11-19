@@ -16,23 +16,23 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import { applyInitUrlOptions, initOptionsSchema, runInit } from "./init"
 
-vi.mock("@/src/preflights/preflight-init", () => ({
+vi.mock("../preflights/preflight-init", () => ({
   preFlightInit: vi.fn(),
 }))
 
-vi.mock("@/src/utils/create-project", () => ({
+vi.mock("../utils/create-project", () => ({
   createProject: vi.fn(),
 }))
 
-vi.mock("@/src/utils/add-components", () => ({
+vi.mock("../utils/add-components", () => ({
   addComponents: vi.fn(),
 }))
 
-vi.mock("@/src/utils/registries", () => ({
+vi.mock("../utils/registries", () => ({
   ensureRegistriesInConfig: vi.fn(),
 }))
 
-vi.mock("@/src/registry/api", () => ({
+vi.mock("../registry/api", () => ({
   getRegistryBaseColors: vi.fn().mockResolvedValue([
     {
       label: "Zinc",
@@ -47,7 +47,7 @@ vi.mock("@/src/registry/api", () => ({
   ]),
 }))
 
-vi.mock("@/src/utils/get-config", () => ({
+vi.mock("../utils/get-config", () => ({
   DEFAULT_COMPONENTS: "@/components",
   DEFAULT_TAILWIND_CONFIG: "tailwind.config.js",
   DEFAULT_TAILWIND_CSS: "app/globals.css",
@@ -74,14 +74,14 @@ vi.mock("@/src/utils/get-config", () => ({
   ),
 }))
 
-vi.mock("@/src/utils/get-project-info", () => ({
+vi.mock("../utils/get-project-info", () => ({
   getProjectComponents: vi.fn().mockResolvedValue([]),
   getProjectConfig: vi.fn(),
   getProjectInfo: vi.fn(),
   getProjectTailwindVersionFromConfig: vi.fn(),
 }))
 
-vi.mock("@/src/utils/logger", () => ({
+vi.mock("../utils/logger", () => ({
   logger: {
     break: vi.fn(),
     error: vi.fn(),
@@ -91,7 +91,7 @@ vi.mock("@/src/utils/logger", () => ({
   },
 }))
 
-vi.mock("@/src/utils/spinner", () => ({
+vi.mock("../utils/spinner", () => ({
   spinner: vi.fn(() => ({
     fail: vi.fn(),
     start: vi.fn().mockReturnThis(),
@@ -99,7 +99,7 @@ vi.mock("@/src/utils/spinner", () => ({
   })),
 }))
 
-vi.mock("@/src/utils/highlighter", () => ({
+vi.mock("../utils/highlighter", () => ({
   highlighter: {
     error: (value: string) => value,
     info: (value: string) => value,

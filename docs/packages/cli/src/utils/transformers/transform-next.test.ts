@@ -31,14 +31,14 @@ const testConfig: Config = {
   },
 }
 
-vi.mock("@/src/utils/get-project-info", () => ({
+vi.mock("../get-project-info", () => ({
   getProjectInfo: vi.fn(),
 }))
 
 describe("transformNext", () => {
   describe("Next.js 16+ transformations", () => {
     test("should transform function declaration export", async () => {
-      const { getProjectInfo } = await import("@/src/utils/get-project-info")
+      const { getProjectInfo } = await import("../get-project-info")
       vi.mocked(getProjectInfo).mockResolvedValue({
         framework: FRAMEWORKS["next-app"],
         frameworkVersion: "16.0.0",
@@ -74,7 +74,7 @@ export function middleware(request: Request) {
     })
 
     test("should transform async function declaration", async () => {
-      const { getProjectInfo } = await import("@/src/utils/get-project-info")
+      const { getProjectInfo } = await import("../get-project-info")
       vi.mocked(getProjectInfo).mockResolvedValue({
         framework: FRAMEWORKS["next-app"],
         frameworkVersion: "16.1.0",
@@ -110,7 +110,7 @@ export async function middleware(request: Request) {
     })
 
     test("should transform const arrow function export", async () => {
-      const { getProjectInfo } = await import("@/src/utils/get-project-info")
+      const { getProjectInfo } = await import("../get-project-info")
       vi.mocked(getProjectInfo).mockResolvedValue({
         framework: FRAMEWORKS["next-app"],
         frameworkVersion: "16.0.0",
@@ -146,7 +146,7 @@ export const middleware = (request: Request) => {
     })
 
     test("should transform named export with alias", async () => {
-      const { getProjectInfo } = await import("@/src/utils/get-project-info")
+      const { getProjectInfo } = await import("../get-project-info")
       vi.mocked(getProjectInfo).mockResolvedValue({
         framework: FRAMEWORKS["next-app"],
         frameworkVersion: "16.0.0",
@@ -188,7 +188,7 @@ export { handler as middleware }`,
 
   describe("Next.js < 16 or unknown versions (no transformation)", () => {
     test("should not transform for Next.js 15", async () => {
-      const { getProjectInfo } = await import("@/src/utils/get-project-info")
+      const { getProjectInfo } = await import("../get-project-info")
       vi.mocked(getProjectInfo).mockResolvedValue({
         framework: FRAMEWORKS["next-app"],
         frameworkVersion: "15.0.0",
@@ -220,7 +220,7 @@ export function middleware(request: Request) {
     })
 
     test("should not transform when frameworkVersion is null", async () => {
-      const { getProjectInfo } = await import("@/src/utils/get-project-info")
+      const { getProjectInfo } = await import("../get-project-info")
       vi.mocked(getProjectInfo).mockResolvedValue({
         framework: FRAMEWORKS["next-app"],
         frameworkVersion: null,
@@ -252,7 +252,7 @@ export function middleware(request: Request) {
     })
 
     test("should not transform for canary tag (unknown version)", async () => {
-      const { getProjectInfo } = await import("@/src/utils/get-project-info")
+      const { getProjectInfo } = await import("../get-project-info")
       vi.mocked(getProjectInfo).mockResolvedValue({
         framework: FRAMEWORKS["next-app"],
         frameworkVersion: "canary",
@@ -284,7 +284,7 @@ export function middleware(request: Request) {
     })
 
     test("should not transform for latest tag (unknown version)", async () => {
-      const { getProjectInfo } = await import("@/src/utils/get-project-info")
+      const { getProjectInfo } = await import("../get-project-info")
       vi.mocked(getProjectInfo).mockResolvedValue({
         framework: FRAMEWORKS["next-app"],
         frameworkVersion: "latest",
@@ -318,7 +318,7 @@ export function middleware(request: Request) {
 
   describe("Non-middleware files", () => {
     test("should not transform non-middleware files", async () => {
-      const { getProjectInfo } = await import("@/src/utils/get-project-info")
+      const { getProjectInfo } = await import("../get-project-info")
       vi.mocked(getProjectInfo).mockResolvedValue({
         framework: FRAMEWORKS["next-app"],
         frameworkVersion: "16.0.0",
@@ -348,7 +348,7 @@ export function middleware(request: Request) {
     })
 
     test("should not transform nested middleware files", async () => {
-      const { getProjectInfo } = await import("@/src/utils/get-project-info")
+      const { getProjectInfo } = await import("../get-project-info")
       vi.mocked(getProjectInfo).mockResolvedValue({
         framework: FRAMEWORKS["next-app"],
         frameworkVersion: "16.0.0",
@@ -392,7 +392,7 @@ export function middleware(request: Request) {
 
   describe("Non-Next.js projects", () => {
     test("should not transform for Vite projects", async () => {
-      const { getProjectInfo } = await import("@/src/utils/get-project-info")
+      const { getProjectInfo } = await import("../get-project-info")
       vi.mocked(getProjectInfo).mockResolvedValue({
         framework: FRAMEWORKS["vite"],
         frameworkVersion: null,
