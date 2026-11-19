@@ -126,6 +126,15 @@ YYC³ AI Intelligent Calling 是由 **YanYuCloudCube™** 团队构建的企业�
 
 > 命名对齐 [YYC3-AI-Family-Agent 总仓](https://github.com/YYC-Cube) `yyc3-family-ai-agents` IDENTITY 权威定义；旧 slug ID（meta-oracle 等）保留兼容别名。
 
+**域包定义**：总仓 `docs/YYC3-AI-Family-Agent/YYC3-AI-Family-Agent-智能外呼/`（DomainPack-lite 五件套 + 8 角色三件套，共 28 份 md），声明 `domain_id: intelligent-calling` 的九环外呼链路与本仓模块的对应关系：
+
+```
+① 线索导入 → ② 意图分诊 → ③ 合规预审 → ④ 客户画像 → ⑤ 时机与匹配
+→ ⑥ 三态裁决 → ⑦ 外呼执行 → ⑧ 话术质检 → ⑨ 留痕
+```
+
+本仓实现以该域包 `PACK.md` 的 `role_mapping` / `skills.subset` 为准；两条不可越过红线：**拒呼即合规**（未获同意不得外呼）、**守护否决不可被下游覆盖**。
+
 ---
 
 ## Quick Start
