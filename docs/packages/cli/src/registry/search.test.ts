@@ -1,14 +1,15 @@
 import { describe, expect, it, vi } from "vitest"
 
+
+vi.mock("./api", () => ({
+  getRegistry: vi.fn(),
+}))
+
 import { getRegistry } from "./api"
 import { buildRegistryItemNameFromRegistry, searchRegistries } from "./search"
 
 describe("searchRegistries", () => {
   it("should fetch and return registries in flat format", async () => {
-    // Mock getRegistry
-    vi.mock("./api", () => ({
-      getRegistry: vi.fn(),
-    }))
 
     const mockGetRegistry = vi.mocked(getRegistry)
 
@@ -85,9 +86,6 @@ describe("searchRegistries", () => {
   })
 
   it("should apply search filter when query is provided", async () => {
-    vi.mock("./api", () => ({
-      getRegistry: vi.fn(),
-    }))
 
     const mockGetRegistry = vi.mocked(getRegistry)
 
@@ -135,9 +133,6 @@ describe("searchRegistries", () => {
   })
 
   it("should fail fast on registry error", async () => {
-    vi.mock("./api", () => ({
-      getRegistry: vi.fn(),
-    }))
 
     const mockGetRegistry = vi.mocked(getRegistry)
 
@@ -153,9 +148,6 @@ describe("searchRegistries", () => {
   })
 
   it("should return empty items when search has no matches", async () => {
-    vi.mock("./api", () => ({
-      getRegistry: vi.fn(),
-    }))
 
     const mockGetRegistry = vi.mocked(getRegistry)
 
@@ -179,9 +171,6 @@ describe("searchRegistries", () => {
   })
 
   it("should handle fuzzy search", async () => {
-    vi.mock("./api", () => ({
-      getRegistry: vi.fn(),
-    }))
 
     const mockGetRegistry = vi.mocked(getRegistry)
 
@@ -217,9 +206,6 @@ describe("searchRegistries", () => {
   })
 
   it("should search in descriptions", async () => {
-    vi.mock("./api", () => ({
-      getRegistry: vi.fn(),
-    }))
 
     const mockGetRegistry = vi.mocked(getRegistry)
 
@@ -251,9 +237,6 @@ describe("searchRegistries", () => {
   })
 
   it("should respect limit option", async () => {
-    vi.mock("./api", () => ({
-      getRegistry: vi.fn(),
-    }))
 
     const mockGetRegistry = vi.mocked(getRegistry)
 
@@ -290,9 +273,6 @@ describe("searchRegistries", () => {
   })
 
   it("should handle offset and limit for pagination", async () => {
-    vi.mock("./api", () => ({
-      getRegistry: vi.fn(),
-    }))
 
     const mockGetRegistry = vi.mocked(getRegistry)
 
@@ -324,9 +304,6 @@ describe("searchRegistries", () => {
   })
 
   it("should set hasMore to false when no more items", async () => {
-    vi.mock("./api", () => ({
-      getRegistry: vi.fn(),
-    }))
 
     const mockGetRegistry = vi.mocked(getRegistry)
 
@@ -350,9 +327,6 @@ describe("searchRegistries", () => {
   })
 
   it("should handle pagination across multiple registries", async () => {
-    vi.mock("./api", () => ({
-      getRegistry: vi.fn(),
-    }))
 
     const mockGetRegistry = vi.mocked(getRegistry)
 
