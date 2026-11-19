@@ -115,14 +115,16 @@ YYC³ AI Intelligent Calling 是由 **YanYuCloudCube™** 团队构建的企业�
 
 | Agent | Role | Specialty |
 |-------|------|-----------|
-| 🌟 元启·天枢 (Meta-Oracle) | MASTER | 全局编排、任务分发、协同决策 |
-| 🛡️ 智云·守护 (Cloud-Guardian) | GUARDIAN | 安全审计、合规检查、风险预警 |
-| 🔮 洞察·先知 (Insight-Prophet) | PROPHET | 数据分析、趋势预测、智能推荐 |
-| 🧠 思辨·哲者 (Thinker) | THINKER | 推理分析、知识图谱、逻辑验证 |
-| 🎯 精准·择优 (Recommender) | RECOMMENDER | 意图识别、最优路径、资源匹配 |
-| 🔗 融通·协作者 (Collaborator) | COLLABORATOR | 跨域协同、流程编排、生态对接 |
-| 📚 博学·知识库 (Scholar) | SCHOLAR | 知识检索、RAG 增强、文档解析 |
-| ⚡ 执行·实干家 (Executor) | EXECUTOR | 任务执行、工具调用、结果交付 |
+| 🧭 言启·千行 (`yanqi-qianhang`) | NAVIGATOR | 导航员 · 意图识别、上下文管理、任务路由 |
+| 🛡️ 智云·守护 (`zhiyun-shouhu`) | SENTINEL | 安全官 · 威胁检测、行为分析、自动修复 |
+| 🔮 预见·先知 (`yujian-xianzhi`) | PROPHET | 预言家 · 趋势预测、异常检测、前瞻建议 |
+| 🤔 语枢·万物 (`yushu-wanwu`) | THINKER | 思考者 · 数据洞察、文档分析、假设推演 |
+| 🎯 知遇·伯乐 (`zhiyu-bole`) | RECOMMENDER | 推荐官 · 用户画像、个性化推荐、潜能发掘 |
+| 🎨 创想·灵韵 (`chuangxiang-lingyun`) | CREATIVE | 创意官 · 内容生成、头脑风暴、叙事构建 |
+| 📚 格物·宗师 (`gewu-zongshi`) | QUALITY | 质量官 · 代码分析、性能监控、测试策略 |
+| 🌟 元启·天枢 (`yuanqi-tianshu`) | MASTER | 总指挥 · 任务编排、资源调度、协同决策 |
+
+> 命名对齐 [YYC3-AI-Family-Agent 总仓](https://github.com/YYC-Cube) `yyc3-family-ai-agents` IDENTITY 权威定义；旧 slug ID（meta-oracle 等）保留兼容别名。
 
 ---
 

@@ -4,10 +4,29 @@ import {
   AgentRole,
 } from './types';
 
+/**
+ * YYC³ AI Family — 8 智能体权威定义
+ * 命名对齐总仓 YYC3-AI-Family-Agent（yyc3-family-ai-agents IDENTITY 三件套）：
+ *   yuanqi-tianshu 元启·天枢（总指挥） · zhiyun-shouhu 智云·守护（安全官）
+ *   gewu-zongshi 格物·宗师（质量官） · chuangxiang-lingyun 创想·灵韵（创意官）
+ *   yanqi-qianhang 言启·千行（导航员） · yushu-wanwu 语枢·万物（思考者）
+ *   yujian-xianzhi 预见·先知（预言家） · zhiyu-bole 知遇·伯乐（推荐官）
+ */
+const LEGACY_ID_ALIASES: Record<string, string> = {
+  'meta-oracle': 'yuanqi-tianshu',
+  'cloud-guardian': 'zhiyun-shouhu',
+  'quality-master': 'gewu-zongshi',
+  'creative-spirit': 'chuangxiang-lingyun',
+  'speech-navigator': 'yanqi-qianhang',
+  'language-thinker': 'yushu-wanwu',
+  'visionary-prophet': 'yujian-xianzhi',
+  'talent-scout': 'zhiyu-bole',
+};
+
 export const AI_FAMILY_AGENTS: Record<string, AgentDefinition> = {
-  'meta-oracle': {
-    id: 'meta-oracle',
-    name: 'MetaOracle',
+  'yuanqi-tianshu': {
+    id: 'yuanqi-tianshu',
+    name: 'YuanqiTianshu',
     displayName: '元启·天枢',
     role: AgentRole.MASTER,
     emoji: '🧠',
@@ -55,9 +74,9 @@ export const AI_FAMILY_AGENTS: Record<string, AgentDefinition> = {
     version: '1.0.0',
   },
 
-  'cloud-guardian': {
-    id: 'cloud-guardian',
-    name: 'CloudGuardian',
+  'zhiyun-shouhu': {
+    id: 'zhiyun-shouhu',
+    name: 'ZhiyunShouhu',
     displayName: '智云·守护',
     role: AgentRole.SENTINEL,
     emoji: '🛡️',
@@ -105,9 +124,9 @@ export const AI_FAMILY_AGENTS: Record<string, AgentDefinition> = {
     version: '1.0.0',
   },
 
-  'quality-master': {
-    id: 'quality-master',
-    name: 'QualityMaster',
+  'gewu-zongshi': {
+    id: 'gewu-zongshi',
+    name: 'GewuZongshi',
     displayName: '格物·宗师',
     role: AgentRole.QUALITY,
     emoji: '📚',
@@ -155,9 +174,9 @@ export const AI_FAMILY_AGENTS: Record<string, AgentDefinition> = {
     version: '1.0.0',
   },
 
-  'creative-spirit': {
-    id: 'creative-spirit',
-    name: 'CreativeSpirit',
+  'chuangxiang-lingyun': {
+    id: 'chuangxiang-lingyun',
+    name: 'ChuangxiangLingyun',
     displayName: '创想·灵韵',
     role: AgentRole.CREATIVE,
     emoji: '🎨',
@@ -205,9 +224,9 @@ export const AI_FAMILY_AGENTS: Record<string, AgentDefinition> = {
     version: '1.0.0',
   },
 
-  'speech-navigator': {
-    id: 'speech-navigator',
-    name: 'SpeechNavigator',
+  'yanqi-qianhang': {
+    id: 'yanqi-qianhang',
+    name: 'YanqiQianhang',
     displayName: '言启·千行',
     role: AgentRole.NAVIGATOR,
     emoji: '🧭',
@@ -255,9 +274,9 @@ export const AI_FAMILY_AGENTS: Record<string, AgentDefinition> = {
     version: '1.0.0',
   },
 
-  'language-thinker': {
-    id: 'language-thinker',
-    name: 'LanguageThinker',
+  'yushu-wanwu': {
+    id: 'yushu-wanwu',
+    name: 'YushuWanwu',
     displayName: '语枢·万物',
     role: AgentRole.THINKER,
     emoji: '🤔',
@@ -305,9 +324,9 @@ export const AI_FAMILY_AGENTS: Record<string, AgentDefinition> = {
     version: '1.0.0',
   },
 
-  'visionary-prophet': {
-    id: 'visionary-prophet',
-    name: 'VisionaryProphet',
+  'yujian-xianzhi': {
+    id: 'yujian-xianzhi',
+    name: 'YujianXianzhi',
     displayName: '预见·先知',
     role: AgentRole.PROPHET,
     emoji: '🔮',
@@ -355,9 +374,9 @@ export const AI_FAMILY_AGENTS: Record<string, AgentDefinition> = {
     version: '1.0.0',
   },
 
-  'talent-scout': {
-    id: 'talent-scout',
-    name: 'TalentScout',
+  'zhiyu-bole': {
+    id: 'zhiyu-bole',
+    name: 'ZhiyuBole',
     displayName: '知遇·伯乐',
     role: AgentRole.RECOMMENDER,
     emoji: '🎯',
@@ -407,7 +426,7 @@ export const AI_FAMILY_AGENTS: Record<string, AgentDefinition> = {
 };
 
 export function getAgentById(id: string): AgentDefinition | undefined {
-  return AI_FAMILY_AGENTS[id];
+  return AI_FAMILY_AGENTS[id] ?? AI_FAMILY_AGENTS[LEGACY_ID_ALIASES[id] ?? ''];
 }
 
 export function getAgentsByRole(role: AgentRole): AgentDefinition[] {

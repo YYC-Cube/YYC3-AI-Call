@@ -13,7 +13,7 @@ import {
   TaskPriority,
 } from './types';
 import { AI_FAMILY_AGENTS, getAgentById, getAllAgents } from './definitions';
-import { BaseAgent, MetaOracleAgent, CloudGuardianAgent } from './agents';
+import { BaseAgent, YuanqiTianshuAgent, ZhiyunShouhuAgent } from './agents';
 
 export class AIFamilyManager {
   private agents: Map<string, BaseAgent> = new Map();
@@ -41,11 +41,11 @@ export class AIFamilyManager {
       let agent: BaseAgent;
 
       switch (agentId) {
-        case 'meta-oracle':
-          agent = new MetaOracleAgent({ agentId });
+        case 'yuanqi-tianshu':
+          agent = new YuanqiTianshuAgent({ agentId });
           break;
-        case 'cloud-guardian':
-          agent = new CloudGuardianAgent({ agentId });
+        case 'zhiyun-shouhu':
+          agent = new ZhiyunShouhuAgent({ agentId });
           break;
         default:
           agent = new BaseAgent({ definition, config: { agentId } });
@@ -368,7 +368,7 @@ export class AIFamilyManager {
     session: CollaborationSession,
     tasks: Array<{ type: string; input: TaskInput }>
   ): Promise<void> {
-    const masterAgent = this.agents.get('meta-oracle');
+    const masterAgent = this.agents.get('yuanqi-tianshu');
     if (!masterAgent) throw new Error('Master agent not available');
 
     const orchestrationInput: TaskInput = {

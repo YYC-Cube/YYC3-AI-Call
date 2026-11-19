@@ -63,10 +63,10 @@ const mcpServer = new MCPServer({
         const agents = params.agentId
           ? [params.agentId]
           : [
-              'meta-oracle',
-              'cloud-guardian',
-              'quality-master',
-              'creative-spirit',
+              'yuanqi-tianshu',
+              'zhiyun-shouhu',
+              'gewu-zongshi',
+              'chuangxiang-lingyun',
             ];
 
         return {

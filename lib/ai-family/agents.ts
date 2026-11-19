@@ -8,10 +8,10 @@ import {
   TaskOutput,
 } from './types';
 
-export class MetaOracleAgent extends BaseAgent {
+export class YuanqiTianshuAgent extends BaseAgent {
   constructor(config?: Partial<AgentConfig>) {
     super({
-      definition: AI_FAMILY_AGENTS['meta-oracle'],
+      definition: AI_FAMILY_AGENTS['yuanqi-tianshu'],
       config,
     });
   }
@@ -137,23 +137,23 @@ export class MetaOracleAgent extends BaseAgent {
 
   private recommendAgentForTask(taskType: string): string {
     const agentMapping: Record<string, string> = {
-      'analysis': 'language-thinker',
-      'generation': 'creative-spirit',
-      'monitoring': 'cloud-guardian',
-      'execution': 'speech-navigator',
-      'recommendation': 'talent-scout',
-      'security': 'cloud-guardian',
-      'quality': 'quality-master',
+      'analysis': 'yushu-wanwu',
+      'generation': 'chuangxiang-lingyun',
+      'monitoring': 'zhiyun-shouhu',
+      'execution': 'yanqi-qianhang',
+      'recommendation': 'zhiyu-bole',
+      'security': 'zhiyun-shouhu',
+      'quality': 'gewu-zongshi',
     };
 
-    return agentMapping[taskType] || 'meta-oracle';
+    return agentMapping[taskType] || 'yuanqi-tianshu';
   }
 }
 
-export class CloudGuardianAgent extends BaseAgent {
+export class ZhiyunShouhuAgent extends BaseAgent {
   constructor(config?: Partial<AgentConfig>) {
     super({
-      definition: AI_FAMILY_AGENTS['cloud-guardian'],
+      definition: AI_FAMILY_AGENTS['zhiyun-shouhu'],
       config,
     });
   }

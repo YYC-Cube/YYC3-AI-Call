@@ -118,17 +118,17 @@ describe('AI Family Definitions', () => {
       expect(Object.keys(AI_FAMILY_AGENTS).length).toBe(8);
     });
 
-    it('should have MetaOracle as master agent', () => {
-      const metaOracle = AI_FAMILY_AGENTS['meta-oracle'];
+    it('should have YuanqiTianshu as master agent', () => {
+      const metaOracle = AI_FAMILY_AGENTS['yuanqi-tianshu'];
       expect(metaOracle).toBeDefined();
       expect(metaOracle.role).toBe(AgentRole.MASTER);
-      expect(metaOracle.id).toBe('meta-oracle');
-      expect(metaOracle.name).toBe('MetaOracle');
+      expect(metaOracle.id).toBe('yuanqi-tianshu');
+      expect(metaOracle.name).toBe('YuanqiTianshu');
       expect(metaOracle.displayName).toContain('元启');
     });
 
-    it('should have CloudGuardian as sentinel agent', () => {
-      const cloudGuardian = AI_FAMILY_AGENTS['cloud-guardian'];
+    it('should have ZhiyunShouhu as sentinel agent', () => {
+      const cloudGuardian = AI_FAMILY_AGENTS['zhiyun-shouhu'];
       expect(cloudGuardian).toBeDefined();
       expect(cloudGuardian.role).toBe(AgentRole.SENTINEL);
       expect(cloudGuardian.displayName).toContain('智云');
@@ -164,7 +164,7 @@ describe('AI Family Definitions', () => {
     });
 
     it('master agent should have valid maxConcurrentTasks', () => {
-      const metaOracle = AI_FAMILY_AGENTS['meta-oracle'];
+      const metaOracle = AI_FAMILY_AGENTS['yuanqi-tianshu'];
       expect(metaOracle.maxConcurrentTasks).toBeGreaterThan(0);
       expect(typeof metaOracle.maxConcurrentTasks).toBe('number');
     });

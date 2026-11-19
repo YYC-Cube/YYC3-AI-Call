@@ -20,8 +20,8 @@ export { AI_FAMILY_AGENTS, getAgentById, getAgentsByRole, getAllAgents, getAgent
 export { BaseAgent } from './base-agent';
 
 export {
-  MetaOracleAgent,
-  CloudGuardianAgent,
+  YuanqiTianshuAgent,
+  ZhiyunShouhuAgent,
 } from './agents';
 
 export { AIFamilyManager, aiFamilyManager } from './manager';
