@@ -333,7 +333,7 @@ export class RegistriesIndexParseError extends RegistryError {
     if (parseError instanceof z.ZodError) {
       const invalidNamespaces = parseError.issues
         .filter((e) => e.path.length > 0)
-        .map((e) => `"${e.path[0]}"`)
+        .map((e) => `"${String(e.path[0])}"`)
         .filter((v, i, arr) => arr.indexOf(v) === i) // remove duplicates
 
       if (invalidNamespaces.length > 0) {

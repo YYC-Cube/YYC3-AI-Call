@@ -62,6 +62,7 @@ import deepmerge from "deepmerge"
 import fsExtra from "fs-extra"
 import prompts from "prompts"
 import { z } from "zod"
+import { deepPartial } from "../utils/deep-partial"
 
 export const initOptionsSchema = z.object({
   cwd: z.string(),
@@ -80,9 +81,9 @@ export const initOptionsSchema = z.object({
   base: z.enum(["radix", "base"]).optional(),
   template: z.string().optional(),
   monorepo: z.boolean().optional(),
-  existingConfig: z.record(z.unknown()).optional(),
+  existingConfig: z.record(z.string(), z.unknown()).optional(),
   installStyleIndex: z.boolean().default(true),
-  registryBaseConfig: rawConfigSchema.deepPartial().optional(),
+  registryBaseConfig: deepPartial(rawConfigSchema).optional(),
   menuColor: z
     .enum([
       "default",

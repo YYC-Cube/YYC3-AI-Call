@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { deepPartial } from "../utils/deep-partial"
 
 // Note: if you edit the schema here, you must also edit the schema in the
 // apps/v4/public/schema/registry-item.json file.
@@ -19,10 +20,12 @@ export const registryConfigItemSchema = z.union([
 ])
 
 export const registryConfigSchema = z.record(
-  z.string().refine((key) => key.startsWith("@"), {
-    message: "Registry names must start with @ (e.g., @v0, @acme)",
-  }),
-  registryConfigItemSchema
+  z.string().refine((key) => key.startsWith("@")),
+  registryConfigItemSchema,
+  {
+    // Zod 4 的 record key 校验消息由 record 自身接管，在此统一定制
+    error: () => "Registry names must start with @ (e.g., @v0, @acme)",
+  }
 )
 
 export const rawConfigSchema = z
@@ -76,7 +79,7 @@ export const configSchema = rawConfigSchema.extend({
 
 // TODO: type the key.
 // Okay for now since I don't want a breaking change.
-export const workspaceConfigSchema = z.record(configSchema)
+export const workspaceConfigSchema = z.record(z.string(), configSchema)
 
 export const registryItemTypeSchema = z.enum([
   "registry:lib",
@@ -179,7 +182,7 @@ export const registryItemCommonSchema = z.object({
 export const registryItemSchema = z.discriminatedUnion("type", [
   registryItemCommonSchema.extend({
     type: z.literal("registry:base"),
-    config: rawConfigSchema.deepPartial().optional(),
+    config: deepPartial(rawConfigSchema).optional(),
   }),
   registryItemCommonSchema.extend({
     type: z.literal("registry:font"),
