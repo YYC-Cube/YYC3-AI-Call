@@ -24,6 +24,7 @@ overrides:
   postcss-selector-parser: ^6.1.5
   '@babel/core': ^7.29.6
   zod: ^4.6.6
+  minimatch@10: ^11.0.1
 
 importers:
 
@@ -974,6 +975,9 @@ packages:
 
   '@ioredis/commands@1.5.1':
     resolution: {integrity: sha512-JH8ZL/ywcJyR9MmJ5BNqZllXNZQqQbnVZOqpPQqE1vHiFgAw4NHbvE0FOduNU8IX9babitBT46571OnPTT0Zcw==}
+
+  '@isaacs/nonrecursive-glob-match@1.1.0':
+    resolution: {integrity: sha512-GPm/Dbvk5RLmhRnxXIa7nTpK0xtl4E0wj0MslsuNiJ1FIROU+2+9lgUC/dgF7Ey4QCWhfEsgxilMRMCdHPfDfw==}
 
   '@istanbuljs/load-nyc-config@1.1.0':
     resolution: {integrity: sha512-VjeHSlIzpv/NyD3N0YuHfXOPDIixcA1q2ZV98wsMqcYlPmv2n3Yb2lYP9XMElnaFVXg5A7YLTeLu6V84uQDjmQ==}
@@ -2337,6 +2341,10 @@ packages:
 
   '@yyc3/core@1.4.0':
     resolution: {integrity: sha512-kOROJg7UtFlTEc/8JirtOmRnd1g01X+iQWxi0G/BsAcJSim4GBSAYNtPCXu6jQZ+TiNXsnLyQ2qKYi5up4tVJA==}
+    engines: {node: '>=18.0.0'}
+
+  '@yyc3/core@1.5.0':
+    resolution: {integrity: sha512-Y0yU654k9mmNmrI12pFp6/YyD8LLDh7+tQeRAzMkLtR1Jx2Gjo+9WS1UQBNwcpVTLDxNhGqC0anp/p262gdqGg==}
     engines: {node: '>=18.0.0'}
 
   '@yyc3/core@file:docs/packages/core':
@@ -4063,9 +4071,9 @@ packages:
     resolution: {integrity: sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==}
     engines: {node: '>=4'}
 
-  minimatch@10.2.5:
-    resolution: {integrity: sha512-MULkVLfKGYDFYejP07QOurDLLQpcjk7Fw+7jXS2R2czRQzR56yHRveU5NDJEOviH+hETZKSkIk5c+T23GjFUMg==}
-    engines: {node: 18 || 20 || >=22}
+  minimatch@11.0.9:
+    resolution: {integrity: sha512-KCFkfyjqerNlSstjlhIGNXIKZGA/6O4V4RlhZ+Dsr621SPPw0mzlypE9D9ZOoPiVefHID+j7/XuMMlqfD/F60Q==}
+    engines: {node: 20 || >=22}
 
   minimatch@3.1.5:
     resolution: {integrity: sha512-VgjWUsnnT6n+NUk6eZq77zeFdpW2LWDzP6zFGrCbHXiYNul5Dzqk2HHQ5uFH2DNW5Xbp8+jVzaeNt94ssEEl4w==}
@@ -5759,6 +5767,8 @@ snapshots:
 
   '@ioredis/commands@1.5.1': {}
 
+  '@isaacs/nonrecursive-glob-match@1.1.0': {}
+
   '@istanbuljs/load-nyc-config@1.1.0':
     dependencies:
       camelcase: 5.3.1
@@ -7140,7 +7150,7 @@ snapshots:
       '@typescript-eslint/types': 8.59.1
       '@typescript-eslint/visitor-keys': 8.59.1
       debug: 4.4.3
-      minimatch: 10.2.5
+      minimatch: 11.0.9
       semver: 7.7.4
       tinyglobby: 0.2.16
       ts-api-utils: 2.5.0(typescript@5.9.3)
@@ -7225,11 +7235,16 @@ snapshots:
 
   '@yyc3/ai-hub@file:docs/packages/ai-hub':
     dependencies:
-      '@yyc3/core': 1.4.0
+      '@yyc3/core': 1.5.0
       eventemitter3: 5.0.4
       zod: 4.6.7
 
   '@yyc3/core@1.4.0':
+    dependencies:
+      eventemitter3: 5.0.4
+      zod: 4.6.7
+
+  '@yyc3/core@1.5.0':
     dependencies:
       eventemitter3: 5.0.4
       zod: 4.6.7
@@ -9344,8 +9359,9 @@ snapshots:
 
   min-indent@1.0.1: {}
 
-  minimatch@10.2.5:
+  minimatch@11.0.9:
     dependencies:
+      '@isaacs/nonrecursive-glob-match': 1.1.0
       brace-expansion: 5.0.12
 
   minimatch@3.1.5:

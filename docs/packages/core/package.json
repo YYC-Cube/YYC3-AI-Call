@@ -104,5 +104,10 @@
       "path": "dist/index.js",
       "limit": "100 kB"
     }
-  ]
+  ],
+  "pnpm": {
+    "overrides": {
+      "esbuild": "^0.28.1"
+    }
+  }
 }
