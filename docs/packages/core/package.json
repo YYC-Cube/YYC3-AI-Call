@@ -1,6 +1,6 @@
 {
   "name": "@yyc3/core",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "YYC³ AI Family 核心包 — 统一认证、MCP协议、技能系统、八位AI家人智能体、多模态处理",
   "type": "module",
   "main": "./dist/index.js",

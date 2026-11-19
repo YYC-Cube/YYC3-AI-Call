@@ -2,6 +2,18 @@
 
 All notable changes to `@yyc3/core` will be documented in this file.
 
+## [1.5.0] - 2026-11-20
+
+### ⬆️ 依赖升级（安全）
+
+- **zod**: `^3.25.76` → `^4.6.6`
+  - 修复 GHSA-mrhx-c7xc-m3w5（Zod 约束集合校验内存耗尽，high）
+- 适配 Zod 4 破坏性变更：`z.record(value)` → `z.record(key, value)` 双参签名
+
+### ✅ 验证
+
+- typecheck / build (tsup) / 10 测试文件 224 用例全绿
+
 ## [1.3.0] - 2026-04-23
 
 ### 🎉 首次正式发布 (审计升级版)

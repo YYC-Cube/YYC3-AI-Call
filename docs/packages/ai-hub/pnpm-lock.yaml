@@ -4,13 +4,16 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@yyc3/core': https://registry.npmjs.org/@yyc3/core/-/core-1.5.0.tgz
+
 importers:
 
   .:
     dependencies:
       '@yyc3/core':
-        specifier: ^1.4.0
-        version: 1.4.0
+        specifier: https://registry.npmjs.org/@yyc3/core/-/core-1.5.0.tgz
+        version: https://registry.npmjs.org/@yyc3/core/-/core-1.5.0.tgz
       eventemitter3:
         specifier: ^5.0.1
         version: 5.0.4
@@ -715,8 +718,9 @@ packages:
   '@vitest/utils@4.1.12':
     resolution: {integrity: sha512-Q3awXrwOfEV+qc3WmO5ONyE0yO7Q1gQ9/oyHxGLZ/pl7N3NO/ZztqQwKLuwMkV+CA1JYSIeO3gkHnRDIo4AVaA==}
 
-  '@yyc3/core@1.4.0':
-    resolution: {integrity: sha512-kOROJg7UtFlTEc/8JirtOmRnd1g01X+iQWxi0G/BsAcJSim4GBSAYNtPCXu6jQZ+TiNXsnLyQ2qKYi5up4tVJA==}
+  '@yyc3/core@https://registry.npmjs.org/@yyc3/core/-/core-1.5.0.tgz':
+    resolution: {tarball: https://registry.npmjs.org/@yyc3/core/-/core-1.5.0.tgz}
+    version: 1.5.0
     engines: {node: '>=18.0.0'}
 
   acorn-jsx@5.3.2:
@@ -1511,9 +1515,6 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  zod@3.25.76:
-    resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
-
   zod@4.6.7:
     resolution: {integrity: sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg==}
 
@@ -2041,10 +2042,10 @@ snapshots:
       convert-source-map: 2.0.0
       tinyrainbow: 3.2.0
 
-  '@yyc3/core@1.4.0':
+  '@yyc3/core@https://registry.npmjs.org/@yyc3/core/-/core-1.5.0.tgz':
     dependencies:
       eventemitter3: 5.0.4
-      zod: 3.25.76
+      zod: 4.6.7
 
   acorn-jsx@5.3.2(acorn@8.19.0):
     dependencies:
@@ -2768,7 +2769,5 @@ snapshots:
   wrappy@1.0.2: {}
 
   yocto-queue@0.1.0: {}
-
-  zod@3.25.76: {}
 
   zod@4.6.7: {}
