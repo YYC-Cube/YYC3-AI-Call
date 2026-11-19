@@ -188,7 +188,7 @@ pnpm db:verify:yyc3
 
 ### 6.1 审计结果
 
-| 阶段 | critical | high | moderate | low |
+| 主应用根依赖阶段 | critical | high | moderate | low |
 |---|---|---|---|---|
 | 初始 | 1 | 32 | 13 | 4 |
 | 首轮修复后 | 0 | 30 | 10 | 4 |
@@ -204,6 +204,8 @@ pnpm db:verify:yyc3
 ```bash
 pnpm audit --registry=https://registry.npmjs.org
 ```
+
+> 说明：`docs/packages/{core,ai-hub,cli}` 为独立示例包，仍声明 Zod 3.x；Zod 4 移除了 `ZodSchema` / `error.errors` 等 API，升级需同步改造并重建这些包，故未在本轮强制升级。i18n 示例中的 Vite / Browserslist / Source Map 漏洞已单独修复。
 
 ### 6.2 代码适配
 
