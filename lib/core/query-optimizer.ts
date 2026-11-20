@@ -1,6 +1,6 @@
 import prisma from '@/lib/db';
 
-interface BatchLoadOptions<T> {
+interface BatchLoadOptions<_T> {
   ids: string[];
   batchSize?: number;
   select?: Record<string, unknown>;
@@ -57,7 +57,7 @@ export class QueryOptimizer {
       relationLoaders.map(async ({ loader }) => loader(allIds))
     );
 
-    return items.map((item, index) => {
+    return items.map((item, _index) => {
       const enrichedItem = { ...item };
 
       relationLoaders.forEach(({ key }, relationIndex) => {

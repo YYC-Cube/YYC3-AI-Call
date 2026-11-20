@@ -3,16 +3,16 @@ import { requireAuth } from '@/lib/api-auth';
 import {
   multimodalManager,
   ImageAnalysisTask,
-  AudioProcessingTask,
-  DocumentProcessingTask,
+  AudioProcessingTask as _AudioProcessingTask,
+  DocumentProcessingTask as _DocumentProcessingTask,
   MediaType,
 } from '@/lib/multimodal';
 
 export async function POST(request: NextRequest) {
-  const gate = requireAuth(request);
+  const _gate = requireAuth(request);
   try {
     const body = await request.json();
-    const { action, mediaType, ...params } = body;
+    const { action, mediaType: _X, ...params } = body;
 
     switch (action) {
       case 'process-image':
@@ -144,7 +144,7 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
-  const gate = requireAuth(request);
+  const _gate = requireAuth(request);
   const metrics = multimodalManager.getMetrics();
 
   return NextResponse.json({

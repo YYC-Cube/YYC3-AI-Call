@@ -292,7 +292,7 @@ async function demonstrateIntelligentCalling(): Promise<void> {
     await platform.initialize();
     console.log('\n✅ AI平台初始化成功\n');
 
-    const scenarios = new IntelligentCallingScenarios(platform);
+    const _scenarios = new IntelligentCallingScenarios(platform);
 
     console.log('='.repeat(60));
     console.log('📞 智能外呼五大核心场景演示');

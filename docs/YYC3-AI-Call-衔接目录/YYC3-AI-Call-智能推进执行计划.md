@@ -536,7 +536,7 @@ git merge main  # 或创建PR
 
 ### 关键文档位置
 - 完整审查报告: [YYC3-AI-Call-衔接文档.md](./YYC3-AI-Call-衔接文档.md)
-- 环境变量配置: [ENVIRONMENT_FILES_SUMMARY.md](../../ENVIRONMENT_FILES_SUMMARY.md)
+- 环境变量配置: [ENVIRONMENT_FILES_SUMMARY.md](../ENVIRONMENT_FILES_SUMMARY.md)
 - 技术架构文档: [docs/YYC3-AI-Call-架构设计/](../../docs/YYC3-AI-Call-架构设计/)
 - API文档: [docs/YYC3-AI-Call-API文档/](../../docs/YYC3-AI-Call-API文档/)
 

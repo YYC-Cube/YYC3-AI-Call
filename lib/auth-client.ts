@@ -1,42 +1,31 @@
 /**
- * @fileoverview 客户端认证凭证工具
- * @description 浏览器侧令牌存取与请求头组装，供前端 fetch 调用受保护 API 使用。
- *              令牌由登录接口（/api/auth）签发，前端保存后自动附加到请求。
+ * @fileoverview 客户端认证会话工具（HttpOnly Cookie 通道）
+ * @description R3 升级：令牌由 /api/auth 经 HttpOnly Cookie 下发，浏览器 JS
+ *              不可读（收敛 XSS 面）；同源 fetch 自动携带 Cookie，
+ *              requireAuth（lib/api-auth）从 access_token Cookie 校验——
+ *              前端无需也无法在 localStorage 明文存取令牌。
  * @module lib/auth-client
  * @author YYC³
- * @version 1.0.0
+ * @version 2.0.0
  * @created 2026-11-20
  * @copyright Copyright (c) 2026 YYC³
  * @license MIT
  */
 
-const ACCESS_TOKEN_KEY = 'yyc3_access_token';
-const REFRESH_TOKEN_KEY = 'yyc3_refresh_token';
-
-export interface AuthTokens {
-  accessToken: string;
-  refreshToken: string;
-}
-
-export function saveAuthTokens(tokens: AuthTokens): void {
-  if (typeof window === 'undefined') return;
-  window.localStorage.setItem(ACCESS_TOKEN_KEY, tokens.accessToken);
-  window.localStorage.setItem(REFRESH_TOKEN_KEY, tokens.refreshToken);
-}
-
-export function clearAuthTokens(): void {
-  if (typeof window === 'undefined') return;
-  window.localStorage.removeItem(ACCESS_TOKEN_KEY);
-  window.localStorage.removeItem(REFRESH_TOKEN_KEY);
-}
-
-export function getAccessToken(): string | null {
-  if (typeof window === 'undefined') return null;
-  return window.localStorage.getItem(ACCESS_TOKEN_KEY);
-}
-
-/** 组装带 Authorization 的请求头（无令牌时返回空对象，不破坏匿名请求） */
+/** 组装请求头：Cookie 通道由浏览器自动携带，此处保持空对象兼容既有调用方 */
 export function getAuthHeaders(): Record<string, string> {
-  const token = getAccessToken();
-  return token ? { Authorization: `Bearer ${token}` } : {};
+  return {};
+}
+
+/** 退出登录：服务端撤销刷新令牌并清空 Cookie */
+export async function logout(): Promise<void> {
+  try {
+    await fetch('/api/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'logout' }),
+    });
+  } catch {
+    // 网络失败时本地 Cookie 仍随 Max-Age=0 由服务端响应清除尽力而为
+  }
 }

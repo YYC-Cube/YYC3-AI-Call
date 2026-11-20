@@ -323,7 +323,7 @@ describe('🎯 YYC³ 全家桶集成测试套件', () => {
       try {
         const result = t('test.key', '默认值');
         console.log(`   🌍 翻译测试: "${result}"`);
-      } catch (error) {
+      } catch (_error) {
         console.log('   ⚠️  翻译函数需要配置翻译文件');
       }
     });
@@ -397,7 +397,7 @@ describe('🎯 YYC³ 全家桶集成测试套件', () => {
           
           console.log('   🧠 多模态分析: 已就绪');
           console.log(`      测试结果: ${result.primaryEmotion} (${(result.confidence * 100).toFixed(1)}%)`);
-        } catch (error) {
+        } catch (_error) {
           console.log('   ⚠️  多模态分析: 需要模型文件');
         }
       } else {
@@ -507,7 +507,7 @@ describe('🎯 YYC³ 全家桶集成测试套件', () => {
       const emotion = yyc3Global.getEmotionEngine();
 
       if (core?.aiFamily && emotion) {
-        const agent = core.aiFamily.createAgent('emotional-assistant');
+        const _agent = core.aiFamily.createAgent('emotional-assistant');
         
         const textInput = "我对你们的服务非常不满意！";
         
@@ -726,6 +726,6 @@ describe('🎯 YYC³ 全家桶集成测试套件', () => {
 /**
  * 辅助函数：延迟执行
  */
-function delay(ms: number): Promise<void> {
+function _delay(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }

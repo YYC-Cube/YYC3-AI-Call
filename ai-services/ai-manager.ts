@@ -63,7 +63,7 @@ export class AIServiceManager {
     return AIServiceManager.instance;
   }
 
-  async initialize(config?: AIServiceConfig): Promise<void> {
+  async initialize(_config?: AIServiceConfig): Promise<void> {
     if (this.isInitialized) return;
 
     console.log('🤖 初始化 AI 服务管理器...');
@@ -101,7 +101,7 @@ export class AIServiceManager {
 
   async analyzeCall(
     audioBuffer: ArrayBuffer,
-    options?: {
+    _options?: {
       customerContext?: Record<string, any>;
       callHistory?: Array<{ text: string; timestamp: Date }>;
     }

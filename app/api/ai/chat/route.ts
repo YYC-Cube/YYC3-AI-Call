@@ -24,7 +24,7 @@ import { requireAuth } from '@/lib/api-auth';
 import { getAIClient } from "@/lib/ai-client";
 
 export async function POST(request: NextRequest) {
-  const gate = requireAuth(request);
+  const _gate = requireAuth(request);
   try {
     const body = await request.json();
     const { messages, model, temperature, max_tokens } = body;

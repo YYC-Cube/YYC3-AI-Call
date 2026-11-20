@@ -34,7 +34,7 @@ class RateLimiter {
           console.error('[RateLimiter] Redis connection error:', err.message);
           this.useMemoryFallback = true;
         });
-      } catch (error) {
+      } catch (_error) {
         console.warn('[RateLimiter] Failed to connect to Redis, using memory fallback');
         this.useMemoryFallback = true;
       }
@@ -109,7 +109,7 @@ class RateLimiter {
     key: string,
     config: RateLimitConfig,
     now: number,
-    windowStart: number
+    _windowStart: number
   ): RateLimitResult {
     const stored = this.memoryStore.get(key);
 

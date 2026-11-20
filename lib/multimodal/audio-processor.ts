@@ -138,7 +138,7 @@ export class AudioProcessor {
     await new Promise((resolve) => setTimeout(resolve, text.length * 30));
 
     const voices = ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'];
-    const selectedVoice = voices[Math.floor(Math.random() * voices.length)];
+    const _selectedVoice = voices[Math.floor(Math.random() * voices.length)];
 
     return {
       success: true,

@@ -69,7 +69,7 @@ export class MultimodalManager {
     input: MediaInput,
     task: AudioProcessingTask
   ): Promise<AudioProcessingResult> {
-    const startTime = Date.now();
+    const _startTime = Date.now();
 
     try {
       const result = await this.audioProcessor.processAudio(input, task);
@@ -92,7 +92,7 @@ export class MultimodalManager {
     input: MediaInput,
     task: DocumentProcessingTask
   ): Promise<DocumentProcessingResult> {
-    const startTime = Date.now();
+    const _startTime = Date.now();
 
     try {
       const result = await this.documentProcessor.processDocument(input, task);

@@ -179,10 +179,10 @@ const colorSystem = {
 export default function DataAnalytics() {
   const [activeTab, setActiveTab] = useState("overview")
   const [timeRange, setTimeRange] = useState("6months")
-  const [selectedRegion, setSelectedRegion] = useState("all")
+  const [_selectedRegion, _setSelectedRegion] = useState("all")
 
   // 计算增长趋势
-  const getGrowthTrend = (current: number, previous: number) => {
+  const _getGrowthTrend = (current: number, previous: number) => {
     const growth = ((current - previous) / previous) * 100
     return {
       value: Math.abs(growth).toFixed(1),

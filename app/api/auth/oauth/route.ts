@@ -320,7 +320,7 @@ async function handleDisableMFA(params: Record<string, unknown>) {
   });
 }
 
-async function generateAppTokens(userInfo: OAuthUserInfo): Promise<AuthTokenPair> {
+async function generateAppTokens(_userInfo: OAuthUserInfo): Promise<AuthTokenPair> {
   // TODO: 集成JWT生成逻辑
   // 这里返回模拟数据，实际应调用JWT service
   

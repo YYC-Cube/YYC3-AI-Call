@@ -1,17 +1,17 @@
 import {
-  BusinessDimension,
-  EnablementDimension,
-  KPI,
-  KPICategory,
+  BusinessDimension as _BusinessDimension,
+  EnablementDimension as _EnablementDimension,
+  KPI as _KPI,
+  KPICategory as _KPICategory,
   KPITrend,
-  KPIStatus,
-  MeasurementFrequency,
+  KPIStatus as _KPIStatus,
+  MeasurementFrequency as _MeasurementFrequency,
   Priority,
-  Organization,
-  Currency,
-  ApiResponse,
-  QueryOptions,
-  PaginatedResponse
+  Organization as _Organization,
+  Currency as _Currency,
+  ApiResponse as _ApiResponse,
+  QueryOptions as _QueryOptions,
+  PaginatedResponse as _PaginatedResponse
 } from '../../core/types';
 
 export interface CockpitMetric {

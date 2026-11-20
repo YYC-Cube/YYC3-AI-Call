@@ -2,8 +2,8 @@ import {
   ToolDefinition,
   ToolExecutionContext,
   ToolExecutionResult,
-  ToolChainStep,
-  ToolChainDefinition,
+  ToolChainStep as _ToolChainStep,
+  ToolChainDefinition as _ToolChainDefinition,
   ToolCategory,
   ToolPermission,
 } from './types';

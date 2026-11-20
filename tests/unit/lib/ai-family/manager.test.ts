@@ -1,9 +1,9 @@
 import { AIFamilyManager } from '@/lib/ai-family/manager';
 import {
-  AIFamilyTask,
+  AIFamilyTask as _AIFamilyTask,
   TaskPriority,
   CollaborationMode,
-  AgentRole,
+  AgentRole as _AgentRole,
 } from '@/lib/ai-family/types';
 
 describe('AIFamilyManager', () => {

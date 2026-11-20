@@ -4,11 +4,11 @@ import {
   AgentStatus,
   TaskInput,
   TaskOutput,
-  AIFamilyTask,
+  AIFamilyTask as _AIFamilyTask,
   AgentCapability,
   AgentSnapshot,
 } from './types';
-import { getAgentById } from './definitions';
+import { getAgentById as _getAgentById } from './definitions';
 
 export interface BaseAgentOptions {
   definition: AgentDefinition;

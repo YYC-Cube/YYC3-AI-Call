@@ -214,7 +214,7 @@ const colorSystem = {
 }
 
 export default function CustomerProfile360() {
-  const [selectedCustomer, setSelectedCustomer] = useState<CustomerProfile360>(mockCustomerProfile)
+  const [selectedCustomer, _setSelectedCustomer] = useState<CustomerProfile360>(mockCustomerProfile)
   const [activeTab, setActiveTab] = useState("overview")
 
   const getRiskColor = (risk: number) => {

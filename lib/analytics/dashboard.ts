@@ -2,7 +2,7 @@ import {
   type Dashboard, 
   type DashboardWidget, 
   type ReportTemplate,
-  type AnalyticsQuery
+  type AnalyticsQuery as _AnalyticsQuery
 } from './types';
 import { analyticsEngine } from './engine';
 import { logger } from '../logger';

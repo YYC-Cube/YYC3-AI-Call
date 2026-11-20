@@ -1,6 +1,6 @@
 import {
   AgentRole,
-  AgentCapability,
+  AgentCapability as _AgentCapability,
   TaskPriority,
   CollaborationMode,
   AIFamilyTask,

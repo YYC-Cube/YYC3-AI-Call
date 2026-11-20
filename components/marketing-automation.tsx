@@ -254,7 +254,7 @@ const colorSystem = {
 }
 
 export default function MarketingAutomation() {
-  const [activeTab, setActiveTab] = useState("campaigns")
+  const [_activeTab, _setActiveTab] = useState("campaigns")
   const [selectedCampaign, setSelectedCampaign] = useState<MarketingCampaign | null>(null)
 
   const getStatusColor = (status: string) => {

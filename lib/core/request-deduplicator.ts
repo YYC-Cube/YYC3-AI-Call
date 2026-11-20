@@ -131,7 +131,7 @@ export class RequestDeduplicator {
     };
   }
 
-  async markCompleted(requestId: string): Promise<void> {
+  async markCompleted(_requestId: string): Promise<void> {
     // Can be used to explicitly clear dedup lock after successful processing
   }
 

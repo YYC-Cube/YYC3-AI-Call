@@ -10,7 +10,7 @@ import {
   CustomerIntent,
   SentimentScore,
   DetectedIntent,
-  AIAssistData,
+  AIAssistData as _AIAssistData,
   AISuggestion,
   KnowledgeSearchResult,
   SentimentAlert,
@@ -156,7 +156,7 @@ export class OmniChannelCustomerService {
   async assignAgent(
     conversationId: string,
     agentId: string,
-    reason?: string
+    _reason?: string
   ): Promise<Conversation> {
     const conversation = this.getConversationOrThrow(conversationId);
     const agent = this.getAgentOrThrow(agentId);
@@ -900,7 +900,7 @@ export class OmniChannelCustomerService {
     return { sentiment, intent, category };
   }
 
-  private async categorizeMessage(message: Message, conversation: Conversation): Promise<any> {
+  private async categorizeMessage(_message: Message, _conversation: Conversation): Promise<any> {
     return {
       primary: 'general_inquiry',
       confidence: 0.7
@@ -973,7 +973,7 @@ export class OmniChannelCustomerService {
     }
   }
 
-  private async notifyAssignedAgent(conversation: Conversation, message: Message): Promise<void> {
+  private async notifyAssignedAgent(conversation: Conversation, _message: Message): Promise<void> {
     if (conversation.assignedAgentId) {
       const agent = this.agents.get(conversation.assignedAgentId);
       if (agent) {
@@ -1020,8 +1020,8 @@ export class OmniChannelCustomerService {
   }
 
   private async generateSuggestions(
-    conversation: Conversation,
-    latestMessage: Message
+    _conversation: Conversation,
+    _latestMessage: Message
   ): Promise<AISuggestion[]> {
     return [];
   }
@@ -1056,11 +1056,11 @@ export class OmniChannelCustomerService {
       .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
   }
 
-  private async searchKnowledgeBase(messages: Message[]): Promise<KnowledgeSearchResult[]> {
+  private async searchKnowledgeBase(_messages: Message[]): Promise<KnowledgeSearchResult[]> {
     return [];
   }
 
-  private getAgentCapabilities(agentId?: string): string[] {
+  private getAgentCapabilities(_agentId?: string): string[] {
     return [];
   }
 
@@ -1364,8 +1364,8 @@ export class OmniChannelCustomerService {
   }
 
   private analyzePurchaseCorrelation(
-    customer: CustomerProfile,
-    conversations: Conversation[]
+    _customer: CustomerProfile,
+    _conversations: Conversation[]
   ): any {
     return {
       correlationStrength: 'medium',
@@ -1375,8 +1375,8 @@ export class OmniChannelCustomerService {
   }
 
   private assessChurnRisk(
-    customer: CustomerProfile,
-    conversations: Conversation[]
+    _customer: CustomerProfile,
+    _conversations: Conversation[]
   ): any {
     return {
       riskLevel: 'LOW',
@@ -1388,7 +1388,7 @@ export class OmniChannelCustomerService {
 
   private projectLifetimeValue(
     customer: CustomerProfile,
-    conversations: Conversation[]
+    _conversations: Conversation[]
   ): any {
     return {
       projectedLTV: customer.lifetimeValue * 1.5,
@@ -1399,8 +1399,8 @@ export class OmniChannelCustomerService {
   }
 
   private identifyPersonalizationOpportunities(
-    customer: CustomerProfile,
-    conversations: Conversation[]
+    _customer: CustomerProfile,
+    _conversations: Conversation[]
   ): any[] {
     return [
       {
@@ -1417,9 +1417,9 @@ export class OmniChannelCustomerService {
   }
 
   private generateNextBestActions(
-    customer: CustomerProfile,
-    churnRisk: any,
-    opportunities: any[]
+    _customer: CustomerProfile,
+    _churnRisk: any,
+    _opportunities: any[]
   ): any[] {
     return [
       {
@@ -1435,23 +1435,23 @@ export class OmniChannelCustomerService {
     ];
   }
 
-  private async getProductContext(message: Message): Promise<any> {
+  private async getProductContext(_message: Message): Promise<any> {
     return {};
   }
 
-  private async findSimilarCases(message: Message): Promise<any[]> {
+  private async findSimilarCases(_message: Message): Promise<any[]> {
     return [];
   }
 
-  private getAgentStyle(agentId?: string): any {
+  private getAgentStyle(_agentId?: string): any {
     return {};
   }
 
-  private estimateResponseTime(suggestion: any): number {
+  private estimateResponseTime(_suggestion: any): number {
     return 30;
   }
 
-  private assessReplyRisk(suggestion: any, conversation: Conversation): any {
+  private assessReplyRisk(_suggestion: any, _conversation: Conversation): any {
     return {
       level: 'low',
       concerns: [],
@@ -1459,7 +1459,7 @@ export class OmniChannelCustomerService {
     };
   }
 
-  private getChannelConfig(channel: ChannelType): any {
+  private getChannelConfig(_channel: ChannelType): any {
     return {};
   }
 
@@ -1894,7 +1894,7 @@ const ChurnRiskLevel = {
   CRITICAL: 'critical' as any
 };
 
-const DeviceType = {
+const _DeviceType = {
   DESKTOP: 'desktop' as any,
   MOBILE: 'mobile' as any,
   TABLET: 'tablet' as any,
@@ -1904,9 +1904,9 @@ const DeviceType = {
 };
 
 class RoutingEngine {
-  constructor(config: RoutingConfig) {}
+  constructor(_config: RoutingConfig) {}
 
-  async findBestAgent(queue: QueueInfo, conversation: Conversation): Promise<AgentInfo | null> {
+  async findBestAgent(_queue: QueueInfo, _conversation: Conversation): Promise<AgentInfo | null> {
     return null;
   }
 }

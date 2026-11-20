@@ -14,6 +14,7 @@ import { z } from 'zod';
 import prisma from '@/lib/db';
 import { AuthService } from '@/lib/auth';
 import { CacheService } from '@/lib/redis';
+import { buildAuthCookies, buildClearedAuthCookies, readCookie, REFRESH_COOKIE } from '@/lib/auth-cookies';
 
 // Zod 验证 schema
 const RegisterSchema = z.object({
@@ -28,10 +29,6 @@ const LoginSchema = z.object({
   password: z.string().min(1, '请输入密码'),
 });
 
-const RefreshTokenSchema = z.object({
-  refreshToken: z.string().min(1, '请提供刷新令牌'),
-});
-
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -43,7 +40,9 @@ export async function POST(request: NextRequest) {
       case 'login':
         return handleLogin(body);
       case 'refresh':
-        return handleRefreshToken(body);
+        return handleRefreshToken(body, request);
+      case 'logout':
+        return handleLogout(request);
       default:
         return NextResponse.json(
           { error: '不支持的操作', code: 'INVALID_ACTION' },
@@ -105,16 +104,21 @@ async function handleRegister(body: unknown) {
     7 * 24 * 60 * 60 // 7天
   );
 
-  return NextResponse.json(
+  // HttpOnly Cookie 下发（R3：令牌不再经 body 交前端明文存储）
+  const response = NextResponse.json(
     {
       message: '注册成功',
       data: {
         user,
-        tokens,
+        tokens: { accessToken: tokens.accessToken, refreshToken: tokens.refreshToken },
       },
     },
     { status: 201 }
   );
+  buildAuthCookies(tokens.accessToken, tokens.refreshToken).forEach((c) =>
+    response.headers.append('Set-Cookie', c)
+  );
+  return response;
 }
 
 async function handleLogin(body: unknown) {
@@ -162,7 +166,8 @@ async function handleLogin(body: unknown) {
     7 * 24 * 60 * 60 // 7天
   );
 
-  return NextResponse.json({
+  // HttpOnly Cookie 下发（R3）
+  const response = NextResponse.json({
     message: '登录成功',
     data: {
       user: {
@@ -172,17 +177,30 @@ async function handleLogin(body: unknown) {
         role: user.role,
         avatar: user.avatar,
       },
-      tokens,
+      tokens: { accessToken: tokens.accessToken, refreshToken: tokens.refreshToken },
     },
   });
+  buildAuthCookies(tokens.accessToken, tokens.refreshToken).forEach((c) =>
+    response.headers.append('Set-Cookie', c)
+  );
+  return response;
 }
 
-async function handleRefreshToken(body: unknown) {
-  // 验证输入
-  const validated = RefreshTokenSchema.parse(body);
+async function handleRefreshToken(body: unknown, request: NextRequest) {
+  // 刷新令牌通道：HttpOnly Cookie 优先，body 兼容（R3 轮换入口）
+  const cookieToken = readCookie(request.headers.get('cookie'), REFRESH_COOKIE);
+  const bodyToken = (body as { refreshToken?: string })?.refreshToken;
+  const presented = cookieToken ?? bodyToken;
+
+  if (!presented) {
+    return NextResponse.json(
+      { error: '请提供刷新令牌', code: 'TOKEN_MISSING' },
+      { status: 400 }
+    );
+  }
 
   // 验证刷新令牌
-  const decoded = AuthService.verifyRefreshToken(validated.refreshToken);
+  const decoded = AuthService.verifyRefreshToken(presented);
 
   if (!decoded) {
     return NextResponse.json(
@@ -194,7 +212,7 @@ async function handleRefreshToken(body: unknown) {
   // 从缓存中获取存储的刷新令牌进行比对
   const storedToken = await CacheService.get<string>(`refresh:${decoded.userId}`);
 
-  if (!storedToken || storedToken !== validated.refreshToken) {
+  if (!storedToken || storedToken !== presented) {
     return NextResponse.json(
       { error: '刷新令牌已失效，请重新登录', code: 'TOKEN_REVOKED' },
       { status: 401 }
@@ -223,10 +241,33 @@ async function handleRefreshToken(body: unknown) {
     7 * 24 * 60 * 60 // 7天
   );
 
-  return NextResponse.json({
+  // 轮换：新令牌对经 HttpOnly Cookie 下发（旧 refresh 即刻作废）
+  const response = NextResponse.json({
     message: '令牌刷新成功',
     data: {
-      tokens: newTokens,
+      tokens: {
+        accessToken: newTokens.accessToken,
+        refreshToken: newTokens.refreshToken,
+      },
     },
   });
+  buildAuthCookies(newTokens.accessToken, newTokens.refreshToken).forEach((c) =>
+    response.headers.append('Set-Cookie', c)
+  );
+  return response;
+}
+
+async function handleLogout(request: NextRequest) {
+  // 撤销缓存的刷新令牌（存在即作废）
+  const cookieToken = readCookie(request.headers.get('cookie'), REFRESH_COOKIE);
+  if (cookieToken) {
+    const decoded = AuthService.verifyRefreshToken(cookieToken);
+    if (decoded) {
+      await CacheService.del(`refresh:${decoded.userId}`);
+    }
+  }
+
+  const response = NextResponse.json({ message: '已退出登录', data: {} });
+  buildClearedAuthCookies().forEach((c) => response.headers.append('Set-Cookie', c));
+  return response;
 }

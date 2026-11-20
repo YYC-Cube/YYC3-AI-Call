@@ -255,21 +255,21 @@ class MFAManager {
     return `${userId}@example.com`;
   }
 
-  private async getStoredSecret(userId: string): Promise<string | null> {
+  private async getStoredSecret(_userId: string): Promise<string | null> {
     // TODO: 从数据库/Redis获取存储的TOTP密钥
     return null;
   }
 
   private async storeVerificationCode(
-    userId: string,
-    method: string,
-    code: string,
-    expiresAt: number
+    _userId: string,
+    _method: string,
+    _code: string,
+    _expiresAt: number
   ): Promise<void> {
     // TODO: 存储验证码到Redis或数据库
   }
 
-  private async getStoredCode(userId: string, method: string): Promise<{
+  private async getStoredCode(_userId: string, _method: string): Promise<{
     code: string;
     expiresAt: number;
   } | null> {
@@ -277,37 +277,37 @@ class MFAManager {
     return null;
   }
 
-  private async deleteStoredCode(userId: string, method: string): Promise<void> {
+  private async deleteStoredCode(_userId: string, _method: string): Promise<void> {
     // TODO: 删除已使用的验证码
   }
 
-  private async getStoredRecoveryCodes(userId: string): Promise<string[] | null> {
+  private async getStoredRecoveryCodes(_userId: string): Promise<string[] | null> {
     // TODO: 获取恢复代码列表
     return null;
   }
 
-  private async useRecoveryCode(userId: string, code: string): Promise<void> {
+  private async useRecoveryCode(_userId: string, _code: string): Promise<void> {
     // TODO: 标记恢复代码为已使用
   }
 
-  private async recordMFASuccess(userId: string, method: string): Promise<void> {
+  private async recordMFASuccess(_userId: string, _method: string): Promise<void> {
     // TODO: 记录MFA成功事件
   }
 
-  private async recordMFAFailure(userId: string, method: string): Promise<void> {
+  private async recordMFAFailure(_userId: string, _method: string): Promise<void> {
     // TODO: 记录MFA失败事件（用于检测暴力攻击）
   }
 
-  private async isMFAEnabledForUser(userId: string): Promise<boolean> {
+  private async isMFAEnabledForUser(_userId: string): Promise<boolean> {
     // TODO: 检查用户是否启用了MFA
     return false;
   }
 
-  private async clearMFAData(userId: string): Promise<void> {
+  private async clearMFAData(_userId: string): Promise<void> {
     // TODO: 清除用户的所有MFA数据
   }
 
-  private async verifyPassword(userId: string, password: string): Promise<boolean> {
+  private async verifyPassword(_userId: string, _password: string): Promise<boolean> {
     // TODO: 验证用户密码
     return false;
   }

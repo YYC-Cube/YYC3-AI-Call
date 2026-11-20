@@ -117,7 +117,7 @@ export class ZhipuAIClient {
     }
   }
 
-  async generateEmbedding(text: string): Promise<number[]> {
+  async generateEmbedding(_text: string): Promise<number[]> {
     console.log('📊 Generating embedding with Zhipu AI...');
 
     await new Promise((resolve) => setTimeout(resolve, 500));

@@ -1,4 +1,4 @@
-import { OAuthProvider, type OAuthConfig, type OIDCConfig } from './types';
+import { OAuthProvider, type OAuthConfig, type OIDCConfig as _OIDCConfig } from './types';
 
 class OAuthProviderRegistry {
   private providers: Map<OAuthProvider, OAuthConfig> = new Map();

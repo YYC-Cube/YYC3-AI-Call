@@ -3,7 +3,7 @@ import { AIClient } from "@/lib/ai-client";
 // Polyfill TextEncoder/TextDecoder if missing (Jest Node env)
 const needPolyfill = typeof (global as any).TextEncoder === "undefined";
 if (needPolyfill) {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+   
   const { TextEncoder, TextDecoder } = require("util");
   (global as any).TextEncoder = TextEncoder;
   (global as any).TextDecoder = TextDecoder;
@@ -11,7 +11,7 @@ if (needPolyfill) {
 
 // Polyfill ReadableStream if missing
 if (typeof (global as any).ReadableStream === "undefined") {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+   
   const { ReadableStream } = require("stream/web");
   (global as any).ReadableStream = ReadableStream;
 }

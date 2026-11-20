@@ -12,6 +12,8 @@ category: documentation
 language: zh-CN
 ---
 
+> 🗄️ **归档声明（2026-11-20）**：本文为历史阶段执行报告，正文链接指向当时工作区快照路径，不再随主线演进修正；当前验收与演进以 [验收系统](../YYC3-项目闭环-验收系统/README.md) 为准。
+
 # YYC³ 全家桶全局协同集成报告
 
 > **版本**: 1.0.0  
@@ -295,7 +297,7 @@ return <div {...motionProps}>内容</div>;
 
 ### 1. 全局配置管理器
 
-**文件位置**: [`config/yyc3-global-config.ts`](../config/yyc3-global-config.ts)
+**文件位置**: [`config/yyc3-global-config.ts`(../../config/yyc3-global-config.tsundefined)
 
 **核心特性**:
 - 单例模式确保全局唯一
@@ -339,7 +341,7 @@ interface YYC3GlobalConfig {
 
 ### 2. 完整集成示例
 
-**文件位置**: [`examples/yyc3-full-integration-demo.ts`](../examples/yyc3-full-integration-demo.ts)
+**文件位置**: [`examples/yyc3-full-integration-demo.ts`(../../examples/yyc3-full-integration-demo.tsundefined)
 
 **演示流程**（7步）:
 
@@ -881,7 +883,7 @@ this.emotionEngine = new MultimodalEmotionEngine({
 
 ## 📄 许可证
 
-本项目基于 MIT License 开源。详见 [LICENSE](../LICENSE) 文件。
+本项目基于 MIT License 开源。详见 [LICENSE(../../LICENSEundefined) 文件。
 
 ---
 

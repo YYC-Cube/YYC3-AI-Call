@@ -9,7 +9,7 @@ import {
 } from '@/lib/core/security-middleware';
 
 export async function GET(request: NextRequest) {
-  const gate = requireAuth(request);
+  const _gate = requireAuth(request);
   try {
     const { searchParams } = new URL(request.url);
     const action = searchParams.get('action');
@@ -72,7 +72,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const gate = requireAuth(request);
+  const _gate = requireAuth(request);
   try {
     const clientIP =
       request.headers.get('x-forwarded-for')?.split(',')[0] ||
@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
 
     const rateLimitResult = globalRateLimiter.checkLimit(clientIP);
     if (!rateLimitResult.allowed) {
-      let response = NextResponse.json(
+      const response = NextResponse.json(
         {
           success: false,
           error: 'Rate limit exceeded. Please try again later.',
@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
 
     const securityCheck = await securityMiddleware(request);
     if (!securityCheck.success) {
-      let response = NextResponse.json(
+      const response = NextResponse.json(
         {
           success: false,
           error: securityCheck.error,
@@ -221,7 +221,7 @@ export async function POST(request: NextRequest) {
         ? error.message
         : 'Internal server error';
 
-    let response = NextResponse.json(
+    const response = NextResponse.json(
       {
         success: false,
         error: errorMessage,

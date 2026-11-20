@@ -106,7 +106,7 @@ interface FormSubmission {
 }
 
 // 表单统计类型
-interface FormAnalytics {
+interface _FormAnalytics {
   formId: string
   formName: string
   totalViews: number
@@ -466,8 +466,8 @@ const colorSystem = {
 
 export default function IntelligentForms() {
   const [activeTab, setActiveTab] = useState("overview")
-  const [formTemplates, setFormTemplates] = useState<FormTemplate[]>(mockFormTemplates)
-  const [submissions, setSubmissions] = useState<FormSubmission[]>(mockSubmissions)
+  const [formTemplates, _setFormTemplates] = useState<FormTemplate[]>(mockFormTemplates)
+  const [submissions, _setSubmissions] = useState<FormSubmission[]>(mockSubmissions)
   const [selectedForm, setSelectedForm] = useState<FormTemplate | null>(null)
   const [selectedSubmission, setSelectedSubmission] = useState<FormSubmission | null>(null)
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)

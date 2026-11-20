@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { validateInput, preventXSS, ValidationError } from './validation';
 import { rateLimiter, RateLimitConfigs } from './rate-limiter';
-import { rbac, Permission, Role, type UserContext } from './rbac';
+import { rbac, Permission, Role as _Role, type UserContext } from './rbac';
 
 export type { UserContext };
 

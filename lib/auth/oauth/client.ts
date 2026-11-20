@@ -1,4 +1,4 @@
-import { OAuthProvider, type OAuthConfig, type OIDCConfig, type OAuthUserInfo, type AuthTokenPair } from './types';
+import { OAuthProvider, type OAuthConfig, type OIDCConfig as _OIDCConfig, type OAuthUserInfo, type AuthTokenPair } from './types';
 import { oauthProviderRegistry } from './provider-registry';
 import { logger } from '../../logger';
 

@@ -16,7 +16,7 @@
 
 import { WhisperASRService, TranscriptionResult } from './asr/whisper-service';
 import { VITSTTSService, SynthesisResult } from './tts/vits-service';
-import { QwenLLMService, LLMResponse } from './llm/qwen-llm-service';
+import { QwenLLMService, LLMResponse as _LLMResponse } from './llm/qwen-llm-service';
 import { QwenEmbeddingService, SimilarityResult } from './embedding/qwen-embedding-service';
 
 export interface AIPlatformConfig {
@@ -109,7 +109,7 @@ export class AIPlatform {
     return AIPlatform.instance;
   }
 
-  async initialize(config?: AIPlatformConfig): Promise<void> {
+  async initialize(_config?: AIPlatformConfig): Promise<void> {
     if (this.isInitialized) return;
 
     console.log('🚀 初始化 AI 中台平台...');

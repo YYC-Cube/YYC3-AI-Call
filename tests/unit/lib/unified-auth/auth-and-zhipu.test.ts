@@ -8,7 +8,7 @@ import {
   UnifiedAuthConfig,
 } from '@/lib/unified-auth/types';
 import {
-  ZhipuChatMessage,
+  ZhipuChatMessage as _ZhipuChatMessage,
   ZhipuChatCompletionRequest,
 } from '@/lib/unified-auth/zhipu-client';
 

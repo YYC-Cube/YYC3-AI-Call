@@ -720,7 +720,7 @@ export class SmartApprovalEngine {
     return titles[type] || '审批申请';
   }
 
-  private async determineRoute(input: CreateRequestInput): Promise<ApprovalRoute> {
+  private async determineRoute(_input: CreateRequestInput): Promise<ApprovalRoute> {
     const matchingRoutes = Array.from(this.routeTemplates.values())
       .filter(route => route.isActive)
       .filter(route => !route.expiryDate || route.expiryDate > new Date())
@@ -956,7 +956,7 @@ export class SmartApprovalEngine {
     console.log('Sending notification:', notification);
   }
 
-  private async performInitialComplianceCheck(input: CreateRequestInput): Promise<ComplianceCheckResult> {
+  private async performInitialComplianceCheck(_input: CreateRequestInput): Promise<ComplianceCheckResult> {
     return {
       isChecked: true,
       status: 'compliant' as any,
@@ -995,23 +995,23 @@ export class SmartApprovalEngine {
     });
   }
 
-  private async runComplianceChecks(request: ApprovalRequest): Promise<any> {
+  private async runComplianceChecks(_request: ApprovalRequest): Promise<any> {
     return { score: 90, issues: [], recommendations: [] };
   }
 
-  private async validateBudget(request: ApprovalRequest): Promise<any> {
+  private async validateBudget(_request: ApprovalRequest): Promise<any> {
     return { score: 85, issues: [], recommendations: [] };
   }
 
-  private async validatePolicies(request: ApprovalRequest): Promise<any> {
+  private async validatePolicies(_request: ApprovalRequest): Promise<any> {
     return { score: 95, issues: [], recommendations: [] };
   }
 
-  private async checkForDuplicates(request: ApprovalRequest): Promise<any> {
+  private async checkForDuplicates(_request: ApprovalRequest): Promise<any> {
     return { score: 100, issues: [], recommendations: [] };
   }
 
-  private async assessRisk(request: ApprovalRequest): Promise<any> {
+  private async assessRisk(_request: ApprovalRequest): Promise<any> {
     return { score: 88, issues: [], recommendations: [] };
   }
 
@@ -1026,26 +1026,26 @@ export class SmartApprovalEngine {
     };
   }
 
-  private async analyzeHistoricalPatterns(request: ApprovalRequest): Promise<any> {
+  private async analyzeHistoricalPatterns(_request: ApprovalRequest): Promise<any> {
     return {};
   }
 
-  private async analyzeApproverWorkload(request: ApprovalRequest): Promise<any> {
+  private async analyzeApproverWorkload(_request: ApprovalRequest): Promise<any> {
     return {};
   }
 
-  private async calculateSLAImpact(request: ApprovalRequest): Promise<any> {
+  private async calculateSLAImpact(_request: ApprovalRequest): Promise<any> {
     return {};
   }
 
-  private calculateRouteMatch(route: ApprovalRoute, context: any): number {
+  private calculateRouteMatch(_route: ApprovalRoute, _context: any): number {
     return Math.random() * 30 + 70;
   }
 
   private async optimizeRouteSteps(
     route: ApprovalRoute, 
-    context: any, 
-    analysis: any
+    _context: any, 
+    _analysis: any
   ): Promise<any[]> {
     return route.steps;
   }
@@ -1054,11 +1054,11 @@ export class SmartApprovalEngine {
     return steps.reduce((total, step) => total + (step.slaTarget || 24), 0);
   }
 
-  private generateOptimizationTips(steps: any[], context: any): string[] {
+  private generateOptimizationTips(_steps: any[], _context: any): string[] {
     return [];
   }
 
-  private identifyRisks(steps: any[], context: any): string[] {
+  private identifyRisks(_steps: any[], _context: any): string[] {
     return [];
   }
 
@@ -1102,7 +1102,7 @@ export class SmartApprovalEngine {
     };
   }
 
-  private calculateBottleneckMetrics(requests: ApprovalRequest[]): any {
+  private calculateBottleneckMetrics(_requests: ApprovalRequest[]): any {
     return {
       avgProcessingTime: 48,
       medianProcessingTime: 36,
@@ -1115,15 +1115,15 @@ export class SmartApprovalEngine {
     };
   }
 
-  private identifyProcessBottlenecks(requests: ApprovalRequest[]): any[] {
+  private identifyProcessBottlenecks(_requests: ApprovalRequest[]): any[] {
     return [];
   }
 
-  private identifyApproverBottlenecks(requests: ApprovalRequest[]): any[] {
+  private identifyApproverBottlenecks(_requests: ApprovalRequest[]): any[] {
     return [];
   }
 
-  private generateBottleneckRecommendations(metrics: any, process: any[], approvers: any[]): any[] {
+  private generateBottleneckRecommendations(_metrics: any, _process: any[], _approvers: any[]): any[] {
     return [];
   }
 

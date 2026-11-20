@@ -12,7 +12,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import {
   globalErrorHandler,
-  inputValidator,
+  inputValidator as _inputValidator,
   performanceMonitor,
   securityUtils as SecurityUtils,
   responseFormatter as ResponseFormatter,

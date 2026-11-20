@@ -19,7 +19,7 @@ describe("useAI hook", () => {
     const onSuccess = jest.fn();
     const { result } = renderHook(() => useAI({ onSuccess }));
 
-    const data = await act(async () => {
+    const _data = await act(async () => {
       return await result.current.chat([
         { role: "user", content: "hello" },
       ]);

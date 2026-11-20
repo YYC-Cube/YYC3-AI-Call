@@ -438,7 +438,7 @@ const colorSystem = {
 export default function MobileApplication() {
   const [activeTab, setActiveTab] = useState("overview")
   const [selectedApp, setSelectedApp] = useState<MobileApp | null>(null)
-  const [selectedUser, setSelectedUser] = useState<MobileUser | null>(null)
+  const [_selectedUser, setSelectedUser] = useState<MobileUser | null>(null)
   const [isQRDialogOpen, setIsQRDialogOpen] = useState(false)
   const [isNotificationDialogOpen, setIsNotificationDialogOpen] = useState(false)
   const [selectedPlatform, setSelectedPlatform] = useState("all")

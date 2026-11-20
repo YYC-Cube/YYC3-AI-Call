@@ -316,7 +316,7 @@ export class SecurityUtils {
     maxRequests: number = 100
   ): { allowed: boolean; remaining: number; resetTime: Date } {
     const now = Date.now();
-    const windowStart = now - windowMs;
+    const _windowStart = now - windowMs;
 
     // 使用内存存储速率限制数据（生产环境应使用Redis）
     const rateLimitStore = new Map<string, { count: number; resetTime: number }>();

@@ -9,7 +9,7 @@
  * @license MIT
  */
 
-import { Readable } from 'stream';
+import { Readable as _Readable } from 'stream';
 
 export interface TranscriptionResult {
   text: string;

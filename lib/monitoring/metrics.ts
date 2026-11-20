@@ -1,4 +1,4 @@
-interface MetricValue {
+interface _MetricValue {
   value: number;
   timestamp: number;
   labels?: Record<string, string>;

@@ -120,7 +120,7 @@ export class ImageProcessor {
     }
   }
 
-  private async describeImage(input: MediaInput): Promise<ImageAnalysisResult> {
+  private async describeImage(_input: MediaInput): Promise<ImageAnalysisResult> {
     console.log('🖼️ Describing image...');
 
     await new Promise((resolve) => setTimeout(resolve, 1500));
@@ -136,7 +136,7 @@ export class ImageProcessor {
     };
   }
 
-  private async extractTextFromImage(input: MediaInput): Promise<ImageAnalysisResult> {
+  private async extractTextFromImage(_input: MediaInput): Promise<ImageAnalysisResult> {
     console.log('📝 Extracting text from image (OCR)...');
 
     await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -152,7 +152,7 @@ export class ImageProcessor {
     };
   }
 
-  private async classifyImage(input: MediaInput): Promise<ImageAnalysisResult> {
+  private async classifyImage(_input: MediaInput): Promise<ImageAnalysisResult> {
     console.log('🏷️ Classifying image...');
 
     await new Promise((resolve) => setTimeout(resolve, 1200));
@@ -176,7 +176,7 @@ export class ImageProcessor {
     };
   }
 
-  private async detectObjects(input: MediaInput): Promise<ImageAnalysisResult> {
+  private async detectObjects(_input: MediaInput): Promise<ImageAnalysisResult> {
     console.log('🔍 Detecting objects in image...');
 
     await new Promise((resolve) => setTimeout(resolve, 1800));
@@ -201,7 +201,7 @@ export class ImageProcessor {
     };
   }
 
-  private async analyzeFace(input: MediaInput): Promise<ImageAnalysisResult> {
+  private async analyzeFace(_input: MediaInput): Promise<ImageAnalysisResult> {
     console.log('😊 Analyzing face...');
 
     await new Promise((resolve) => setTimeout(resolve, 2200));
@@ -232,7 +232,7 @@ export class ImageProcessor {
     };
   }
 
-  private async generateCaption(input: MediaInput): Promise<ImageAnalysisResult> {
+  private async generateCaption(_input: MediaInput): Promise<ImageAnalysisResult> {
     console.log('✨ Generating caption for image...');
 
     await new Promise((resolve) => setTimeout(resolve, 1000));

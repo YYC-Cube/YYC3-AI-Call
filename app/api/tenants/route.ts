@@ -5,9 +5,9 @@ import { tenantMiddleware } from '@/lib/tenant/middleware';
 import { logger } from '@/lib/logger';
 
 export async function GET(request: NextRequest) {
-  const gate = requireAuth(request);
+  const _gate = requireAuth(request);
   try {
-    const tenantContext = await tenantMiddleware.resolveTenant(request);
+    const _tenantContext = await tenantMiddleware.resolveTenant(request);
 
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1', 10);
@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const gate = requireAuth(request);
+  const _gate = requireAuth(request);
   try {
     const body = await request.json();
     const { name, slug, ownerId, ownerEmail, plan, isolationStrategy, settings } = body;

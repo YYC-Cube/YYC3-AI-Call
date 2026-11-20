@@ -11,8 +11,8 @@ import {
   MetricCategory,
   ChangeDirection,
   AlertSeverity,
-  InsightType,
-  RecommendationType
+  InsightType as _InsightType,
+  RecommendationType as _RecommendationType
 } from './types';
 
 export class IntelligentBusinessCockpit {
@@ -339,7 +339,7 @@ export class IntelligentBusinessCockpit {
     };
   }
 
-  private async analyzeData(data: RelevantData, context?: QueryContext): Promise<AnalysisResult> {
+  private async analyzeData(data: RelevantData, _context?: QueryContext): Promise<AnalysisResult> {
     const answerType = this.determineAnswerType(data.queryContext.intent);
     const answer = this.generateAnswer(data);
     const summary = this.generateSummary(data);
@@ -550,7 +550,7 @@ export class IntelligentBusinessCockpit {
     }));
   }
 
-  private generateFollowUpSuggestions(analysis: AnalysisResult): any[] {
+  private generateFollowUpSuggestions(_analysis: AnalysisResult): any[] {
     return [
       {
         question: '这个指标的详细构成是什么？',
@@ -614,7 +614,7 @@ export class IntelligentBusinessCockpit {
     return 'OUTLIER';
   }
 
-  private generatePossibleCauses(metric: CockpitMetric, deviation: number): any[] {
+  private generatePossibleCauses(metric: CockpitMetric, _deviation: number): any[] {
     return [
       {
         description: '季节性因素影响',
@@ -672,7 +672,7 @@ export class IntelligentBusinessCockpit {
     });
   }
 
-  private async fetchObjectives(timeRange: TimeRange): Promise<any[]> {
+  private async fetchObjectives(_timeRange: TimeRange): Promise<any[]> {
     return [];
   }
 
@@ -680,7 +680,7 @@ export class IntelligentBusinessCockpit {
     return objectives;
   }
 
-  private async performAlignmentAnalysis(progress: any[]): Promise<any> {
+  private async performAlignmentAnalysis(_progress: any[]): Promise<any> {
     return {
       companyAlignment: { score: 85, maxScore: 100, percentage: 85, grade: 'B', trend: ChangeDirection.UP },
       departmentAlignment: [],
@@ -690,11 +690,11 @@ export class IntelligentBusinessCockpit {
     };
   }
 
-  private async assessRisks(progress: any[]): Promise<any[]> {
+  private async assessRisks(_progress: any[]): Promise<any[]> {
     return [];
   }
 
-  private async generateObjectiveRecommendations(risks: any[]): Promise<any[]> {
+  private async generateObjectiveRecommendations(_risks: any[]): Promise<any[]> {
     return [];
   }
 
@@ -782,7 +782,7 @@ export class IntelligentBusinessCockpit {
     return ['erp', 'crm', 'hrms', 'finance', 'analytics'];
   }
 
-  private async queryDataSource(source: string, options?: QueryOptions): Promise<CockpitMetric[]> {
+  private async queryDataSource(source: string, _options?: QueryOptions): Promise<CockpitMetric[]> {
     const mockMetrics: CockpitMetric[] = [
       {
         id: `${source}_revenue`,

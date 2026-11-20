@@ -12,6 +12,8 @@ category: documentation
 language: zh-CN
 ---
 
+> 🗄️ **归档声明（2026-11-20）**：本文为历史阶段执行报告，正文链接指向当时工作区快照路径，不再随主线演进修正；当前验收与演进以 [验收系统](../YYC3-项目闭环-验收系统/README.md) 为准。
+
 # 🚀 Phase 3: AI服务集成 - 实施完成报告
 
 ## 📋 执行概要
@@ -29,7 +31,7 @@ language: zh-CN
 ### ✅ 已完成的集成工作
 
 #### 1️⃣ **Qwen3-35B-A3B LLM 服务** (23GB MoE模型)
-**文件位置**: [qwen-llm-service.ts](../ai-services/llm/qwen-llm-service.ts)
+**文件位置**: [qwen-llm-service.ts(../../ai-services/llm/qwen-llm-service.tsundefined)
 
 **核心能力**:
 - ✅ 意图识别 (8种意图类型，JSON结构化输出)
@@ -76,7 +78,7 @@ const action = await llm.suggestNextAction({
 ---
 
 #### 2️⃣ **Qwen3-Embedding-8B 向量检索服务** (15GB)
-**文件位置**: [qwen-embedding-service.ts](../ai-services/embedding/qwen-embedding-service.ts)
+**文件位置**: [qwen-embedding-service.ts(../../ai-services/embedding/qwen-embedding-service.tsundefined)
 
 **核心能力**:
 - ✅ 文本向量化 (1024维向量)
@@ -130,7 +132,7 @@ const recommendations = await embedding.recommendProducts(
 ---
 
 #### 3️⃣ **AI 中台统一接口层**
-**文件位置**: [ai-platform.ts](../ai-services/ai-platform.ts)
+**文件位置**: [ai-platform.ts(../../ai-services/ai-platform.tsundefined)
 
 **架构设计** (对齐五维管理体系V2.0第5章):
 ```
@@ -195,7 +197,7 @@ const similar = await platform.findSimilarCustomers("企业客户", 5);
 ---
 
 #### 4️⃣ **五大智能外呼场景实现**
-**文件位置**: [intelligent-calling-scenarios.ts](../ai-services/examples/intelligent-calling-scenarios.ts)
+**文件位置**: [intelligent-calling-scenarios.ts(../../ai-services/examples/intelligent-calling-scenarios.tsundefined)
 
 | 场景 | 描述 | 核心能力 |
 |------|------|----------|
@@ -283,17 +285,17 @@ console.log(result5.shouldOfferDiscount); // true/false
 
 | 子维度 | 实现内容 | 文件位置 |
 |--------|----------|----------|
-| **数 (数据智能)** | Qwen3-35B-A3B 意图识别、情感分析、话术生成 | [qwen-llm-service.ts](../ai-services/llm/qwen-llm-service.ts) |
-| **智 (AI能力)** | Qwen3-Embedding-8B 语义搜索、知识库检索 | [qwen-embedding-service.ts](../ai-services/embedding/qwen-embedding-service.ts) |
-| **协 (协同平台)** | AI中台统一编排、五维协同引擎 | [ai-platform.ts](../ai-services/ai-platform.ts) |
+| **数 (数据智能)** | Qwen3-35B-A3B 意图识别、情感分析、话术生成 | [qwen-llm-service.ts(../../ai-services/llm/qwen-llm-service.tsundefined) |
+| **智 (AI能力)** | Qwen3-Embedding-8B 语义搜索、知识库检索 | [qwen-embedding-service.ts(../../ai-services/embedding/qwen-embedding-service.tsundefined) |
+| **协 (协同平台)** | AI中台统一编排、五维协同引擎 | [ai-platform.ts(../../ai-services/ai-platform.tsundefined) |
 
 ### 维度1: 前线运维管理层 ✅ 部分对齐
 
 | 能力 | 场景覆盖 | 文件位置 |
 |------|----------|----------|
-| **营 (营销增长)** | 产品介绍外呼、销售转化引导 | [intelligent-calling-scenarios.ts#L50-L100](../ai-services/examples/intelligent-calling-scenarios.ts#L50-L100) |
-| **运 (运营调度)** | 客户回访跟进、预约提醒服务 | [intelligent-calling-scenarios.ts#L105-L155](../ai-services/examples/intelligent-calling-scenarios.ts#L105-L155) |
-| **维 (维护保障)** | 投诉处理流程、问题解决推荐 | [intelligent-calling-scenarios.ts#L160-L210](../ai-services/examples/intelligent-calling-scenarios.ts#L160-L210) |
+| **营 (营销增长)** | 产品介绍外呼、销售转化引导 | [intelligent-calling-scenarios.ts#L50-L100(../../ai-services/examples/intelligent-calling-scenarios.ts#L50-L100) |
+| **运 (运营调度)** | 客户回访跟进、预约提醒服务 | [intelligent-calling-scenarios.ts#L105-L155(../../ai-services/examples/intelligent-calling-scenarios.ts#L105-L155) |
+| **维 (维护保障)** | 投诉处理流程、问题解决推荐 | [intelligent-calling-scenarios.ts#L160-L210(../../ai-services/examples/intelligent-calling-scenarios.ts#L160-L210) |
 
 ---
 

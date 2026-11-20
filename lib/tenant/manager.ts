@@ -130,7 +130,7 @@ class TenantManager {
 
   async findById(tenantId: string): Promise<Tenant | null> {
     // 先查缓存
-    let tenant = this.tenantCache.get(tenantId);
+    const tenant = this.tenantCache.get(tenantId);
     
     if (tenant) {
       return tenant;
@@ -232,7 +232,7 @@ class TenantManager {
     return true;
   }
 
-  async suspendTenant(tenantId: string, reason?: string): Promise<Tenant> {
+  async suspendTenant(tenantId: string, _reason?: string): Promise<Tenant> {
     return this.updateTenant(tenantId, {
       status: TenantStatus.SUSPENDED,
     });

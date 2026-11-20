@@ -19,7 +19,7 @@
  */
 
 import Redis from 'ioredis';
-import crypto from 'crypto';
+import _crypto from 'crypto';
 
 // ============================================
 // 类型定义
@@ -585,12 +585,12 @@ export class MultiLevelCache {
     };
   }
 
-  private recordHit(startTime: number): void {
+  private recordHit(_startTime: number): void {
     this.stats.hits++;
     // TODO: 记录命中耗时
   }
 
-  private recordMiss(startTime: number): void {
+  private recordMiss(_startTime: number): void {
     this.stats.misses++;
     // TODO: 记录未命中耗时
   }

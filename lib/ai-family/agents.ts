@@ -5,7 +5,7 @@ import { AI_FAMILY_AGENTS } from './definitions';
 import {
   AgentConfig,
   TaskInput,
-  TaskOutput,
+  TaskOutput as _TaskOutput,
 } from './types';
 
 export class YuanqiTianshuAgent extends BaseAgent {
@@ -113,7 +113,7 @@ export class YuanqiTianshuAgent extends BaseAgent {
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
     const feedback = taskInput.data.feedback as string[];
-    const metrics = taskInput.data.metrics as Record<string, number>;
+    const _metrics = taskInput.data.metrics as Record<string, number>;
 
     return {
       data: {
@@ -180,7 +180,7 @@ export class ZhiyunShouhuAgent extends BaseAgent {
   private async analyzeBehavior(taskInput: TaskInput) {
     await new Promise((resolve) => setTimeout(resolve, 900));
     
-    const events = taskInput.data.events as Array<{ type: string; timestamp: string }>;
+    const _events = taskInput.data.events as Array<{ type: string; timestamp: string }>;
     const anomalyCount = Math.floor(Math.random() * 3);
 
     return {
@@ -203,7 +203,7 @@ export class ZhiyunShouhuAgent extends BaseAgent {
     };
   }
 
-  private async detectThreats(taskInput: TaskInput) {
+  private async detectThreats(_taskInput: TaskInput) {
     await new Promise((resolve) => setTimeout(resolve, 700));
     
     const threatLevel = Math.random();
@@ -263,7 +263,7 @@ export class ZhiyunShouhuAgent extends BaseAgent {
     };
   }
 
-  private async securityAudit(taskInput: TaskInput) {
+  private async securityAudit(_taskInput: TaskInput) {
     await new Promise((resolve) => setTimeout(resolve, 2000));
     
     const complianceChecks = [

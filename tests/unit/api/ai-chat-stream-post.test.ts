@@ -2,7 +2,7 @@
 // Polyfills for Node/Jest if needed
 // @ts-ignore
 if (typeof (global as any).TextEncoder === "undefined") {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+   
   const { TextEncoder, TextDecoder } = require("util");
   // @ts-ignore
   (global as any).TextEncoder = TextEncoder;
@@ -11,7 +11,7 @@ if (typeof (global as any).TextEncoder === "undefined") {
 }
 // @ts-ignore
 if (typeof (global as any).ReadableStream === "undefined") {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+   
   const { ReadableStream } = require("stream/web");
   // @ts-ignore
   (global as any).ReadableStream = ReadableStream;

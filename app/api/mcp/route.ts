@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/api-auth';
-import { MCPServer, MCPClient, MCPMessageType, MCPRole } from '@/lib/mcp';
+import { MCPServer, MCPClient as _MCPClient, MCPMessageType, MCPRole } from '@/lib/mcp';
 
 const mcpServer = new MCPServer({
   name: 'YYC3-MCP-Server',
@@ -102,7 +102,7 @@ const mcpServer = new MCPServer({
 });
 
 export async function POST(request: NextRequest) {
-  const gate = requireAuth(request);
+  const _gate = requireAuth(request);
   try {
     const body = await request.json();
     const { action, ...params } = body;
@@ -192,7 +192,7 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
-  const gate = requireAuth(request);
+  const _gate = requireAuth(request);
   const config = mcpServer.getConfig();
   const tools = mcpServer.getToolNames();
   const resources = mcpServer.getResourceURIs();

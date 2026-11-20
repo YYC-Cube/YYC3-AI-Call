@@ -290,7 +290,7 @@ export class BatchOperations {
 
         updatedCount++;
         await prisma.$disconnect();
-      } catch (error) {
+      } catch (_error) {
         errorCount++;
       }
 

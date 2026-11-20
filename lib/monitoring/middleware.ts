@@ -1,9 +1,9 @@
-import { type NextRequest, type NextFetchEvent } from 'next/server';
+import { type NextRequest, type NextFetchEvent as _NextFetchEvent } from 'next/server';
 import { metrics } from './metrics';
 
 export function createMonitoringMiddleware() {
   return {
-    requestHandler: (request: NextRequest): { requestId: string; startTime: number } => {
+    requestHandler: (_request: NextRequest): { requestId: string; startTime: number } => {
       const requestId = `req_${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 10)}`;
       const startTime = Date.now();
 
@@ -219,7 +219,7 @@ export class HealthChecker {
         if (!isHealthy) {
           allHealthy = false;
         }
-      } catch (error) {
+      } catch (_error) {
         results.push({ name, status: false });
         allHealthy = false;
       }

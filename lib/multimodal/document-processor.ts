@@ -163,7 +163,7 @@ ${Array.from({ length: pageCount }, (_: unknown, i: number) => `【第${i + 1}�
     };
   }
 
-  private async summarizeDocument(input: MediaInput): Promise<DocumentProcessingResult> {
+  private async summarizeDocument(_input: MediaInput): Promise<DocumentProcessingResult> {
     console.log('📋 Summarizing document...');
 
     await new Promise((resolve) => setTimeout(resolve, 2500));
@@ -237,7 +237,7 @@ ${Array.from({ length: pageCount }, (_: unknown, i: number) => `【第${i + 1}�
     };
   }
 
-  private async extractTables(input: MediaInput): Promise<DocumentProcessingResult> {
+  private async extractTables(_input: MediaInput): Promise<DocumentProcessingResult> {
     console.log('📊 Extracting tables from document...');
 
     await new Promise((resolve) => setTimeout(resolve, 1500));

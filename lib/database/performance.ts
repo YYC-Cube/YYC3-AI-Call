@@ -295,7 +295,7 @@ export async function generateIndexOptimizationPlan(): Promise<{
 }
 
 function suggestMissingIndex(sql: string): { table: string; columns: string; type: string; reason: string } | null {
-  const upperSQL = sql.toUpperCase();
+  const _upperSQL = sql.toUpperCase();
 
   // 检测FROM子句中的表名
   const fromMatch = sql.match(/FROM\s+"?(\w+)"?\s+/i);

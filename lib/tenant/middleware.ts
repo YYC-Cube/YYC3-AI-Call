@@ -1,4 +1,4 @@
-import { type NextRequest, type NextResponse } from 'next/server';
+import { type NextRequest, type NextResponse as _NextResponse } from 'next/server';
 import { TenantStatus, PlanType } from './types';
 import { tenantManager } from './manager';
 import { logger } from '../logger';

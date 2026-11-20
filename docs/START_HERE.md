@@ -3,11 +3,11 @@ file: START_HERE.md
 title: 🎯 YYC³ AI Intelligent Calling - 立即行动指南
 description: YYC³ AI Call — 🎯 YYC³ AI Intelligent Calling - 立即行动指南
 author: YYC³ Team <admin@0379.email>
-version: v1.0.0
+version: v1.1.0
 created: 2026-11-20
 updated: 2026-11-20
-status: stable
-tags: [yyc3, ai-call]
+status: archived
+tags: [yyc3, ai-call, archived]
 category: documentation
 language: zh-CN
 ---
@@ -64,7 +64,7 @@ pkill -f "pnpm dev" || true && pnpm dev
 
 ### 🔴 最重要 - 现在需要看
 
-**[快速执行指南.md](./docs/快速执行指南.md)**
+**[快速执行指南.md → 已归档，当前入口见仓库根 README](../README.md)**
 
 - 详细的命令说明
 - 常见问题排查
@@ -72,7 +72,7 @@ pkill -f "pnpm dev" || true && pnpm dev
 
 ### 🟠 很重要 - 了解计划
 
-**[系统完善总体方案.md](./docs/系统完善总体方案.md)**
+**[系统完善总体方案.md → 已归档，验收与演进见验收系统](./YYC3-项目闭环-验收系统/README.md)**
 
 - 完整的3周计划
 - 4个阶段详解
@@ -80,7 +80,7 @@ pkill -f "pnpm dev" || true && pnpm dev
 
 ### 🟡 参考 - 快速概览
 
-**[执行摘要.md](./docs/执行摘要.md)**
+**[执行摘要.md → 已归档，当前验收结论见整改复测报告](./YYC3-项目闭环-验收系统/YYC3-闭环验收-整改复测报告-20261120.md)**
 
 - 关键数字和进度
 - 立即可用命令
@@ -160,11 +160,11 @@ Phase 4: 高级功能
 
 ### Q: 初始化数据库失败?
 
-**A**: 查看[快速执行指南.md](./docs/快速执行指南.md)中的常见问题排查第Q5项。
+**A**: 查看[快速执行指南.md → 已归档](../README.md)中的常见问题排查第Q5项。
 
 ### Q: Recharts图表没有显示?
 
-**A**: 查看[快速执行指南.md](./docs/快速执行指南.md)中的常见问题排查第Q3项。
+**A**: 查看[快速执行指南.md → 已归档](../README.md)中的常见问题排查第Q3项。
 
 ### Q: 我应该先做什么?
 

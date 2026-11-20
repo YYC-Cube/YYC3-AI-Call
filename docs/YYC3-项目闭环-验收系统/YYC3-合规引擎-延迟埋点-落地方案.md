@@ -2,7 +2,7 @@
 file: YYC3-合规引擎-延迟埋点-落地方案.md
 description: 基于行业调研结论的合规引擎与延迟埋点落地方案 — 数据模型、预呼校验管线、AI 内容标识、录音留存、TTFT/E2E 埋点与三迭代任务列表（v1.2.0 M1/M2 已完成闭环）
 author: YYC³ Team <admin@0379.email>
-version: v1.2.0
+version: v1.3.0
 created: 2026-11-20
 updated: 2026-11-20
 status: stable
@@ -313,6 +313,7 @@ V1/V2 依赖真实语音供应商接入决策；R2-R7 相互独立
 | v1.0.0 | 2026-11-20 | 首次发布：合规引擎五道闸 + AI 双标识 + 录音留存方案、延迟埋点指标体系与 M1-M3 三迭代任务列表（遗留风险 7 项全量转化） | YYC³ Team |
 | v1.1.0 | 2026-11-20 | **M1 合规闭环执行完成**：C1 迁移 `20261120134817_compliance_engine` 已应用（migrator 角色通道，shadow 库权限受限改用 diff+deploy 标准替代路径）；C2 五道闸管线（precall 17 用例）；C3 AI 双标识注入 synthesizeSpeech（6 用例）；C4 合规 API 四路由（11 用例，403/422 硬约束覆盖）；C5 录音留存 attachRecording+purge 幂等+双通道调度（4 用例）；C6 外呼发起入口合规前置（集成 3 例：DNC→BLOCKED+审计）；C7 合规台账组件（6 用例含 RBAC 列可见性+axe）。合规测试合计 41/41 全绿；M1 出口复测 tsc 0 error / lint 0e647w / jest 283/283 / 覆盖率门禁通过（73.2/57.14/75.29/74.9）/ build 成功 | YYC³ Team |
 | v1.2.0 | 2026-11-20 | **M2 观测闭环执行完成（P1-8 关闭）**：T1 `observeTtft`/`trackStreamTtft`（TransformStream 首字节 + 总耗时，jsdom/edge 环境防御直通）包装 `/api/ai/chat/stream`（4 用例）；T2 TTS 耗时直通 `yyc3_tts_processing_ms`；T3 `/api/metrics` Prometheus 端点（MANAGER+ 门禁，3 用例；顺带修复 MetricsCollector 导出格式缺陷：TYPE 行去 label、quantile 并入 label 集）；T4 `buildLatencySnapshot` 三态 SLO 判定 + `LatencyPanel` 组件（5 用例含 axe）；T5 LHCI 接入（`@lhci/cli` + `lighthouserc.json` staticDistDir=out + CI 步骤），本地 Playwright Chromium 实测静态导出基线：**首页性能分 100 / FCP 0.2s / LCP 0.2s / TBT 0ms**（a11y 86）；T6 SLO 门禁表登记 TTFT P95 ≤200ms（上线部署 §3.1/§6.1）。M2 出口复测 tsc 0 error / lint 0e / jest 全绿 + 覆盖率门禁 / standalone+export 双构建成功 | YYC³ Team |
+| v1.3.0 | 2026-11-20 | **M3 治理收尾执行完成（R2-R7）**：R6 next 15.5.28→15.5.29（Dependabot 6 条 medium 全部修复于该版本，含 Edge HttpOnly 暴露）+ esbuild 告警清零确认；R5 [依赖升级核对清单](../YYC3-AI-Call-运维阶段/166-YYC3-AI-Call-运维阶段-依赖升级核对清单.md) 落档（file: 包升级流程 + openai ✓/ollama 缺口）；R7 lint 收敛 647→443（unused-vars 217→约 1，vars/caughtErrors IgnorePattern 补齐 + 行为保真 codemod 196 处重命名/别名，预算门禁降至 450 exit 0）；R3 令牌升级 HttpOnly Cookie（[auth-cookies](../../lib/auth-cookies.ts) + login/refresh/logout 三端点 + 轮换撤销，auth-client 2.0 去 localStorage，6 用例）；R4 LoginForm（Cookie 通道无令牌落盘，5 用例含 axe）；R2 全库 263 文件 229 链接 0 断链（活跃修链 9 + 归档声明 3 份 + 真实目标重指 24）。V1/V2 随语音供应商选型启动（解耦承诺兑现）。M3 出口：tsc 0 / lint 0e443w / jest 全绿 + 门禁 / build 成功 | YYC³ Team |
 
 ---
 

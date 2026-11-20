@@ -79,7 +79,7 @@ export async function securityMiddleware(
     let body: Record<string, unknown>;
     try {
       body = await request.json();
-    } catch (parseError) {
+    } catch (_parseError) {
       return { success: false, error: 'Invalid JSON in request body' };
     }
 

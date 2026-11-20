@@ -9,7 +9,7 @@ import { getAIClient } from "@/lib/ai-client";
 import { trackStreamTtft } from "@/lib/observability";
 
 export async function POST(request: Request) {
-  const gate = requireAuth(request);
+  const _gate = requireAuth(request);
   try {
     const body = await request.json();
     const { messages, model, temperature, max_tokens } = body || {};

@@ -1,7 +1,7 @@
 import {
-  AgentDefinition,
+  AgentDefinition as _AgentDefinition,
   AgentConfig,
-  AgentStatus,
+  AgentStatus as _AgentStatus,
   TaskInput,
   TaskOutput,
   AIFamilyTask,
@@ -12,7 +12,7 @@ import {
   AgentSnapshot,
   TaskPriority,
 } from './types';
-import { AI_FAMILY_AGENTS, getAgentById, getAllAgents } from './definitions';
+import { AI_FAMILY_AGENTS, getAgentById, getAllAgents as _getAllAgents } from './definitions';
 import { BaseAgent, YuanqiTianshuAgent, ZhiyunShouhuAgent } from './agents';
 
 export class AIFamilyManager {
