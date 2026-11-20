@@ -1,3 +1,17 @@
+---
+file: YYC3-AI-Call-架构设计/API-Design-Specification.md
+title: YYC³ Enterprise Solution - API Design Specification
+description: YYC³ AI Call — Enterprise Solution - API Design Specification
+author: YYC³ Team <admin@0379.email>
+version: v1.0.0
+created: 2026-11-20
+updated: 2026-11-20
+status: stable
+tags: [yyc3, ai-call]
+category: documentation
+language: zh-CN
+---
+
 # YYC³ Enterprise Solution - API Design Specification
 
 ## 📋 Overview

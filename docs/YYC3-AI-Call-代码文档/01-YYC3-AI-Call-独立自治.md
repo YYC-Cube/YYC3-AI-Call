@@ -1,3 +1,17 @@
+---
+file: YYC3-AI-Call-代码文档/01-YYC3-AI-Call-独立自治.md
+title: 独立自治智能AI系统
+description: YYC³ AI Call — 独立自治智能AI系统
+author: YYC³ Team <admin@0379.email>
+version: v1.0.0
+created: 2026-11-20
+updated: 2026-11-20
+status: stable
+tags: [yyc3, ai-call]
+category: documentation
+language: zh-CN
+---
+
 # 独立自治智能AI系统
 
 ## 架构升级自治AI浮窗系统

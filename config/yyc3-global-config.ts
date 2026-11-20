@@ -420,7 +420,7 @@ class YYC3GlobalManagerV2 {
       },
       transformation: { 
         enabled: dims.transformation.enabled, 
-        standardsCompliance: `${dims.transformation.standardsCompliance}%`,
+        standardsCompliance: dims.transformation.standardsCompliance,
         automationRate: '85%',
         status: dims.transformation.enabled ? 'ACTIVE' : 'INACTIVE' 
       },
@@ -516,7 +516,7 @@ class YYC3GlobalManagerV2 {
       const icon = value.status === 'ACTIVE' ? '✅' : '⚪';
       let metrics = '';
       if (value.auditLevel) metrics = `审计:${value.auditLevel}`;
-      else if (value.standardsCompliance) metrics = `合规${value.standardsCompliance}`;
+      else if (typeof value.standardsCompliance === 'number') metrics = `合规${value.standardsCompliance}%`;
       else if (value.innovationIndex !== undefined) metrics = `创新${value.innovationIndex}`;
       else if (value.continuousImprovement !== undefined) metrics = `持续改进`;
       

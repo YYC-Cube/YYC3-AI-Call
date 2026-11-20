@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { requireAuth } from '@/lib/api-auth';
 import { aiFamilyManager } from '@/lib/ai-family/manager';
 import { TaskPriority, CollaborationMode } from '@/lib/ai-family/types';
 import {
@@ -8,6 +9,7 @@ import {
 } from '@/lib/core/security-middleware';
 
 export async function GET(request: NextRequest) {
+  const gate = requireAuth(request);
   try {
     const { searchParams } = new URL(request.url);
     const action = searchParams.get('action');
@@ -70,6 +72,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const gate = requireAuth(request);
   try {
     const clientIP =
       request.headers.get('x-forwarded-for')?.split(',')[0] ||

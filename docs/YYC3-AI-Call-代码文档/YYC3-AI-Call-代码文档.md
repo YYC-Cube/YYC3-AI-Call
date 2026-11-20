@@ -1,3 +1,17 @@
+---
+file: YYC3-AI-Call-代码文档/YYC3-AI-Call-代码文档.md
+title: 完全自治的智能AI浮窗系统，具备独立运行、模块复用、自主学习等高级能力
+description: YYC³ AI Call — 完全自治的智能AI浮窗系统，具备独立运行、模块复用、自主学习等高级能力
+author: YYC³ Team <admin@0379.email>
+version: v1.0.0
+created: 2026-11-20
+updated: 2026-11-20
+status: stable
+tags: [yyc3, ai-call]
+category: documentation
+language: zh-CN
+---
+
 # 完全自治的智能AI浮窗系统，具备独立运行、模块复用、自主学习等高级能力
 
 🏗️ 架构升级：自治AI浮窗系统

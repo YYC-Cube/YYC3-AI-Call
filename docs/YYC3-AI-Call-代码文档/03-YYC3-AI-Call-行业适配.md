@@ -1,3 +1,17 @@
+---
+file: YYC3-AI-Call-代码文档/03-YYC3-AI-Call-行业适配.md
+title: 智能AI浮窗系统：多行业实战接入方案
+description: YYC³ AI Call — 智能AI浮窗系统：多行业实战接入方案
+author: YYC³ Team <admin@0379.email>
+version: v1.0.0
+created: 2026-11-20
+updated: 2026-11-20
+status: stable
+tags: [yyc3, ai-call]
+category: documentation
+language: zh-CN
+---
+
 # 智能AI浮窗系统：多行业实战接入方案
 
 ## 🏢 多行业适配架构设计

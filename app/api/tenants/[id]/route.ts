@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { requireAuth } from '@/lib/api-auth';
 import { tenantManager } from '@/lib/tenant/manager';
 import { logger } from '@/lib/logger';
 
@@ -6,6 +7,7 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const gate = requireAuth(request);
   try {
     const { id } = await params;
     const tenant = await tenantManager.findById(id);
@@ -46,6 +48,7 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const gate = requireAuth(request);
   try {
     const { id } = await params;
     const body = await request.json();
@@ -77,6 +80,7 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const gate = requireAuth(request);
   try {
     const { id } = await params;
     const deleted = await tenantManager.deleteTenant(id);

@@ -1,3 +1,17 @@
+---
+file: YYC3-AI-Call-架构设计/AI-Capability-Layer-Architecture.md
+title: YYC³ AI Calling - Enterprise Solution
+description: YYC³ AI Call — AI Calling - Enterprise Solution
+author: YYC³ Team <admin@0379.email>
+version: v1.0.0
+created: 2026-11-20
+updated: 2026-11-20
+status: stable
+tags: [yyc3, ai-call]
+category: documentation
+language: zh-CN
+---
+
 # YYC³ AI Calling - Enterprise Solution
 # AI Capability Layer Architecture Design
 

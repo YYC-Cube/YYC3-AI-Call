@@ -1,3 +1,17 @@
+---
+file: YYC3-AI-Call-衔接目录/03-客户关系管理CRM/智能网站AI客服.md
+title: 电商网站AI客服对话示例集
+description: YYC³ AI Call — 电商网站AI客服对话示例集
+author: YYC³ Team <admin@0379.email>
+version: v1.0.0
+created: 2026-11-20
+updated: 2026-11-20
+status: stable
+tags: [yyc3, ai-call]
+category: documentation
+language: zh-CN
+---
+
 # 电商网站AI客服对话示例集
 
 **以下是适用于电商网站的AI智能客服对话示例，涵盖了从商品咨询到售后服务的完整购物流程。这些对话示例可以直接应用于您的电商AI客服系统，或根据您的品牌调整语气和风格。**

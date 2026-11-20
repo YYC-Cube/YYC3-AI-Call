@@ -1,3 +1,17 @@
+---
+file: adr/001-use-esm.md
+title: ADR-001: 使用ESM (ECMAScript Modules) 作为模块系统
+description: YYC³ AI Call — ADR-001: 使用ESM (ECMAScript Modules) 作为模块系统
+author: YYC³ Team <admin@0379.email>
+version: v1.0.0
+created: 2026-11-20
+updated: 2026-11-20
+status: stable
+tags: [yyc3, ai-call]
+category: documentation
+language: zh-CN
+---
+
 # ADR-001: 使用ESM (ECMAScript Modules) 作为模块系统
 
 ## 状态

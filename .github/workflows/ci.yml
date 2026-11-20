@@ -36,11 +36,14 @@ jobs:
       - name: Type Check
         run: pnpm type-check
 
-      - name: Test
+      - name: Test (unit + integration + coverage gate)
         env:
           NODE_ENV: test
           JWT_SECRET: test-secret-ci-pipeline
-        run: pnpm exec jest tests/unit --passWithNoTests
+        run: pnpm exec jest --coverage --passWithNoTests
+
+      - name: Lint warning budget (anti-regression baseline)
+        run: pnpm lint --max-warnings 700
 
       - name: Remove API routes for static export
         run: rm -rf app/api

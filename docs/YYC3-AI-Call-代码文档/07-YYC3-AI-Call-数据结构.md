@@ -1,3 +1,17 @@
+---
+file: YYC3-AI-Call-代码文档/07-YYC3-AI-Call-数据结构.md
+title: YYC³ 全端全量框架：核心技术深度指导
+description: YYC³ AI Call — 全端全量框架：核心技术深度指导
+author: YYC³ Team <admin@0379.email>
+version: v1.0.0
+created: 2026-11-20
+updated: 2026-11-20
+status: stable
+tags: [yyc3, ai-call]
+category: documentation
+language: zh-CN
+---
+
 # YYC³ 全端全量框架：核心技术深度指导
 
 基于"五高五标五化"框架，深入核心技术实现细节，打造真正的**技术闭环生态系统**。

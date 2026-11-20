@@ -7,6 +7,16 @@ jest.mock("next/server", () => ({
   },
 }));
 
+// 鉴权网关在专门的 API 测试覆盖，路由逻辑测试直接放行
+jest.mock("@/lib/api-auth", () => ({
+  requireAuth: () => ({
+    ok: true,
+    userId: "test-user",
+    email: "test@yyc3.ai",
+    role: "ADMIN",
+  }),
+}));
+
 // Mock AI client
 jest.mock("@/lib/ai-client", () => {
   return {

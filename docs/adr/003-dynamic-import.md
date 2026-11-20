@@ -1,3 +1,17 @@
+---
+file: adr/003-dynamic-import.md
+title: ADR-003: 动态导入用于大型依赖懒加载
+description: YYC³ AI Call — ADR-003: 动态导入用于大型依赖懒加载
+author: YYC³ Team <admin@0379.email>
+version: v1.0.0
+created: 2026-11-20
+updated: 2026-11-20
+status: stable
+tags: [yyc3, ai-call]
+category: documentation
+language: zh-CN
+---
+
 # ADR-003: 动态导入用于大型依赖懒加载
 
 ## 状态

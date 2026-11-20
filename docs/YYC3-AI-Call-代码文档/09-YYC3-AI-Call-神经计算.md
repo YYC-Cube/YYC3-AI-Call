@@ -1,3 +1,17 @@
+---
+file: YYC3-AI-Call-代码文档/09-YYC3-AI-Call-神经计算.md
+title: YYC³ 全端全量框架：前沿技术深度探索
+description: YYC³ AI Call — 全端全量框架：前沿技术深度探索
+author: YYC³ Team <admin@0379.email>
+version: v1.0.0
+created: 2026-11-20
+updated: 2026-11-20
+status: stable
+tags: [yyc3, ai-call]
+category: documentation
+language: zh-CN
+---
+
 # YYC³ 全端全量框架：前沿技术深度探索
 
 基于"五高五标五化"框架，继续深入探索**前沿技术融合与创新**，打造**下一代智能技术生态系统**。

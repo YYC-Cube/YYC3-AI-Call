@@ -1,4 +1,6 @@
 /**
+ * @jest-environment node
+ *
  * API 集成测试套件
  *
  * 测试目标：

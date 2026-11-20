@@ -1,3 +1,17 @@
+---
+file: YYC3-AI-Call-审核分析/YYC3-AI-Call-多维度审核分析报告.md
+title: YYC³ AI 智能外呼系统 - 深度多维度审核分析报告
+description: YYC³ AI Call — AI 智能外呼系统 - 深度多维度审核分析报告
+author: YYC³ Team <admin@0379.email>
+version: v1.0.0
+created: 2026-11-20
+updated: 2026-11-20
+status: stable
+tags: [yyc3, ai-call]
+category: documentation
+language: zh-CN
+---
+
 # YYC³ AI 智能外呼系统 - 深度多维度审核分析报告
 
 > ***YanYuCloudCube***

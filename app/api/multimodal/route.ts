@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { requireAuth } from '@/lib/api-auth';
 import {
   multimodalManager,
   ImageAnalysisTask,
@@ -8,6 +9,7 @@ import {
 } from '@/lib/multimodal';
 
 export async function POST(request: NextRequest) {
+  const gate = requireAuth(request);
   try {
     const body = await request.json();
     const { action, mediaType, ...params } = body;
@@ -141,7 +143,8 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const gate = requireAuth(request);
   const metrics = multimodalManager.getMetrics();
 
   return NextResponse.json({

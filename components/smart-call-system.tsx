@@ -266,7 +266,7 @@ export default function SmartCallSystem() {
             <div>
               <label className="block text-sm font-medium mb-2">外呼类型</label>
               <Select>
-                <SelectTrigger>
+                <SelectTrigger aria-label="外呼类型">
                   <SelectValue placeholder="选择外呼类型" />
                 </SelectTrigger>
                 <SelectContent>
@@ -289,7 +289,7 @@ export default function SmartCallSystem() {
                 <Phone className="w-4 h-4 mr-2" />
                 开始外呼
               </Button>
-              <Button variant="outline" className={`${colorSystem.blue.text} ${colorSystem.blue.hover}`}>
+              <Button variant="outline" aria-label="刷新通话记录" className={`${colorSystem.blue.text} ${colorSystem.blue.hover}`}>
                 <RefreshCw className="w-4 h-4" />
               </Button>
             </div>
@@ -352,7 +352,7 @@ export default function SmartCallSystem() {
                     <span className="text-sm font-medium">情感分析</span>
                     <Badge className={getSentimentColor(voiceAnalysis.sentiment)}>{voiceAnalysis.emotion}</Badge>
                   </div>
-                  <Progress value={voiceAnalysis.confidence * 100} className="h-2" colorScheme="purple" />
+                  <Progress value={voiceAnalysis.confidence * 100} className="h-2" colorScheme="purple" aria-label="语音识别置信度" />
                   <div className="text-xs text-gray-600 mt-1">
                     置信度: {(voiceAnalysis.confidence * 100).toFixed(1)}%
                   </div>
@@ -563,21 +563,21 @@ export default function SmartCallSystem() {
                   <div className="flex items-center justify-between">
                     <span className="text-sm">积极情感</span>
                     <div className="flex items-center gap-2">
-                      <Progress value={65} className="w-20 h-2" colorScheme="purple" />
+                      <Progress value={65} className="w-20 h-2" colorScheme="purple" aria-label="积极情感占比" />
                       <span className="text-sm font-medium text-green-600">65%</span>
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm">中性情感</span>
                     <div className="flex items-center gap-2">
-                      <Progress value={25} className="w-20 h-2" colorScheme="purple" />
+                      <Progress value={25} className="w-20 h-2" colorScheme="purple" aria-label="中性情感占比" />
                       <span className="text-sm font-medium text-gray-600">25%</span>
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-sm">消极情感</span>
                     <div className="flex items-center gap-2">
-                      <Progress value={10} className="w-20 h-2" colorScheme="purple" />
+                      <Progress value={10} className="w-20 h-2" colorScheme="purple" aria-label="消极情感占比" />
                       <span className="text-sm font-medium text-red-600">10%</span>
                     </div>
                   </div>

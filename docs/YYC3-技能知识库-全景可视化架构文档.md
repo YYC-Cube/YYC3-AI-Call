@@ -1,3 +1,17 @@
+---
+file: YYC3-技能知识库-全景可视化架构文档.md
+title: YYC³ 技能知识库 — 全景可视化架构文档
+description: YYC³ AI Call — 技能知识库 — 全景可视化架构文档
+author: YYC³ Team <admin@0379.email>
+version: v1.0.0
+created: 2026-11-20
+updated: 2026-11-20
+status: stable
+tags: [yyc3, ai-call]
+category: documentation
+language: zh-CN
+---
+
 # YYC³ 技能知识库 — 全景可视化架构文档
 
 > **五高五标五化五维驱动 | 智能应用产业级知识图谱**

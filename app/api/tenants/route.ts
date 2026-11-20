@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { requireAuth } from '@/lib/api-auth';
 import { tenantManager } from '@/lib/tenant/manager';
 import { tenantMiddleware } from '@/lib/tenant/middleware';
 import { logger } from '@/lib/logger';
 
 export async function GET(request: NextRequest) {
+  const gate = requireAuth(request);
   try {
     const tenantContext = await tenantMiddleware.resolveTenant(request);
 
@@ -46,6 +48,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const gate = requireAuth(request);
   try {
     const body = await request.json();
     const { name, slug, ownerId, ownerEmail, plan, isolationStrategy, settings } = body;

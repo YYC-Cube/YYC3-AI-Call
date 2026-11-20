@@ -1,3 +1,17 @@
+---
+file: adr/002-singleton-pattern.md
+title: ADR-002: 单例模式用于服务实例管理
+description: YYC³ AI Call — ADR-002: 单例模式用于服务实例管理
+author: YYC³ Team <admin@0379.email>
+version: v1.0.0
+created: 2026-11-20
+updated: 2026-11-20
+status: stable
+tags: [yyc3, ai-call]
+category: documentation
+language: zh-CN
+---
+
 # ADR-002: 单例模式用于服务实例管理
 
 ## 状态

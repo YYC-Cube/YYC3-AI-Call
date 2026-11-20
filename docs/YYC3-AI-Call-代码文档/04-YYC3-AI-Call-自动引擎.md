@@ -1,3 +1,17 @@
+---
+file: YYC3-AI-Call-代码文档/04-YYC3-AI-Call-自动引擎.md
+title: YYC³ AI智能外呼系统：AI工作流与智能化升级方案
+description: YYC³ AI Call — AI智能外呼系统：AI工作流与智能化升级方案
+author: YYC³ Team <admin@0379.email>
+version: v1.0.0
+created: 2026-11-20
+updated: 2026-11-20
+status: stable
+tags: [yyc3, ai-call]
+category: documentation
+language: zh-CN
+---
+
 # YYC³ AI智能外呼系统：AI工作流与智能化升级方案
 
 基于您提供的系统截图和功能列表，我将设计一个**AI驱动的智能外呼生态系统**，深度融合AI工作流、智能教育和多维度优化。

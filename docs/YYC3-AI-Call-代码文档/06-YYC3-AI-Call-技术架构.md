@@ -1,3 +1,17 @@
+---
+file: YYC3-AI-Call-代码文档/06-YYC3-AI-Call-技术架构.md
+title: YYC³ 全端全量框架：五高五标五化技术架构
+description: YYC³ AI Call — 全端全量框架：五高五标五化技术架构
+author: YYC³ Team <admin@0379.email>
+version: v1.0.0
+created: 2026-11-20
+updated: 2026-11-20
+status: stable
+tags: [yyc3, ai-call]
+category: documentation
+language: zh-CN
+---
+
 # YYC³ 全端全量框架：五高五标五化技术架构
 
 基于"五高、五标、五化"核心框架，打造真正的**API闭环生态系统**。

@@ -6,6 +6,7 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
+import { getAuthHeaders } from "@/lib/auth-client";
 
 interface ChatMessage {
   role: "user" | "assistant" | "system";
@@ -41,7 +42,7 @@ export function useAI(hookOptions?: UseAIOptions) {
 
         const response = await fetch("/api/ai/chat", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", ...getAuthHeaders() },
           body: JSON.stringify({ messages, ...chatOptions }),
           signal: abortControllerRef.current.signal,
         });
@@ -75,7 +76,7 @@ export function useAI(hookOptions?: UseAIOptions) {
       try {
         const response = await fetch("/api/ai/intent", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", ...getAuthHeaders() },
           body: JSON.stringify({ message, intents }),
         });
 
@@ -107,7 +108,7 @@ export function useAI(hookOptions?: UseAIOptions) {
       try {
         const response = await fetch("/api/ai/sentiment", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", ...getAuthHeaders() },
           body: JSON.stringify({ text }),
         });
 

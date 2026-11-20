@@ -1,3 +1,17 @@
+---
+file: START_HERE.md
+title: 🎯 YYC³ AI Intelligent Calling - 立即行动指南
+description: YYC³ AI Call — 🎯 YYC³ AI Intelligent Calling - 立即行动指南
+author: YYC³ Team <admin@0379.email>
+version: v1.0.0
+created: 2026-11-20
+updated: 2026-11-20
+status: stable
+tags: [yyc3, ai-call]
+category: documentation
+language: zh-CN
+---
+
 # 🎯 YYC³ AI Intelligent Calling - 立即行动指南
 
 **最后更新**: 2026-01-23 06:52 PM  

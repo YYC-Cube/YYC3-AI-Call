@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { requireAuth } from '@/lib/api-auth';
 import { analyticsEngine } from '@/lib/analytics/engine';
 import { dashboardManager } from '@/lib/analytics/dashboard';
 import { TimeGranularity, AggregationType } from '@/lib/analytics/types';
 import { logger } from '@/lib/logger';
 
 export async function GET(request: NextRequest) {
+  const gate = requireAuth(request);
   try {
     const { searchParams } = new URL(request.url);
     const action = searchParams.get('action');
@@ -41,6 +43,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const gate = requireAuth(request);
   try {
     const body = await request.json();
     const { action, ...params } = body;

@@ -14,6 +14,8 @@ const nextConfig = {
     unoptimized: true,
   },
   trailingSlash: true,
+  // 安全响应头基线由 middleware.ts 统一设置（X-Frame-Options/nosniff/
+  // Referrer-Policy/Permissions-Policy + X-Request-ID），此处不重复配置。
 };
 
 export default nextConfig;

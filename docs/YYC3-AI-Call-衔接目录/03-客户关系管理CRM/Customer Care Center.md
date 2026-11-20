@@ -1,3 +1,17 @@
+---
+file: YYC3-AI-Call-衔接目录/03-客户关系管理CRM/Customer Care Center.md
+title: Customer Care Center
+description: YYC³ AI Call — Customer Care Center
+author: YYC³ Team <admin@0379.email>
+version: v1.0.0
+created: 2026-11-20
+updated: 2026-11-20
+status: stable
+tags: [yyc3, ai-call]
+category: documentation
+language: zh-CN
+---
+
 # Customer Care Center
 
 ```

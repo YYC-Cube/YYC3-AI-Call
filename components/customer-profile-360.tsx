@@ -364,28 +364,28 @@ export default function CustomerProfile360() {
               <CardContent className="pt-6">
                 <div className="text-3xl font-bold text-green-600">{selectedCustomer.rfmScore.recency}</div>
                 <div className="text-sm text-gray-600">最近购买(R)</div>
-                <Progress value={selectedCustomer.rfmScore.recency} className="mt-2" colorScheme="green" />
+                <Progress value={selectedCustomer.rfmScore.recency} className="mt-2" colorScheme="green" aria-label="最近购买(R)分值" />
               </CardContent>
             </Card>
             <Card className={`border-l-4 ${colorSystem.blue.primary} text-center`}>
               <CardContent className="pt-6">
                 <div className="text-3xl font-bold text-blue-600">{selectedCustomer.rfmScore.frequency}</div>
                 <div className="text-sm text-gray-600">购买频率(F)</div>
-                <Progress value={selectedCustomer.rfmScore.frequency} className="mt-2" colorScheme="blue" />
+                <Progress value={selectedCustomer.rfmScore.frequency} className="mt-2" colorScheme="blue" aria-label="购买频率(F)分值" />
               </CardContent>
             </Card>
             <Card className={`border-l-4 ${colorSystem.orange.primary} text-center`}>
               <CardContent className="pt-6">
                 <div className="text-3xl font-bold text-orange-600">{selectedCustomer.rfmScore.monetary}</div>
                 <div className="text-sm text-gray-600">购买金额(M)</div>
-                <Progress value={selectedCustomer.rfmScore.monetary} className="mt-2" colorScheme="orange" />
+                <Progress value={selectedCustomer.rfmScore.monetary} className="mt-2" colorScheme="orange" aria-label="购买金额(M)分值" />
               </CardContent>
             </Card>
             <Card className={`border-l-4 ${colorSystem.purple.primary} text-center`}>
               <CardContent className="pt-6">
                 <div className="text-3xl font-bold text-purple-600">{selectedCustomer.riskAssessment.loyaltyIndex}</div>
                 <div className="text-sm text-gray-600">忠诚度指数</div>
-                <Progress value={selectedCustomer.riskAssessment.loyaltyIndex} className="mt-2" colorScheme="purple" />
+                <Progress value={selectedCustomer.riskAssessment.loyaltyIndex} className="mt-2" colorScheme="purple" aria-label="忠诚度指数" />
               </CardContent>
             </Card>
           </div>
@@ -562,7 +562,7 @@ export default function CustomerProfile360() {
                         <div key={index} className="flex items-center justify-between">
                           <span className="text-sm">{category.name}</span>
                           <div className="flex items-center gap-2">
-                            <Progress value={category.score} className="w-20 h-2" colorScheme="orange" />
+                            <Progress value={category.score} className="w-20 h-2" colorScheme="orange" aria-label={`${category.name}匹配度`} />
                             <span className="text-sm font-medium w-8">{category.score}</span>
                           </div>
                         </div>
@@ -821,21 +821,21 @@ export default function CustomerProfile360() {
                         <span className="text-sm">消费稳定性</span>
                         <span className="text-sm font-medium">85%</span>
                       </div>
-                      <Progress value={85} className="h-2" colorScheme="orange" />
+                      <Progress value={85} className="h-2" colorScheme="orange" aria-label="消费稳定性" />
                     </div>
                     <div>
                       <div className="flex justify-between items-center mb-1">
                         <span className="text-sm">价格敏感度</span>
                         <span className="text-sm font-medium">45%</span>
                       </div>
-                      <Progress value={45} className="h-2" colorScheme="orange" />
+                      <Progress value={45} className="h-2" colorScheme="orange" aria-label="价格敏感度" />
                     </div>
                     <div>
                       <div className="flex justify-between items-center mb-1">
                         <span className="text-sm">冲动消费倾向</span>
                         <span className="text-sm font-medium">30%</span>
                       </div>
-                      <Progress value={30} className="h-2" colorScheme="orange" />
+                      <Progress value={30} className="h-2" colorScheme="orange" aria-label="冲动消费倾向" />
                     </div>
                   </div>
                 </div>
@@ -885,6 +885,7 @@ export default function CustomerProfile360() {
                         value={selectedCustomer.riskAssessment.satisfactionScore}
                         className="h-2"
                         colorScheme="rose"
+                        aria-label="满意度评分"
                       />
                     </div>
                     <div>
@@ -900,6 +901,7 @@ export default function CustomerProfile360() {
                         value={selectedCustomer.riskAssessment.loyaltyIndex}
                         className="h-2"
                         colorScheme="rose"
+                        aria-label="忠诚度指数（风险评估）"
                       />
                     </div>
                   </div>
