@@ -5,7 +5,8 @@
       "numberOfRuns": 1,
       "settings": {
         "preset": "desktop",
-        "onlyCategories": ["performance", "accessibility", "best-practices"]
+        "onlyCategories": ["performance", "accessibility", "best-practices"],
+        "chromeFlags": ["--no-sandbox", "--disable-dev-shm-usage"]
       }
     },
     "assert": {
