@@ -59,3 +59,4 @@ node_modules/
 **/.DS_Store
 .lighthouseci/
 poc-assets/
+.env.poc
