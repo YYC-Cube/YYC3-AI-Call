@@ -24,7 +24,8 @@ jobs:
       - name: Setup PNPM
         uses: pnpm/action-setup@v4
         with:
-          version: 8
+          # 锁文件 lockfileVersion 9.0：pnpm 8 不兼容
+          version: 10
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -33,10 +34,10 @@ jobs:
           cache: "pnpm"
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile=false
+        run: pnpm install --frozen-lockfile
 
       - name: Generate Prisma Client
-        run: npx prisma generate
+        run: pnpm exec prisma generate
 
       - name: Verify CNAME for custom domain
         run: |

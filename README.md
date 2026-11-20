@@ -217,9 +217,9 @@ yyc3-ai-call/
 │   ├── integration/              # Integration tests
 │   └── e2e/                      # E2E tests (Playwright)
 ├── .github/workflows/
-│   ├── ci.yml                    # PR/push quality gate
+│   ├── ci.yml                    # PR/push quality gate（含依赖审计 + Lighthouse）
 │   ├── deploy-pages.yml          # GitHub Pages → ai-call.yyc3.vip
-│   └── ci-cd.yml                 # Full pipeline (7 stages)
+│   └── ci-cd.yml                 # 版本标签触发的镜像构建 + 漏洞扫描
 ├── prisma/schema.prisma          # Database models
 ├── docker-compose.yml            # 5 services (app, postgres, redis, ollama, nginx)
 ├── Dockerfile                    # Multi-stage build (tini, non-root)
@@ -261,17 +261,19 @@ yyc3-ai-call/
 ```
 Push to main ──► CI Workflow ──► Deploy Pages
                     │                  │
-                    ├─ Lint            ├─ Build Static Site
-                    ├─ Type Check      ├─ Verify CNAME
-                    ├─ Unit Tests      ├─ Upload Artifact
-                    └─ Build           └─ Deploy to ai-call.yyc3.vip
+                    ├─ Dep Audit       ├─ Build Static Site
+                    ├─ Lint            ├─ Verify CNAME
+                    ├─ Type Check      ├─ Upload Artifact
+                    ├─ Unit Tests      └─ Deploy to ai-call.yyc3.vip
+                    ├─ Build (export)
+                    └─ Lighthouse CI
 ```
 
 | Workflow | Trigger | Purpose |
 |----------|---------|---------|
-| `ci.yml` | PR / Push to main | Quality gate: lint + type-check + test + build |
+| `ci.yml` | PR / Push to main | Quality gate: 生产依赖审计 + lint + type-check + test + 静态导出构建 + Lighthouse 性能基线（报告存档 7 天） |
 | `deploy-pages.yml` | Push to main | Build & deploy to GitHub Pages |
-| `ci-cd.yml` | Push / Manual | Full 7-stage pipeline with Docker & K8s |
+| `ci-cd.yml` | Tag `v*` / Manual | 容器镜像构建并推送 GHCR + Trivy 漏洞扫描（CRITICAL 阻断） |
 
 ---
 

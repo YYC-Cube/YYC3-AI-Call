@@ -6,9 +6,24 @@ on:
   push:
     branches: [main]
 
+# 最小权限：CI 只读仓库内容
+permissions:
+  contents: read
+
+# 同一分支只跑最新一次，避免排队堆积
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "20"
+  # 锁文件为 lockfileVersion 9.0，需 pnpm >= 9（pnpm 8 会静默重解析依赖）
+  PNPM_VERSION: "10"
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -16,22 +31,26 @@ jobs:
       - name: Setup PNPM
         uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: ${{ env.PNPM_VERSION }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile=false
+        run: pnpm install --frozen-lockfile
+
+      - name: Audit production dependencies (fail on high+)
+        # 默认 registry（npmmirror）未实现 audit 端点，这里显式指向 npmjs
+        run: pnpm audit --prod --audit-level=high --registry=https://registry.npmjs.org
 
       - name: Generate Prisma Client
-        run: npx prisma generate
+        run: pnpm exec prisma generate
 
-      - name: Lint
-        run: pnpm lint
+      - name: Lint (warning budget, anti-regression baseline)
+        run: pnpm lint --max-warnings 700
 
       - name: Type Check
         run: pnpm type-check
@@ -41,9 +60,6 @@ jobs:
           NODE_ENV: test
           JWT_SECRET: test-secret-ci-pipeline
         run: pnpm exec jest --coverage --passWithNoTests
-
-      - name: Lint warning budget (anti-regression baseline)
-        run: pnpm lint --max-warnings 700
 
       - name: Remove API routes for static export
         run: rm -rf app/api
@@ -62,9 +78,25 @@ jobs:
           fi
           echo "✅ CNAME: $(cat public/CNAME)"
 
+      # lhci 需要「绝对路径」的 Chrome 可执行文件；ubuntu-latest 自带路径不稳定，
+      # 交给 setup-chrome 安装并输出 chrome-path，避免 ChromeNotInstalledError。
+      - name: Setup Chrome for Lighthouse
+        id: chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
       - name: Lighthouse CI (performance baseline, closes P1-8)
         run: pnpm exec lhci autorun
         env:
-          # ubuntu-latest runner 自带 Chrome；显式指认以防路径探测失败
-          CHROME_PATH: google-chrome-stable
+          CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
           NEXT_TELEMETRY_DISABLED: "1"
+          # LHCI_GITHUB_APP_TOKEN 仅用于 PR 状态回写，未配置时只提示 ⚠️，不阻断
+
+      - name: Upload Lighthouse report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: .lighthouseci
+          retention-days: 7
