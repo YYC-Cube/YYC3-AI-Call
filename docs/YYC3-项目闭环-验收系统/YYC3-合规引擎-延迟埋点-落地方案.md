@@ -113,7 +113,7 @@ enum TaskStatus { DRAFT COMPLIANCE_PASSED DIALING COMPLETED FAILED BLOCKED }
 
 落地方式：`pnpm db:migrate`（PostgreSQL 17 / `yyc3_v2`，走既有 migrations 流程，不重置库）。
 
-### 2.2 预呼合规校验管线（新建 [lib/compliance/precall.ts](../../lib/compliance/precall.ts)）
+### 2.2 预呼合规校验管线（新建 `lib/compliance/precall.ts`，M1-C2 交付）
 
 五道闸顺序执行，任一不通过即阻断并写 `AuditLog`：
 
@@ -163,7 +163,7 @@ data.features.contentId = callId; // 关联外呼任务，审计可追溯
 ### 2.5 录音留存 30 日
 
 1. `Call.recordingUrl` 写入时同步写 `recordingExpiresAt = now + 30d`；
-2. 新建 [scripts/purge-expired-recordings.ts](../../scripts/purge-expired-recordings.ts)：扫 `recordingExpiresAt < now` 的记录，删存储对象（对象存储生命周期规则兜底）+ 置空 `recordingUrl`，逐条写 `AuditLog`；
+2. 新建 `scripts/purge-expired-recordings.ts`（M1-C5 交付）：扫 `recordingExpiresAt < now` 的记录，删存储对象（对象存储生命周期规则兜底）+ 置空 `recordingUrl`，逐条写 `AuditLog`；
 3. 调度：GitHub Actions cron（`.github/workflows/maintenance.yml`，`schedule: cron "17 3 * * *"`）+ 部署环境 crontab 双通道，幂等可重跑；
 4. 留存天数集中配置 `lib/compliance/config.ts`（默认 30，**待验证**项在此单点收敛，监管口径更新时只改一处）。
 
