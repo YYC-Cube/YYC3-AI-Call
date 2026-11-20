@@ -129,5 +129,10 @@
     }
   ],
   "sideEffects": false,
+  "pnpm": {
+    "overrides": {
+      "esbuild": "^0.28.2"
+    }
+  },
   "type": "module"
 }

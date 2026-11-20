@@ -25,6 +25,16 @@ const customJestConfig = {
     "/dist/",
     "/tests/e2e/",
   ],
+  // @yyc3/* 生态包为 ESM 产物，需交给 babel 转译。
+  // 注意：next/jest 会用自身默认值覆盖此字段，真实生效值在下方导出函数中强制改写。
+  transformIgnorePatterns: [
+    "node_modules/(?!.*@yyc3/)",
+  ],
 };
 
-module.exports = createJestConfig(customJestConfig);
+module.exports = async () => {
+  const config = await createJestConfig(customJestConfig)();
+  // pnpm 实际路径形如 .pnpm/@yyc3+i18n-core@x/node_modules/@yyc3/...
+  config.transformIgnorePatterns = ["node_modules/(?!.*@yyc3/)"];
+  return config;
+};
