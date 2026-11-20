@@ -99,4 +99,6 @@ jobs:
         with:
           name: lighthouse-report
           path: .lighthouseci
+          # .lighthouseci 以点号开头，v4 默认排除隐藏文件，必须显式开启
+          include-hidden-files: true
           retention-days: 7
