@@ -12,6 +12,9 @@
 #      ignore 同时作用于安全更新：15.5.x 内的安全补丁不受影响。
 #   4. 若要彻底关闭例行版本更新、只保留安全更新：
 #      将 open-pull-requests-limit 改为 0。
+#   5. 已知限制：Dependabot 重写 pnpm-lock.yaml 时会丢失根 package.json 的
+#      pnpm.overrides 段，PR 的 CI 会报 ERR_PNPM_LOCKFILE_CONFIG_MISMATCH。
+#      处理方式：在 PR 分支执行 pnpm install --lockfile-only 后提交锁文件。
 # ============================================
 
 version: 2
