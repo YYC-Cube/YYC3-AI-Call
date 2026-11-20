@@ -72,6 +72,33 @@ const AVAILABLE_LINE = {
   dailyLimit: 3,
 };
 
+// 该链路走真实时钟，固定到允许外呼时段（上海 10:00）。
+// 否则在禁拨时段（21:00–09:00，见 lib/compliance/precall isInQuietHours）
+// 执行测试会被 TIME_WINDOW 闸拦截返回 422，造成随运行时刻波动的假失败。
+// doNotFake 保留定时器与微任务，只冻结 Date，避免影响 Promise 链。
+const FIXED_NOW = new Date('2026-11-20T10:00:00+08:00');
+
+beforeAll(() => {
+  jest.useFakeTimers({
+    now: FIXED_NOW,
+    doNotFake: [
+      'setTimeout',
+      'clearTimeout',
+      'setInterval',
+      'clearInterval',
+      'setImmediate',
+      'clearImmediate',
+      'nextTick',
+      'queueMicrotask',
+      'performance',
+    ],
+  });
+});
+
+afterAll(() => {
+  jest.useRealTimers();
+});
+
 function makeReq(body: unknown): unknown {
   return {
     url: 'http://localhost/api/x',
