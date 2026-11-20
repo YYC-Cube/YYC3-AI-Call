@@ -1,0 +1,22 @@
+{
+  "ci": {
+    "collect": {
+      "staticDistDir": "./out",
+      "numberOfRuns": 1,
+      "settings": {
+        "preset": "desktop",
+        "onlyCategories": ["performance", "accessibility", "best-practices"]
+      }
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance": ["warn", { "minScore": 0.5 }],
+        "categories:accessibility": ["warn", { "minScore": 0.8 }]
+      }
+    },
+    "upload": {
+      "target": "filesystem",
+      "outputDir": ".lighthouseci"
+    }
+  }
+}

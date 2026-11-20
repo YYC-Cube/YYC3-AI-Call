@@ -57,3 +57,4 @@ prisma/migrations/migration_lock.toml
 node_modules/
 .DS_Store
 **/.DS_Store
+.lighthouseci/

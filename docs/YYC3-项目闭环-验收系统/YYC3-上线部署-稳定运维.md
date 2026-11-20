@@ -85,8 +85,9 @@ phase: production
 | 门禁 | 命令 / 证据 | 通过标准 |
 | ---- | ----------- | -------- |
 | 类型检查 | `npx tsc --noEmit` | 0 error |
-| 单元与集成测试 | `npx vitest run` | 全绿 |
+| 单元与集成测试 | `pnpm exec jest --coverage`（本项目测试栈为 Jest，Vitest 不适用） | 全绿 + 覆盖率阈值门禁通过 |
 | 生产构建 | `pnpm build` | 构建成功且产物完整 |
+| 性能基线 | `pnpm exec lhci autorun`（LHCI staticDistDir=out） | 采集成功并回写 FCP/LCP/性能分基线 |
 | 依赖与密钥扫描 | `pnpm audit` + 密钥扫描 | 无高危、无明文密钥 |
 | 验收结论 | 13 阶段验收报告 | 无 P0，P1 有排期 |
 | 文档合规 | 标头标尾 / front matter / 链接校验 | 全部通过 |
@@ -181,6 +182,12 @@ docker run -d -p 8080:80 yyc3-ai-dev:${TAG}
 | P99 时延 | 首屏 ≤ 2s，接口 ≤ 500ms | 前端埋点 + 网关 |
 | 错误率 | ≤ 0.5% | 错误上报聚合 |
 | 告警响应 | P0 ≤ 5min / P1 ≤ 15min | 值班表 |
+| **对话 TTFT P95**（chat 链路） | **≤ 200ms** | `/api/metrics` 指标 `yyc3_chat_ttft_ms`（M2 观测闭环） |
+| 通话端到端延迟 P95 | ≤ 800ms（对标 Retell 600ms 优秀线） | `yyc3_call_e2e_latency_ms`（随 M3 语音管线生效） |
+
+> TTFT 采集实现：`lib/observability` `trackStreamTtft` 包装 `/api/ai/chat/stream` 首字节；
+> 快照判定见 `buildLatencySnapshot`（无样本显示「暂无数据」不误判）。阈值变更须与
+> `lib/observability` `LATENCY_SLO` 同步修改并记录变更历史。
 
 ### 6.2 监控与告警分层
 

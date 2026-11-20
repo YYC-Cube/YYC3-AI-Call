@@ -156,6 +156,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
+    "@lhci/cli": "^0.16.1",
     "@next/bundle-analyzer": "^15.2.4",
     "@playwright/test": "^1.48.0",
     "@testing-library/jest-dom": "^6.6.3",

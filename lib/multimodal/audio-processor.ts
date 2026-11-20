@@ -6,6 +6,7 @@ import {
   MultimodalConfig,
 } from './types';
 import { applyExplicitDisclosure, buildDisclosureMetadata } from '@/lib/compliance/disclosure';
+import { metrics, METRICS, observeLatency } from '@/lib/observability';
 
 export class AudioProcessor {
   private config: {
@@ -54,6 +55,14 @@ export class AudioProcessor {
       }
 
       result.processingTime = Date.now() - startTime;
+
+      // 延迟观测直通（M2）：TTS 处理耗时独立指标，其余任务按 task 标签记录
+      if (task === AudioProcessingTask.SYNTHESIZE_SPEECH) {
+        metrics.histogram(METRICS.TTS_PROCESSING_MS, result.processingTime);
+      } else {
+        observeLatency('yyc3_audio_processing_ms', result.processingTime, { task });
+      }
+
       return result;
     } catch (error) {
       return {

@@ -250,30 +250,40 @@ class MetricsCollector {
 
     // Export counters
     for (const [key, value] of this.counters.entries()) {
-      output += `# TYPE ${key} counter\n`;
-      output += `${key} ${value}\n\n`;
+      const { name, labels: keyLabels } = this.splitKey(key);
+      output += `# TYPE ${name} counter\n`;
+      output += `${name}${this.formatLabels(keyLabels)} ${value}\n\n`;
     }
 
     // Export gauges (latest value)
     for (const [key, values] of this.gauges.entries()) {
       if (values.length > 0) {
         const latest = values[values.length - 1];
-        const labelStr = this.formatLabels(latest.labels);
-        output += `# TYPE ${key} gauge\n`;
-        output += `${key}${labelStr} ${latest.value}\n\n`;
+        const { name, labels: keyLabels } = this.splitKey(key);
+        const labelStr = this.formatLabels(latest.labels ?? keyLabels);
+        output += `# TYPE ${name} gauge\n`;
+        output += `${name}${labelStr} ${latest.value}\n\n`;
       }
     }
 
-    // Export histogram summaries
+    // Export histogram summaries（Prometheus summary 规范：quantile 并入 label 集）
     for (const [key, samples] of this.histograms.entries()) {
       if (samples.length > 0) {
         const stats = this.getHistogramStats(key)!;
-        output += `# TYPE ${key} summary\n`;
-        output += `${key}_count ${stats.count}\n`;
-        output += `${key}_sum ${(stats.avg * stats.count).toFixed(2)}\n`;
-        output += `{quantile="0.5"} ${stats.p50.toFixed(2)}\n`;
-        output += `{quantile="0.95"} ${stats.p95.toFixed(2)}\n`;
-        output += `{quantile="0.99"} ${stats.p99.toFixed(2)}\n\n`;
+        const { name, labels: keyLabels } = this.splitKey(key);
+        output += `# TYPE ${name} summary\n`;
+        output += `${name}${this.formatLabels(keyLabels)}_count ${stats.count}\n`;
+        output += `${name}${this.formatLabels(keyLabels)}_sum ${(stats.avg * stats.count).toFixed(2)}\n`;
+        const quantiles: Array<{ q: string; value: number }> = [
+          { q: '0.5', value: stats.p50 },
+          { q: '0.95', value: stats.p95 },
+          { q: '0.99', value: stats.p99 },
+        ];
+        for (const { q, value } of quantiles) {
+          const qlabels = { ...keyLabels, quantile: q };
+          output += `${name}${this.formatLabels(qlabels)} ${value.toFixed(2)}\n`;
+        }
+        output += '\n';
       }
     }
 
@@ -292,6 +302,27 @@ class MetricsCollector {
     }
     const labelStr = this.formatLabels(labels);
     return `${name}${labelStr}`;
+  }
+
+  /** 拆分 buildKey 产物：name{label="v"} → { name, labels }（导出用） */
+  private splitKey(key: string): { name: string; labels?: Record<string, string> } {
+    const idx = key.indexOf('{');
+    if (idx === -1) return { name: key };
+    return {
+      name: key.slice(0, idx),
+      labels: this.parseLabels(key.slice(idx + 1, -1)),
+    };
+  }
+
+  private parseLabels(body: string): Record<string, string> {
+    const labels: Record<string, string> = {};
+    for (const pair of body.split(',')) {
+      const eq = pair.indexOf('=');
+      if (eq === -1) continue;
+      const k = pair.slice(0, eq).trim();
+      labels[k] = pair.slice(eq + 1).replace(/^"|"$/g, '');
+    }
+    return labels;
   }
 
   private formatLabels(labels?: Record<string, string>): string {
@@ -336,7 +367,145 @@ export const METRICS = {
   // 系统资源
   ACTIVE_CONNECTIONS: 'active_connections',
   MEMORY_USAGE_BYTES: 'memory_usage_bytes',
+
+  // 延迟观测（M2 观测闭环；对标 Retell ~600ms E2E / TTFT 180ms，SLO 见上线部署文档）
+  CHAT_TTFT_MS: 'yyc3_chat_ttft_ms',
+  CHAT_STREAM_TOTAL_MS: 'yyc3_chat_stream_total_ms',
+  TTS_PROCESSING_MS: 'yyc3_tts_processing_ms',
+  ASR_FIRST_TOKEN_MS: 'yyc3_asr_first_token_ms',
+  CALL_E2E_LATENCY_MS: 'yyc3_call_e2e_latency_ms',
+  BARGEIN_RESPONSE_MS: 'yyc3_bargein_response_ms',
 };
+
+// ============================================
+// 延迟观测薄封装（M2 观测闭环）
+// ============================================
+
+/**
+ * 记录首 token/首字节延迟（TTFT）。
+ * SLO：chat 链路 P95 ≤200ms（详见 docs/YYC3-项目闭环-验收系统/YYC3-上线部署-稳定运维.md 门禁表）。
+ * @param channel 埋点通道（如 chat_stream / tts_first_byte）
+ */
+export function observeTtft(channel: string, ttftMs: number): void {
+  metrics.histogram(METRICS.CHAT_TTFT_MS, ttftMs, { channel });
+}
+
+/** 记录任意延迟指标（通用直通） */
+export function observeLatency(
+  metric: string,
+  valueMs: number,
+  labels?: Record<string, string>
+): void {
+  metrics.histogram(metric, valueMs, labels);
+}
+
+/**
+ * 包装流式响应：记录首 chunk 延迟（TTFT）与流总耗时。
+ * 原样透传数据，零拷贝零改写。
+ * 环境防御：无 TransformStream（jsdom/部分 edge runtime）时直通返回，埋点不阻断业务流。
+ */
+export function trackStreamTtft(
+  stream: ReadableStream<unknown>,
+  channel: string
+): ReadableStream<unknown> {
+  if (typeof TransformStream === 'undefined') {
+    return stream;
+  }
+  let firstByteAt: number | null = null;
+  const startedAt = performance.now();
+
+  return stream.pipeThrough(
+    new TransformStream<unknown, unknown>({
+      transform(chunk, controller) {
+        if (firstByteAt === null) {
+          firstByteAt = performance.now() - startedAt;
+          observeTtft(channel, firstByteAt);
+        }
+        controller.enqueue(chunk);
+      },
+      flush() {
+        if (firstByteAt !== null) {
+          observeLatency(METRICS.CHAT_STREAM_TOTAL_MS, performance.now() - startedAt, {
+            channel,
+          });
+        }
+      },
+    })
+  );
+}
+
+// ============================================
+// 延迟快照（T4 看板数据源；SLO 阈值与上线门禁同源）
+// ============================================
+
+/** SLO 阈值（与《上线部署-稳定运维》门禁表保持同步） */
+export const LATENCY_SLO = {
+  /** chat 链路 TTFT P95（ms） */
+  chatTtftP95Ms: 200,
+  /** 通话端到端延迟 P95（ms）——M3 语音管线建设后生效 */
+  callE2eP95Ms: 800,
+} as const;
+
+export interface LatencyMetricSnapshot {
+  metric: string;
+  label: string;
+  count: number;
+  p50: number | null;
+  p95: number | null;
+  /** P95 是否满足 SLO（无样本时为 null，显示「暂无数据」而非误判） */
+  sloMet: boolean | null;
+  sloTargetMs: number;
+}
+
+export interface LatencySnapshot {
+  capturedAt: string;
+  metrics: LatencyMetricSnapshot[];
+}
+
+/**
+ * 构建延迟观测快照（看板/巡检共用）：TTFT + TTS 处理耗时，
+ * 按各自 SLO 阈值给出达标判定。无样本时 sloMet 为 null（不误判）。
+ */
+export function buildLatencySnapshot(now: Date = new Date()): LatencySnapshot {
+  const defs: Array<{
+    metric: string;
+    label: string;
+    labels?: Record<string, string>;
+    sloTargetMs: number;
+  }> = [
+    {
+      metric: METRICS.CHAT_TTFT_MS,
+      label: '对话首字节延迟 (chat_stream)',
+      labels: { channel: 'chat_stream' },
+      sloTargetMs: LATENCY_SLO.chatTtftP95Ms,
+    },
+    {
+      metric: METRICS.TTS_PROCESSING_MS,
+      label: '语音合成处理耗时 (tts)',
+      sloTargetMs: LATENCY_SLO.chatTtftP95Ms,
+    },
+    {
+      metric: METRICS.CALL_E2E_LATENCY_MS,
+      label: '通话端到端延迟 (M3 语音管线)',
+      sloTargetMs: LATENCY_SLO.callE2eP95Ms,
+    },
+  ];
+
+  const metricsOut = defs.map((d) => {
+    const stats = metrics.getHistogramStats(d.metric, d.labels);
+    return {
+      metric: d.metric,
+      label: d.label,
+      count: stats?.count ?? 0,
+      p50: stats ? Math.round(stats.p50 * 100) / 100 : null,
+      p95: stats ? Math.round(stats.p95 * 100) / 100 : null,
+      sloMet: stats ? stats.p95 <= d.sloTargetMs : null,
+      sloTargetMs: d.sloTargetMs,
+    };
+  });
+
+  return { capturedAt: now.toISOString(), metrics: metricsOut };
+}
 
 // ============================================
 // 健康检查系统

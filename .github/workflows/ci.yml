@@ -61,3 +61,10 @@ jobs:
             exit 0
           fi
           echo "✅ CNAME: $(cat public/CNAME)"
+
+      - name: Lighthouse CI (performance baseline, closes P1-8)
+        run: pnpm exec lhci autorun
+        env:
+          # ubuntu-latest runner 自带 Chrome；显式指认以防路径探测失败
+          CHROME_PATH: google-chrome-stable
+          NEXT_TELEMETRY_DISABLED: "1"

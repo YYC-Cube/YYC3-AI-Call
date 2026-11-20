@@ -6,6 +6,7 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from '@/lib/api-auth';
 import { getAIClient } from "@/lib/ai-client";
+import { trackStreamTtft } from "@/lib/observability";
 
 export async function POST(request: Request) {
   const gate = requireAuth(request);
@@ -27,8 +28,16 @@ export async function POST(request: Request) {
       max_tokens,
     });
 
+    // 埋点包装：非标准流（测试桩/异常客户端实现）时降级直通，不阻断业务
+    const aiStream = stream as { pipeThrough?: unknown };
+    const streamBody =
+      typeof aiStream?.pipeThrough === "function" &&
+      typeof TransformStream !== "undefined"
+        ? trackStreamTtft(stream as unknown as ReadableStream<unknown>, "chat_stream")
+        : stream;
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return new NextResponse(stream as any, {
+    return new NextResponse(streamBody as any, {
       status: 200,
       headers: {
         "Content-Type": "text/plain; charset=utf-8",
