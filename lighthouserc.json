@@ -6,7 +6,7 @@
       "settings": {
         "preset": "desktop",
         "onlyCategories": ["performance", "accessibility", "best-practices"],
-        "chromeFlags": ["--no-sandbox", "--disable-dev-shm-usage"]
+        "chromeFlags": "--no-sandbox --disable-dev-shm-usage"
       }
     },
     "assert": {
