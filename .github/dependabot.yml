@@ -1,0 +1,64 @@
+# ============================================
+# Dependabot 配置：限制版本更新 PR 的生成频率与并发
+#
+# 设计依据：
+#   1. 只覆盖仓库根目录（唯一参与构建/发布的 pnpm 工程）。
+#      docs/packages/* 为内部文档包（file: 依赖），各自带 lockfile，
+#      纳入后会按目录重复生成 PR（历史 #9 曾一次覆盖 12 个目录）。
+#   2. open-pull-requests-limit 仅约束「版本更新」；安全更新有独立的
+#      固定上限 10，不受此值影响（官方文档明确）。
+#   3. minor/patch 合并为组，主版本（major）不分组；next/react/react-dom
+#      的 major 直接忽略——Next 主版本需与 React 协同升级（参考已关闭的 #16）。
+#      ignore 同时作用于安全更新：15.5.x 内的安全补丁不受影响。
+#   4. 若要彻底关闭例行版本更新、只保留安全更新：
+#      将 open-pull-requests-limit 改为 0。
+# ============================================
+
+version: 2
+updates:
+  # pnpm 由根目录 pnpm-lock.yaml 自动识别，生态名仍为 npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Asia/Shanghai"
+    open-pull-requests-limit: 2
+    versioning-strategy: "increase"
+    commit-message:
+      prefix: "build(deps)"
+      include: "scope"
+    labels:
+      - "dependencies"
+    groups:
+      # 运行时依赖的 minor/patch 合并为 1 个 PR
+      production-minor-patch:
+        applies-to: version-updates
+        dependency-type: production
+        update-types:
+          - "minor"
+          - "patch"
+      # 开发依赖的 minor/patch 合并为 1 个 PR
+      development-minor-patch:
+        applies-to: version-updates
+        dependency-type: development
+        update-types:
+          - "minor"
+          - "patch"
+      # 安全更新合并为 1 个 PR，避免逐包轰炸
+      security-all:
+        applies-to: security-updates
+        patterns:
+          - "*"
+    ignore:
+      # 框架主版本需人评估（Next 16 要求 React 19），不自动提 PR
+      - dependency-name: "next"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "react"
+        update-types:
+          - "version-update:semver-major"
+      - dependency-name: "react-dom"
+        update-types:
+          - "version-update:semver-major"
