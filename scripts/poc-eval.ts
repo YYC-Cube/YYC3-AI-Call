@@ -19,10 +19,17 @@ import { ASR_SAMPLES } from '../lib/voice/eval-dataset';
 import { runAsrEval, buildPocReport, type AsrRecognize } from '../lib/voice/eval';
 import { buildLatencySnapshot } from '../lib/observability';
 
-/** 供应商适配器注册表（POC 第 1 周随 SDK 接入填充） */
+/** 供应商适配器注册表（选型方案 §三 双主线；mock 供全链冒烟） */
 const VENDOR_ADAPTERS: Record<string, AsrRecognize> = {
-  // volcengine: (audio, sample) => import('../lib/voice/asr-volcengine').then(m => m.recognize(audio, sample)),
-  // iflytek:     (audio, sample) => import('../lib/voice/asr-iflytek').then(m => m.recognize(audio, sample)),
+  volcengine: (audio, sample) =>
+    import('../lib/voice/asr-volcengine').then((m) => m.recognize(audio, sample)),
+  iflytek: (audio, sample) =>
+    import('../lib/voice/asr-iflytek').then((m) => m.recognize(audio, sample)),
+  // mock：评测链路冒烟（返回参考文本 90% 截断，产出非零 CER 的真实评测流）
+  mock: (audio, sample) => {
+    void audio;
+    return Promise.resolve(sample.reference.slice(0, Math.max(1, Math.floor(sample.reference.length * 0.9))));
+  },
 };
 
 /** 音频加载：${audioDir}/${sampleId}.wav */

@@ -1,4 +1,3 @@
-// @ts-expect-error ws is an optional runtime dependency
 import { WebSocketServer, WebSocket } from 'ws';
 import type { IncomingMessage } from 'http';
 import { WebSocketEventType, type WebSocketMessage } from './types';
