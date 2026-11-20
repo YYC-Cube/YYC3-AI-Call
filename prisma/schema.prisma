@@ -69,6 +69,8 @@ model Call {
   status        CallStatus @default(PENDING)
   duration      Int?      // 秒数
   recordingUrl  String?
+  /// 录音到期时间（合规引擎：留存期满由清理任务置空 recordingUrl）
+  recordingExpiresAt DateTime?
   transcript    String?   @db.Text
   intent        String?
   sentiment     String?
@@ -195,4 +197,81 @@ enum InteractionType {
   SENTIMENT_ANALYSIS
   SYSTEM_EVENT
   NOTE
+}
+
+// ============================================
+// 合规引擎（预呼校验 / 禁拨名单 / 号码状态机）
+// ============================================
+
+/// 外呼号码状态机：AVAILABLE 可用 | SUSPENDED 待审（默认，需授权凭证方可转可用）| BLOCKED 禁用
+model PhoneNumber {
+  id            String            @id @default(cuid())
+  number        String            @unique
+  status        PhoneNumberStatus @default(SUSPENDED)
+  carrier       String?           // 电信 / 移动 / 联通
+  /// 运营商授权凭证编号（对接官方号码报备；空则不可转 AVAILABLE）
+  authorization String?
+  /// 单号码日呼上限（预呼频次闸默认取此值）
+  dailyLimit    Int               @default(3)
+  tenantId      String?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  callTasks     OutboundTask[]
+
+  @@index([status])
+  @@map("phone_numbers")
+}
+
+/// 禁拨名单：COMPLAINT 投诉 | OPT_OUT 退订 | REGULATOR 监管下发；expiresAt 为空表示永久
+model DncEntry {
+  id        String    @id @default(cuid())
+  phone     String    @unique
+  reason    DncReason
+  source    String?
+  expiresAt DateTime?
+  tenantId  String?
+  createdAt DateTime  @default(now())
+
+  @@index([phone])
+  @@map("dnc_entries")
+}
+
+/// 外呼任务：预呼校验落点，五道闸快照存 complianceSnap；BLOCKED 即禁止发起
+model OutboundTask {
+  id             String     @id @default(cuid())
+  phoneNumberId  String
+  customerId     String?
+  callId         String?
+  status         TaskStatus @default(DRAFT)
+  /// 预呼校验快照（五道闸结果 JSON）
+  complianceSnap Json?
+  scheduledAt    DateTime?
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  phoneNumber    PhoneNumber @relation(fields: [phoneNumberId], references: [id])
+
+  @@index([status])
+  @@index([phoneNumberId])
+  @@map("outbound_tasks")
+}
+
+enum PhoneNumberStatus {
+  AVAILABLE
+  SUSPENDED
+  BLOCKED
+}
+
+enum DncReason {
+  COMPLAINT
+  OPT_OUT
+  REGULATOR
+}
+
+enum TaskStatus {
+  DRAFT
+  COMPLIANCE_PASSED
+  DIALING
+  COMPLETED
+  FAILED
+  BLOCKED
 }

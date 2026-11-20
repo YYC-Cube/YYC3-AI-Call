@@ -1,0 +1,36 @@
+name: Maintenance
+
+# 合规维护任务（到期录音清理）。需要 LAN 内 self-hosted runner
+# （标签 yyc3-lan）才能访问 NAS 数据库；无 runner 时任务保持排队，不阻塞其他流程。
+# 亦可由部署环境 crontab 直接执行 scripts/purge-expired-recordings.ts 替代。
+
+on:
+  schedule:
+    - cron: "17 3 * * *" # 每日 03:17 UTC（上海 11:17，避开禁拨时段与整点拥塞）
+  workflow_dispatch:
+
+jobs:
+  purge-expired-recordings:
+    runs-on: [self-hosted, yyc3-lan]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies (offline preferred)
+        run: pnpm install --frozen-lockfile=false --prefer-offline
+
+      - name: Purge expired recordings
+        run: pnpm tsx scripts/purge-expired-recordings.ts
+        env:
+          # 凭证由 self-hosted runner 环境预置（use-yyc3-db.sh 同源），不入仓库
+          DATABASE_URL: ${{ secrets.YYC3_DATABASE_URL }}

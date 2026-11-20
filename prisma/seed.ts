@@ -19,6 +19,8 @@ import {
   CallType,
   CallStatus,
   InteractionType,
+  PhoneNumberStatus,
+  DncReason,
 } from "@prisma/client";
 import * as bcrypt from "bcryptjs";
 
@@ -303,11 +305,59 @@ async function main() {
       }),
     ]);
 
+    console.log("☎️ 创建合规号码台账...");
+    await prisma.phoneNumber.createMany({
+      skipDuplicates: true,
+      data: [
+        {
+          number: "10001",
+          status: PhoneNumberStatus.AVAILABLE,
+          carrier: "电信",
+          authorization: "SEED-AUTH-DEMO-001",
+          dailyLimit: 3,
+        },
+        {
+          number: "10085",
+          status: PhoneNumberStatus.AVAILABLE,
+          carrier: "移动",
+          authorization: "SEED-AUTH-DEMO-002",
+          dailyLimit: 3,
+        },
+        {
+          number: "10016",
+          status: PhoneNumberStatus.SUSPENDED,
+          carrier: "联通",
+          authorization: null,
+          dailyLimit: 3,
+        },
+      ],
+    });
+
+    console.log("🚫 创建禁拨名单示例...");
+    await prisma.dncEntry.createMany({
+      skipDuplicates: true,
+      data: [
+        {
+          phone: "19999990001",
+          reason: DncReason.COMPLAINT,
+          source: "seed",
+        },
+        {
+          phone: "19999990002",
+          reason: DncReason.OPT_OUT,
+          source: "seed",
+          // 有期禁拨：7 天后自动解除
+          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        },
+      ],
+    });
+
     console.log("✅ 种子数据创建完成！");
     console.log(`\n📊 数据统计:`);
     console.log(`   👥 用户: ${users.length} 个`);
     console.log(`   👤 客户: ${customers.length} 个`);
     console.log(`   📞 通话: ${calls.length} 条`);
+    console.log(`   ☎️ 号码: 3 个 | 🚫 禁拨: 2 条`);
   } catch (error) {
     console.error("❌ 播种数据时出错:", error);
     throw error;

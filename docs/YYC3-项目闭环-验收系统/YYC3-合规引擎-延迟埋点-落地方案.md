@@ -1,8 +1,8 @@
 ---
 file: YYC3-合规引擎-延迟埋点-落地方案.md
-description: 基于行业调研结论的合规引擎与延迟埋点落地方案 — 数据模型、预呼校验管线、AI 内容标识、录音留存、TTFT/E2E 埋点与三迭代任务列表
+description: 基于行业调研结论的合规引擎与延迟埋点落地方案 — 数据模型、预呼校验管线、AI 内容标识、录音留存、TTFT/E2E 埋点与三迭代任务列表（v1.1.0 M1 已完成闭环）
 author: YYC³ Team <admin@0379.email>
-version: v1.0.0
+version: v1.1.0
 created: 2026-11-20
 updated: 2026-11-20
 status: stable
@@ -311,6 +311,7 @@ V1/V2 依赖真实语音供应商接入决策；R2-R7 相互独立
 | 版本 | 日期 | 变更内容 | 作者 |
 | --- | --- | --- | --- |
 | v1.0.0 | 2026-11-20 | 首次发布：合规引擎五道闸 + AI 双标识 + 录音留存方案、延迟埋点指标体系与 M1-M3 三迭代任务列表（遗留风险 7 项全量转化） | YYC³ Team |
+| v1.1.0 | 2026-11-20 | **M1 合规闭环执行完成**：C1 迁移 `20261120134817_compliance_engine` 已应用（migrator 角色通道，shadow 库权限受限改用 diff+deploy 标准替代路径）；C2 五道闸管线（precall 17 用例）；C3 AI 双标识注入 synthesizeSpeech（6 用例）；C4 合规 API 四路由（11 用例，403/422 硬约束覆盖）；C5 录音留存 attachRecording+purge 幂等+双通道调度（4 用例）；C6 外呼发起入口合规前置（集成 3 例：DNC→BLOCKED+审计）；C7 合规台账组件（6 用例含 RBAC 列可见性+axe）。合规测试合计 41/41 全绿；M1 出口复测 tsc 0 error / lint 0e647w / jest 283/283 / 覆盖率门禁通过（73.2/57.14/75.29/74.9）/ build 成功 | YYC³ Team |
 
 ---
 

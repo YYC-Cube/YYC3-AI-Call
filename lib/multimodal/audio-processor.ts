@@ -5,6 +5,7 @@ import {
   AudioFormat,
   MultimodalConfig,
 } from './types';
+import { applyExplicitDisclosure, buildDisclosureMetadata } from '@/lib/compliance/disclosure';
 
 export class AudioProcessor {
   private config: {
@@ -117,6 +118,14 @@ export class AudioProcessor {
 
     const text = (input.data as { text?: string }).text || '你好，这是语音合成的示例输出。';
 
+    // AI 生成内容标识（《人工智能生成合成内容标识办法》2025-09-01）
+    // 显式标识（§4）：播报文本起始插入提示，不可关闭
+    const spokenText = applyExplicitDisclosure(text);
+    // 隐式标识（§5）：元数据写服务提供者名称/编码、内容编号
+    const metadata = buildDisclosureMetadata(
+      input.metadata?.contentId || `tts-${Date.now()}`
+    );
+
     await new Promise((resolve) => setTimeout(resolve, text.length * 30));
 
     const voices = ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'];
@@ -126,12 +135,17 @@ export class AudioProcessor {
       success: true,
       task: AudioProcessingTask.SYNTHESIZE_SPEECH,
       data: {
+        text: spokenText,
         audioData: `base64_encoded_audio_data_${Date.now()}`,
         features: {
-          duration: text.length * 0.1,
+          duration: spokenText.length * 0.1,
           sampleRate: this.config.sampleRate,
           channels: 1,
           format: 'mp3',
+          aiGenerated: metadata.aiGenerated,
+          provider: metadata.provider,
+          providerCode: metadata.providerCode,
+          contentId: metadata.contentId,
         },
       },
       processingTime: text.length * 30,

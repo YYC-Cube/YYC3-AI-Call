@@ -68,6 +68,8 @@ export interface MediaInput {
     mimeType?: string;
     duration?: number;
     dimensions?: { width: number; height: number };
+    /// AI 内容标识：内容编号（关联通话/外呼任务，审计可追溯）
+    contentId?: string;
   };
 }
 
@@ -116,6 +118,11 @@ export interface AudioProcessingResult {
       sampleRate: number;
       channels: number;
       format: string;
+      /// AI 生成内容隐式标识（办法 §5：aiGenerated 恒 true，无关闭开关）
+      aiGenerated?: true;
+      provider?: string;
+      providerCode?: string;
+      contentId?: string;
     };
     enhancedData?: string;
   };
