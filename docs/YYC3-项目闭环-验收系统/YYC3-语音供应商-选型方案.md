@@ -2,7 +2,7 @@
 file: YYC3-语音供应商-选型方案.md
 description: V1 语音管线级联埋点与 V2 客户端上报的前置供应商选型方案 — 路线决策、候选矩阵（带来源价格）、五维评估、POC 评测口径（复用 M2 延迟指标）与双供应商主备决策流程
 author: YYC³ Team <admin@0379.email>
-version: v1.0.0
+version: v1.1.0
 created: 2026-11-20
 updated: 2026-11-20
 status: stable
@@ -169,7 +169,7 @@ phase: production
 | 评测口径与通过门槛 | ✅ 本方案 §五（复用 M2 指标） |
 | 合规约束核对单 | ✅ 本方案 §1.2 |
 | 决策流程与主备结构 | ✅ 本方案 §六 |
-| 评测集样本 | ⏳ POC 第 1 天构建（内容运营 0.5 人日） |
+| 评测集样本 | ✅ **已构建（2026-11-20）**：[lib/voice/eval-dataset.ts](../../lib/voice/eval-dataset.ts)（ASR 20 句 7/7/6 × 三档位、五要素覆盖；嘈杂 5 段规格；TTS 标识头同源常量）+ [eval.ts](../../lib/voice/eval.ts)（CER 编辑距离/指标直通/门槛判定，15 用例）+ [runner 骨架](../../scripts/poc-eval.ts)（适配器注册表冒烟通过）+ [挂载规格](../../lib/voice/eval-assets/README.md) |
 
 POC 启动后 V1 预估 1 周内交付（埋点已就绪，仅接真实 SDK），V2 随语音客户端同周交付。
 
@@ -196,6 +196,7 @@ POC 启动后 V1 预估 1 周内交付（埋点已就绪，仅接真实 SDK）�
 | 版本 | 日期 | 变更内容 | 作者 |
 | --- | --- | --- | --- |
 | v1.0.0 | 2026-11-20 | 首次发布：路线决策（主 B 级联/A 对标）、三档候选矩阵（带来源定价）、五维权重、POC 评测口径（复用 M2 指标）与双供应商主备流程；V1/V2 启动条件确认 | YYC³ Team |
+| v1.1.0 | 2026-11-20 | **POC 评测集构建完成（§七 末项转 ✅）**：eval-dataset（ASR 20 句 7/7/6 三场景×三档位、数字/日期/金额/专名/谐音五要素、嘈杂 5 段 SNR 15→0 递减规格；TTS 标识头同源 disclosure 常量 + 三话术各 2）+ eval.ts（CER 编辑距离、延迟直通 M2 `asr_first_token_ms`、POC 门槛判定）+ poc-eval.ts runner 骨架（适配器注册表）+ eval-assets 挂载规格；评测引擎 15 用例全绿，tsc 0 / lint ≤450 预算 | YYC³ Team |
 
 ---
 
