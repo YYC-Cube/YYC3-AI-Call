@@ -121,7 +121,7 @@
     "@yyc3/mcp-servers": "1.0.0",
     "@yyc3/motion": "1.0.0",
     "@yyc3/plugins": "^1.4.2",
-    "@yyc3/ui": "^2.1.0",
+    "@yyc3/ui": "^2.0.2",
     "autoprefixer": "^10.6.2",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
