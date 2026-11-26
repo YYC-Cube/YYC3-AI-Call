@@ -136,11 +136,11 @@ importers:
         specifier: 1.0.0
         version: 1.0.0
       '@yyc3/i18n-core':
-        specifier: 2.4.0
-        version: 2.4.0
+        specifier: 3.6.0
+        version: 3.6.0
       '@yyc3/mcp-servers':
-        specifier: 1.0.0
-        version: 1.0.0
+        specifier: 3.0.0
+        version: 3.0.0
       '@yyc3/motion':
         specifier: 1.0.0
         version: 1.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3086,18 +3086,18 @@ packages:
     resolution: {integrity: sha512-OAtPDl0cULk+cXZFkf+x/9juJyRkcJhDxuVw6j01kYkJdqWZBgBDgLlMES5/aNVbTHh7fQZwPNedq2XDXy+0lw==}
     engines: {node: '>=18.0.0'}
 
-  '@yyc3/i18n-core@2.4.0':
-    resolution: {integrity: sha512-46d9HCNX3MD2lVk3InKbwTItayxq9my4edud9Ujo9k+lyOORKpJmdxPCthUG//5tKxaicJEWB5V0VKKuPRnR8Q==}
-    engines: {node: '>=18.0.0'}
+  '@yyc3/i18n-core@3.6.0':
+    resolution: {integrity: sha512-iSqAeW1FgjD5RAJX4EyPmpLtyV7qNtZ3CGxAl8yqLH+B8BXCQ/102tTGwg4Ij61lCwC56AXyYWy12BeETYBh8Q==}
+    engines: {node: '>=20.19.0'}
     peerDependencies:
       lit: ^3.0.0
     peerDependenciesMeta:
       lit:
         optional: true
 
-  '@yyc3/mcp-servers@1.0.0':
-    resolution: {integrity: sha512-2xXF97xT334oNEDEdwXZjxnOv02i55DlV2jtSMfp3QM3cRSvHkYqyTSXU7E1SNGX+mIo7DyScuLdDvmGZV1c7g==}
-    engines: {node: '>=18.0.0'}
+  '@yyc3/mcp-servers@3.0.0':
+    resolution: {integrity: sha512-irBUk5aAzX/+u1rDkR1NJNkzlQtjeygclAwYccJJJtB4hCPvQ57NluZpAfR2hQu6PhcIpwhpOLPvopgDByBnsw==}
+    engines: {node: '>=18.0.0', pnpm: '>=8.0.0'}
 
   '@yyc3/motion@1.0.0':
     resolution: {integrity: sha512-cgK7BQejnl5OCNCN5sFdx9Pzyi+kgaviN1cSyoTyfV2KmwkQ347S31u3C6HFJnU4K+A0Xwj0IV46nplkSmIzdQ==}
@@ -9543,9 +9543,9 @@ snapshots:
     dependencies:
       eventemitter3: 5.0.4
 
-  '@yyc3/i18n-core@2.4.0': {}
+  '@yyc3/i18n-core@3.6.0': {}
 
-  '@yyc3/mcp-servers@1.0.0': {}
+  '@yyc3/mcp-servers@3.0.0': {}
 
   '@yyc3/motion@1.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
